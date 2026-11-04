@@ -1,0 +1,17 @@
+$ docker compose ps --format '{{.Service}} {{.State}} {{.Health}}'
+$ curl --fail --silent --show-error http://127.0.0.1:8080/health
+gateway running healthy
+{"status":"ok"}
+
+$ docker compose down -v --remove-orphans
+$ docker compose ps --all --quiet
+ Container agentruntimeenvironment-gateway-1  Stopping
+ Container agentruntimeenvironment-gateway-1  Stopped
+ Container agentruntimeenvironment-gateway-1  Removing
+ Container agentruntimeenvironment-gateway-1  Removed
+ Network agentruntimeenvironment_default  Removing
+ Network agentruntimeenvironment_default  Removed
+
+$ make run
+$ curl --fail --silent --show-error http://127.0.0.1:8080/health
+{"status":"ok"}
