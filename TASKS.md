@@ -31,7 +31,7 @@
 
 - [x] Выполнено агентом.
 - [x] Проверено агентом: локальный `make test-ci` без внешней сети и оба задания
-  [Linux CI](https://github.com/HermanDp45/AgentRuntimeEnvironment/actions/runs/41809291334) успешны;
+  [Linux CI](https://github.com/HermanDp45/AgentRuntimeEnvironment/actions/runs/41809622312) успешны;
   [сохранённый результат](results/2026-11-04-bootstrap/ci.json). Запуск CI был ручным.
 
 ### P-05. Два коммита и push от владельца

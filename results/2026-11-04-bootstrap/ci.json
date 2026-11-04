@@ -1,159 +1,159 @@
 {
   "conclusion": "success",
   "event": "workflow_dispatch",
-  "headSha": "aa32966ba35fdcbf25b25e7a7a0f0c783f96208e",
+  "headSha": "798a381b3d1060843a53c1cc3af45a71ebe8232b",
   "jobs": [
     {
-      "completedAt": "2026-11-04T09:41:28Z",
+      "completedAt": "2026-11-04T09:44:52Z",
       "conclusion": "success",
-      "databaseId": 126504192287,
-      "name": "compose",
-      "startedAt": "2026-11-04T09:41:05Z",
-      "status": "completed",
-      "steps": [
-        {
-          "completedAt": "2026-11-04T09:41:06Z",
-          "conclusion": "success",
-          "name": "Set up job",
-          "number": 1,
-          "startedAt": "2026-11-04T09:41:06Z",
-          "status": "completed"
-        },
-        {
-          "completedAt": "2026-11-04T09:41:07Z",
-          "conclusion": "success",
-          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
-          "number": 2,
-          "startedAt": "2026-11-04T09:41:06Z",
-          "status": "completed"
-        },
-        {
-          "completedAt": "2026-11-04T09:41:25Z",
-          "conclusion": "success",
-          "name": "Build and wait for healthcheck",
-          "number": 3,
-          "startedAt": "2026-11-04T09:41:07Z",
-          "status": "completed"
-        },
-        {
-          "completedAt": "2026-11-04T09:41:25Z",
-          "conclusion": "success",
-          "name": "Check HTTP contract",
-          "number": 4,
-          "startedAt": "2026-11-04T09:41:25Z",
-          "status": "completed"
-        },
-        {
-          "completedAt": "2026-11-04T09:41:25Z",
-          "conclusion": "success",
-          "name": "Show logs",
-          "number": 5,
-          "startedAt": "2026-11-04T09:41:25Z",
-          "status": "completed"
-        },
-        {
-          "completedAt": "2026-11-04T09:41:25Z",
-          "conclusion": "success",
-          "name": "Clean up",
-          "number": 6,
-          "startedAt": "2026-11-04T09:41:25Z",
-          "status": "completed"
-        },
-        {
-          "completedAt": "2026-11-04T09:41:26Z",
-          "conclusion": "success",
-          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
-          "number": 12,
-          "startedAt": "2026-11-04T09:41:25Z",
-          "status": "completed"
-        },
-        {
-          "completedAt": "2026-11-04T09:41:26Z",
-          "conclusion": "success",
-          "name": "Complete job",
-          "number": 13,
-          "startedAt": "2026-11-04T09:41:26Z",
-          "status": "completed"
-        }
-      ],
-      "url": "https://github.com/HermanDp45/AgentRuntimeEnvironment/actions/runs/41809291334/job/126504192287"
-    },
-    {
-      "completedAt": "2026-11-04T09:41:15Z",
-      "conclusion": "success",
-      "databaseId": 126504193821,
+      "databaseId": 126505317928,
       "name": "python",
-      "startedAt": "2026-11-04T09:41:05Z",
+      "startedAt": "2026-11-04T09:44:41Z",
       "status": "completed",
       "steps": [
         {
-          "completedAt": "2026-11-04T09:41:07Z",
+          "completedAt": "2026-11-04T09:44:43Z",
           "conclusion": "success",
           "name": "Set up job",
           "number": 1,
-          "startedAt": "2026-11-04T09:41:06Z",
+          "startedAt": "2026-11-04T09:44:42Z",
           "status": "completed"
         },
         {
-          "completedAt": "2026-11-04T09:41:08Z",
+          "completedAt": "2026-11-04T09:44:44Z",
           "conclusion": "success",
-          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
           "number": 2,
-          "startedAt": "2026-11-04T09:41:07Z",
+          "startedAt": "2026-11-04T09:44:43Z",
           "status": "completed"
         },
         {
-          "completedAt": "2026-11-04T09:41:09Z",
+          "completedAt": "2026-11-04T09:44:46Z",
           "conclusion": "success",
           "name": "Run astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78",
           "number": 3,
-          "startedAt": "2026-11-04T09:41:08Z",
+          "startedAt": "2026-11-04T09:44:44Z",
           "status": "completed"
         },
         {
-          "completedAt": "2026-11-04T09:41:10Z",
+          "completedAt": "2026-11-04T09:44:48Z",
           "conclusion": "success",
           "name": "Run make setup",
           "number": 4,
-          "startedAt": "2026-11-04T09:41:09Z",
+          "startedAt": "2026-11-04T09:44:46Z",
           "status": "completed"
         },
         {
-          "completedAt": "2026-11-04T09:41:12Z",
+          "completedAt": "2026-11-04T09:44:50Z",
           "conclusion": "success",
           "name": "Run make test-ci",
           "number": 5,
-          "startedAt": "2026-11-04T09:41:10Z",
+          "startedAt": "2026-11-04T09:44:48Z",
           "status": "completed"
         },
         {
-          "completedAt": "2026-11-04T09:41:13Z",
+          "completedAt": "2026-11-04T09:44:50Z",
           "conclusion": "success",
           "name": "Post Run astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78",
           "number": 9,
-          "startedAt": "2026-11-04T09:41:12Z",
+          "startedAt": "2026-11-04T09:44:50Z",
           "status": "completed"
         },
         {
-          "completedAt": "2026-11-04T09:41:13Z",
+          "completedAt": "2026-11-04T09:44:50Z",
           "conclusion": "success",
-          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
           "number": 10,
-          "startedAt": "2026-11-04T09:41:13Z",
+          "startedAt": "2026-11-04T09:44:50Z",
           "status": "completed"
         },
         {
-          "completedAt": "2026-11-04T09:41:13Z",
+          "completedAt": "2026-11-04T09:44:50Z",
           "conclusion": "success",
           "name": "Complete job",
           "number": 11,
-          "startedAt": "2026-11-04T09:41:13Z",
+          "startedAt": "2026-11-04T09:44:50Z",
           "status": "completed"
         }
       ],
-      "url": "https://github.com/HermanDp45/AgentRuntimeEnvironment/actions/runs/41809291334/job/126504193821"
+      "url": "https://github.com/HermanDp45/AgentRuntimeEnvironment/actions/runs/41809622312/job/126505317928"
+    },
+    {
+      "completedAt": "2026-11-04T09:45:12Z",
+      "conclusion": "success",
+      "databaseId": 126505413788,
+      "name": "compose",
+      "startedAt": "2026-11-04T09:44:56Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-11-04T09:44:57Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-11-04T09:44:56Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-04T09:44:58Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "number": 2,
+          "startedAt": "2026-11-04T09:44:57Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-04T09:45:09Z",
+          "conclusion": "success",
+          "name": "Build and wait for healthcheck",
+          "number": 3,
+          "startedAt": "2026-11-04T09:44:58Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-04T09:45:09Z",
+          "conclusion": "success",
+          "name": "Check HTTP contract",
+          "number": 4,
+          "startedAt": "2026-11-04T09:45:09Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-04T09:45:09Z",
+          "conclusion": "success",
+          "name": "Show logs",
+          "number": 5,
+          "startedAt": "2026-11-04T09:45:09Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-04T09:45:10Z",
+          "conclusion": "success",
+          "name": "Clean up",
+          "number": 6,
+          "startedAt": "2026-11-04T09:45:09Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-04T09:45:10Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "number": 12,
+          "startedAt": "2026-11-04T09:45:10Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-04T09:45:10Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 13,
+          "startedAt": "2026-11-04T09:45:10Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/HermanDp45/AgentRuntimeEnvironment/actions/runs/41809622312/job/126505413788"
     }
   ],
   "status": "completed",
-  "url": "https://github.com/HermanDp45/AgentRuntimeEnvironment/actions/runs/41809291334"
+  "url": "https://github.com/HermanDp45/AgentRuntimeEnvironment/actions/runs/41809622312"
 }

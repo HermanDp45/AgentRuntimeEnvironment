@@ -46,9 +46,12 @@ Lock-файл согласован, Ruff и HTTP-тест прошли без в
 
 ## GitHub Actions
 
-[Ручной запуск 41809291334](https://github.com/HermanDp45/AgentRuntimeEnvironment/actions/runs/41809291334)
-на ревизии `aa32966ba35fdcbf25b25e7a7a0f0c783f96208e`: `python` и `compose` успешны
-на Ubuntu 24.04. Исходный ответ `gh run view --json` сохранён в [ci.json](ci.json).
-В нём первая версия workflow с checkout v4; после предупреждения GitHub
-checkout обновлён до v7.0.1. Отсутствие автоматического запуска после первого push
-зафиксировано в журнале; успешный ручной запуск не считается доказательством push-триггера.
+[Ручной запуск 41809622312](https://github.com/HermanDp45/AgentRuntimeEnvironment/actions/runs/41809622312)
+на ревизии `798a381b3d1060843a53c1cc3af45a71ebe8232b`: `python` и `compose` успешны
+на Ubuntu 24.04, checkout v7.0.1. Исходный ответ `gh run view --json` — [ci.json](ci.json).
+
+Первый успешный [запуск 41809291334](https://github.com/HermanDp45/AgentRuntimeEnvironment/actions/runs/41809291334)
+на `aa32966` сохранён в [ci-initial.json](ci-initial.json). Он выдал предупреждение
+об устаревшем Node.js у checkout v4; после этого checkout обновлён и CI повторён.
+Отсутствие автоматического запуска при первых push зафиксировано в журнале;
+успешный ручной запуск не считается доказательством push-триггера.
