@@ -104,6 +104,7 @@ UI-, инфраструктурные и smoke-БАФ тесты будут до
 
 GitHub Actions на push и pull request запускает `make test-ci`,
 а отдельная Linux-проверка собирает Compose, ждёт healthy и проверяет `/health`.
+Тот же workflow можно запустить вручную во вкладке Actions.
 
 ## Материалы проекта
 
