@@ -4,6 +4,8 @@ services:
       context: .
       dockerfile: services/llm-proxy/Dockerfile
       target: production
+    dns_opt:
+      - use-vc
     environment:
       LLM_PROVIDER_URL: "${LLM_PROVIDER_URL:-https://inference.airi.net}"
       LLM_API_KEY: "${LLM_API_KEY:-}"

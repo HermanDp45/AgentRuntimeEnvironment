@@ -37,7 +37,9 @@ uv run --frozen --env-file .env python services/llm-proxy/probe.py results/api-c
 Проверка уже была [сохранена](../../results/2026-11-06-llm-api-probe/README.md).
 Полный read-only сценарий через gateway — services/harness/probe.py.
 
-На текущем Docker Desktop выявлен отдельный сбой внешнего DNS; host DNS работает.
-Для диагностики сохранён временный DNS-снимок, без отключения TLS:
-[условия эксперимента](../../results/2026-11-06-harness-v0/README.md).
-IP из него не встроен в образ и не является постоянной настройкой провайдера.
+В основном Compose для llm-proxy задан dns_opt: [use-vc], DNS через TCP.
+Это устраняет обнаруженную недоступность публичного UDP/53 в текущей VPN-сети.
+Сервис использует имя провайдера и проверяет TLS, ручного IP в конфигурации нет.
+Обычного make up достаточно; глобальные настройки Docker/VPN не менялись.
+[Диагностика](../../results/2026-11-06-dns-investigation/README.md),
+[проверка исправления](../../results/2026-11-06-dns-fix/README.md).

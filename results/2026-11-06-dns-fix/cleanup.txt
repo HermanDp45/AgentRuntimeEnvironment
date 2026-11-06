@@ -1,0 +1,54 @@
+docker compose -p are-offline -f docker-compose.yml -f tests/infra/compose.yml down -v --remove-orphans
+ Container are-offline-gateway-1  Stopping
+ Container are-offline-gateway-1  Stopped
+ Container are-offline-gateway-1  Removing
+ Container are-offline-gateway-1  Removed
+ Container are-offline-harness-1  Stopping
+ Container are-offline-harness-1  Stopped
+ Container are-offline-harness-1  Removing
+ Container are-offline-harness-1  Removed
+ Container are-offline-llm-proxy-1  Stopping
+ Container are-offline-sandbox-manager-1  Stopping
+ Container are-offline-llm-proxy-1  Stopped
+ Container are-offline-llm-proxy-1  Removing
+ Container are-offline-llm-proxy-1  Removed
+ Container are-offline-mock-llm-1  Stopping
+ Container are-offline-sandbox-manager-1  Stopped
+ Container are-offline-sandbox-manager-1  Removing
+ Container are-offline-sandbox-manager-1  Removed
+ Container are-offline-sandbox-image-1  Stopping
+ Container are-offline-sandbox-image-1  Stopped
+ Container are-offline-sandbox-image-1  Removing
+ Container are-offline-sandbox-image-1  Removed
+ Container are-offline-mock-llm-1  Stopped
+ Container are-offline-mock-llm-1  Removing
+ Container are-offline-mock-llm-1  Removed
+ Network are-offline_default  Removing
+ Network are-offline_default  Removed
+docker compose down -v --remove-orphans
+ Container agentruntimeenvironment-gateway-1  Stopping
+ Container agentruntimeenvironment-gateway-1  Stopped
+ Container agentruntimeenvironment-gateway-1  Removing
+ Container agentruntimeenvironment-gateway-1  Removed
+ Container agentruntimeenvironment-harness-1  Stopping
+ Container agentruntimeenvironment-harness-1  Stopped
+ Container agentruntimeenvironment-harness-1  Removing
+ Container agentruntimeenvironment-harness-1  Removed
+ Container agentruntimeenvironment-sandbox-manager-1  Stopping
+ Container agentruntimeenvironment-llm-proxy-1  Stopping
+ Container agentruntimeenvironment-llm-proxy-1  Stopped
+ Container agentruntimeenvironment-llm-proxy-1  Removing
+ Container agentruntimeenvironment-llm-proxy-1  Removed
+ Container agentruntimeenvironment-sandbox-manager-1  Stopped
+ Container agentruntimeenvironment-sandbox-manager-1  Removing
+ Container agentruntimeenvironment-sandbox-manager-1  Removed
+ Container agentruntimeenvironment-sandbox-image-1  Stopping
+ Container agentruntimeenvironment-sandbox-image-1  Stopped
+ Container agentruntimeenvironment-sandbox-image-1  Removing
+ Container agentruntimeenvironment-sandbox-image-1  Removed
+ Network agentruntimeenvironment_default  Removing
+ Network agentruntimeenvironment_default  Removed
+are.owner=agentruntimeenvironment: no containers
+com.docker.compose.project=agentruntimeenvironment: no containers
+are.owner=are-offline: no containers
+com.docker.compose.project=are-offline: no containers
