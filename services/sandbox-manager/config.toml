@@ -1,0 +1,12 @@
+image = "agentruntimeenvironment-sandbox:v0"
+memory = "1g"
+cpus = 1
+pids = 128
+work_bytes = 67108864
+tmp_bytes = 16777216
+timeout_s = 120
+idle_s = 1800
+max_sessions = 4
+max_operations = 128
+file_bytes = 65536
+output_bytes = 65536

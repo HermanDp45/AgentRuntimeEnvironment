@@ -1,4 +1,45 @@
 services:
+  sandbox-image:
+    image: "${COMPOSE_PROJECT_NAME:-agentruntimeenvironment}-sandbox:v0"
+    build:
+      context: .
+      dockerfile: services/sandbox-manager/sandbox/Dockerfile
+    command: ["check"]
+    network_mode: none
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=16m
+
+  sandbox-manager:
+    build:
+      context: .
+      dockerfile: services/sandbox-manager/Dockerfile
+    depends_on:
+      sandbox-image:
+        condition: service_completed_successfully
+    ports:
+      - "127.0.0.1:${SANDBOX_MANAGER_PORT:-8081}:8081"
+    environment:
+      SANDBOX_NAMESPACE: "${COMPOSE_PROJECT_NAME:-agentruntimeenvironment}"
+      SANDBOX_IMAGE: "${COMPOSE_PROJECT_NAME:-agentruntimeenvironment}-sandbox:v0"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    tmpfs:
+      - /state:rw,noexec,nosuid,nodev,size=32m,mode=0700
+      - /tmp:rw,noexec,nosuid,nodev,size=16m
+    stop_grace_period: 30s
+    healthcheck:
+      test: [CMD, python, -c, "from urllib.request import urlopen; urlopen('http://127.0.0.1:8081/health', timeout=2).close()"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 3s
+
   gateway:
     build:
       context: .

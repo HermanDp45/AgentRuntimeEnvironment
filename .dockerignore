@@ -5,5 +5,14 @@
 !services/gateway/
 !services/gateway/src/
 !services/gateway/src/**
+!services/sandbox-manager/
+!services/sandbox-manager/Dockerfile
+!services/sandbox-manager/config.toml
+!services/sandbox-manager/src/
+!services/sandbox-manager/src/**
+!services/sandbox-manager/sandbox/
+!services/sandbox-manager/sandbox/**
+!contracts/
+!contracts/**
 **/__pycache__/
 **/*.py[cod]

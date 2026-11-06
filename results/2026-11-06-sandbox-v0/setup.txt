@@ -1,0 +1,4 @@
+uv sync --frozen
+Checked 33 packages in 0.61ms
+
+Existing .env preserved: true

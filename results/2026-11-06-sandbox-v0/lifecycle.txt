@@ -1,0 +1,40 @@
+ Container agentruntimeenvironment-sandbox-manager-1  Killing
+ Container agentruntimeenvironment-sandbox-manager-1  Killed
+ Container agentruntimeenvironment-sandbox-image-1  Created
+ Container agentruntimeenvironment-sandbox-manager-1  Created
+ Container agentruntimeenvironment-sandbox-image-1  Starting
+ Container agentruntimeenvironment-sandbox-image-1  Started
+ Container agentruntimeenvironment-sandbox-image-1  Waiting
+ Container agentruntimeenvironment-sandbox-image-1  Exited
+ Container agentruntimeenvironment-sandbox-manager-1  Starting
+ Container agentruntimeenvironment-sandbox-manager-1  Started
+ Container agentruntimeenvironment-sandbox-manager-1  Waiting
+ Container agentruntimeenvironment-sandbox-image-1  Waiting
+ Container agentruntimeenvironment-sandbox-image-1  Exited
+ Container agentruntimeenvironment-sandbox-manager-1  Healthy
+ Container agentruntimeenvironment-sandbox-manager-1  Stopping
+ Container agentruntimeenvironment-sandbox-manager-1  Stopped
+{
+  "resources": {
+    "Memory": 1073741824,
+    "MemorySwap": 1073741824,
+    "NanoCpus": 1000000000,
+    "PidsLimit": 128,
+    "NetworkMode": "none",
+    "ReadonlyRootfs": true,
+    "CapDrop": [
+      "ALL"
+    ],
+    "SecurityOpt": [
+      "no-new-privileges:true",
+      "seccomp=builtin"
+    ],
+    "Tmpfs": {
+      "/tmp": "rw,noexec,nosuid,nodev,size=16777216,uid=10001,gid=10001",
+      "/work": "rw,nosuid,nodev,size=67108864,uid=10001,gid=10001,mode=0755"
+    }
+  },
+  "image": "sha256:8f46ecc921b5e1b0e5d643dfbe7b9f8e4533bb565483daf3dcfc3417a62e193e",
+  "startup_orphan_cleanup": true,
+  "graceful_cleanup": true
+}

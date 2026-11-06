@@ -1,0 +1,18 @@
+docker compose down -v --remove-orphans
+ Container agentruntimeenvironment-gateway-1  Stopping
+ Container agentruntimeenvironment-sandbox-manager-1  Stopping
+ Container agentruntimeenvironment-sandbox-manager-1  Stopped
+ Container agentruntimeenvironment-sandbox-manager-1  Removing
+ Container agentruntimeenvironment-sandbox-manager-1  Removed
+ Container agentruntimeenvironment-sandbox-image-1  Stopping
+ Container agentruntimeenvironment-sandbox-image-1  Stopped
+ Container agentruntimeenvironment-sandbox-image-1  Removing
+ Container agentruntimeenvironment-sandbox-image-1  Removed
+ Container agentruntimeenvironment-gateway-1  Stopped
+ Container agentruntimeenvironment-gateway-1  Removing
+ Container agentruntimeenvironment-gateway-1  Removed
+ Network agentruntimeenvironment_default  Removing
+ Network agentruntimeenvironment_default  Removed
+sandbox containers: none
+Compose containers: none
+diagnostic containers: none

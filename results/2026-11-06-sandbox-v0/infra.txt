@@ -1,0 +1,3 @@
+SANDBOX_TEST_URL="${SANDBOX_TEST_URL:-http://$(docker compose port sandbox-manager 8081)}" uv run --frozen --offline pytest -q tests/infra
+....                                                                     [100%]
+4 passed in 8.69s

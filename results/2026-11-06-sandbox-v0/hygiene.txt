@@ -1,0 +1,3 @@
+No local API key or JWT in Git candidates.
+.env, .venv and .cache are not tracked.
+.env mode: 0600.

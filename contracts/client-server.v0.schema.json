@@ -1,0 +1,553 @@
+{
+  "$defs": {
+    "Approval": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "0",
+          "title": "Version",
+          "type": "string"
+        },
+        "type": {
+          "const": "approval",
+          "title": "Type",
+          "type": "string"
+        },
+        "session_id": {
+          "format": "uuid",
+          "title": "Session Id",
+          "type": "string"
+        },
+        "run_id": {
+          "format": "uuid",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "operation_id": {
+          "format": "uuid",
+          "title": "Operation Id",
+          "type": "string"
+        },
+        "approved": {
+          "title": "Approved",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "session_id",
+        "run_id",
+        "operation_id",
+        "approved"
+      ],
+      "title": "Approval",
+      "type": "object"
+    },
+    "Cancelled": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "const": "cancelled",
+          "title": "Status",
+          "type": "string"
+        },
+        "value": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Value",
+          "type": "object"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "title": "Cancelled",
+      "type": "object"
+    },
+    "ClientCancel": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "0",
+          "title": "Version",
+          "type": "string"
+        },
+        "type": {
+          "const": "run.cancel",
+          "title": "Type",
+          "type": "string"
+        },
+        "session_id": {
+          "format": "uuid",
+          "title": "Session Id",
+          "type": "string"
+        },
+        "run_id": {
+          "format": "uuid",
+          "title": "Run Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "session_id",
+        "run_id"
+      ],
+      "title": "ClientCancel",
+      "type": "object"
+    },
+    "ClientClose": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "0",
+          "title": "Version",
+          "type": "string"
+        },
+        "type": {
+          "const": "session.close",
+          "title": "Type",
+          "type": "string"
+        },
+        "session_id": {
+          "format": "uuid",
+          "title": "Session Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "session_id"
+      ],
+      "title": "ClientClose",
+      "type": "object"
+    },
+    "ClientSession": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "0",
+          "title": "Version",
+          "type": "string"
+        },
+        "type": {
+          "const": "session.create",
+          "title": "Type",
+          "type": "string"
+        },
+        "session_id": {
+          "format": "uuid",
+          "title": "Session Id",
+          "type": "string"
+        },
+        "folder": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "title": "Folder",
+          "type": "string"
+        },
+        "read_only": {
+          "default": false,
+          "title": "Read Only",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "session_id",
+        "folder"
+      ],
+      "title": "ClientSession",
+      "type": "object"
+    },
+    "ClientTask": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "0",
+          "title": "Version",
+          "type": "string"
+        },
+        "type": {
+          "const": "task",
+          "title": "Type",
+          "type": "string"
+        },
+        "session_id": {
+          "format": "uuid",
+          "title": "Session Id",
+          "type": "string"
+        },
+        "run_id": {
+          "format": "uuid",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "message": {
+          "maxLength": 65536,
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "session_id",
+        "run_id",
+        "message"
+      ],
+      "title": "ClientTask",
+      "type": "object"
+    },
+    "ErrorInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "command",
+            "timeout",
+            "sandbox",
+            "transport"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "code": {
+          "title": "Code",
+          "type": "string"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "code",
+        "message"
+      ],
+      "title": "ErrorInfo",
+      "type": "object"
+    },
+    "ErrorReply": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "0",
+          "title": "Version",
+          "type": "string"
+        },
+        "type": {
+          "const": "error",
+          "title": "Type",
+          "type": "string"
+        },
+        "error": {
+          "$ref": "#/$defs/ErrorInfo"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "error"
+      ],
+      "title": "ErrorReply",
+      "type": "object"
+    },
+    "Failed": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "const": "error",
+          "title": "Status",
+          "type": "string"
+        },
+        "value": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Value",
+          "type": "object"
+        },
+        "error": {
+          "$ref": "#/$defs/ErrorInfo"
+        }
+      },
+      "required": [
+        "status",
+        "error"
+      ],
+      "title": "Failed",
+      "type": "object"
+    },
+    "JsonValue": {},
+    "Resume": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "0",
+          "title": "Version",
+          "type": "string"
+        },
+        "type": {
+          "const": "resume",
+          "title": "Type",
+          "type": "string"
+        },
+        "session_id": {
+          "format": "uuid",
+          "title": "Session Id",
+          "type": "string"
+        },
+        "run_id": {
+          "format": "uuid",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "after": {
+          "default": 0,
+          "minimum": 0,
+          "title": "After",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "session_id",
+        "run_id"
+      ],
+      "title": "Resume",
+      "type": "object"
+    },
+    "RunEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "0",
+          "title": "Version",
+          "type": "string"
+        },
+        "type": {
+          "const": "run.event",
+          "title": "Type",
+          "type": "string"
+        },
+        "session_id": {
+          "format": "uuid",
+          "title": "Session Id",
+          "type": "string"
+        },
+        "run_id": {
+          "format": "uuid",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "sequence": {
+          "minimum": 1,
+          "title": "Sequence",
+          "type": "integer"
+        },
+        "event": {
+          "enum": [
+            "message",
+            "tool",
+            "approval_required",
+            "status"
+          ],
+          "title": "Event",
+          "type": "string"
+        },
+        "data": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Data",
+          "type": "object"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "session_id",
+        "run_id",
+        "sequence",
+        "event",
+        "data"
+      ],
+      "title": "RunEvent",
+      "type": "object"
+    },
+    "RunResult": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "0",
+          "title": "Version",
+          "type": "string"
+        },
+        "type": {
+          "const": "run.result",
+          "title": "Type",
+          "type": "string"
+        },
+        "session_id": {
+          "format": "uuid",
+          "title": "Session Id",
+          "type": "string"
+        },
+        "run_id": {
+          "format": "uuid",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "sequence": {
+          "minimum": 1,
+          "title": "Sequence",
+          "type": "integer"
+        },
+        "result": {
+          "discriminator": {
+            "mapping": {
+              "cancelled": "#/$defs/Cancelled",
+              "error": "#/$defs/Failed",
+              "ok": "#/$defs/Success"
+            },
+            "propertyName": "status"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Success"
+            },
+            {
+              "$ref": "#/$defs/Failed"
+            },
+            {
+              "$ref": "#/$defs/Cancelled"
+            }
+          ],
+          "title": "Result"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "session_id",
+        "run_id",
+        "sequence",
+        "result"
+      ],
+      "title": "RunResult",
+      "type": "object"
+    },
+    "Session": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "0",
+          "title": "Version",
+          "type": "string"
+        },
+        "type": {
+          "const": "session",
+          "title": "Type",
+          "type": "string"
+        },
+        "session_id": {
+          "format": "uuid",
+          "title": "Session Id",
+          "type": "string"
+        },
+        "read_only": {
+          "title": "Read Only",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "session_id",
+        "read_only"
+      ],
+      "title": "Session",
+      "type": "object"
+    },
+    "Success": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "const": "ok",
+          "title": "Status",
+          "type": "string"
+        },
+        "value": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Value",
+          "type": "object"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "title": "Success",
+      "type": "object"
+    }
+  },
+  "discriminator": {
+    "mapping": {
+      "approval": "#/$defs/Approval",
+      "error": "#/$defs/ErrorReply",
+      "resume": "#/$defs/Resume",
+      "run.cancel": "#/$defs/ClientCancel",
+      "run.event": "#/$defs/RunEvent",
+      "run.result": "#/$defs/RunResult",
+      "session": "#/$defs/Session",
+      "session.close": "#/$defs/ClientClose",
+      "session.create": "#/$defs/ClientSession",
+      "task": "#/$defs/ClientTask"
+    },
+    "propertyName": "type"
+  },
+  "oneOf": [
+    {
+      "$ref": "#/$defs/ClientSession"
+    },
+    {
+      "$ref": "#/$defs/ClientTask"
+    },
+    {
+      "$ref": "#/$defs/Approval"
+    },
+    {
+      "$ref": "#/$defs/ClientCancel"
+    },
+    {
+      "$ref": "#/$defs/Resume"
+    },
+    {
+      "$ref": "#/$defs/ClientClose"
+    },
+    {
+      "$ref": "#/$defs/Session"
+    },
+    {
+      "$ref": "#/$defs/RunEvent"
+    },
+    {
+      "$ref": "#/$defs/RunResult"
+    },
+    {
+      "$ref": "#/$defs/ErrorReply"
+    }
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:agent-runtime:client-server:v0"
+}

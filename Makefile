@@ -24,6 +24,9 @@ check:
 test-ci: check
 	uv run --frozen --offline pytest -q
 
-test-ui test-infra baf-smoke baf bench-fs bench-sandbox:
+test-infra:
+	SANDBOX_TEST_URL="$${SANDBOX_TEST_URL:-http://$$(docker compose port sandbox-manager 8081)}" uv run --frozen --offline pytest -q tests/infra
+
+test-ui baf-smoke baf bench-fs bench-sandbox:
 	@printf '%s\n' '$@: ещё не реализовано; см. TASKS.md' >&2
 	@exit 2

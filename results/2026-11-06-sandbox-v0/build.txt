@@ -1,0 +1,200 @@
+docker compose up --build --wait --wait-timeout 60
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [sandbox-image internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.06kB done
+#1 DONE 0.0s
+
+#2 [gateway internal] load build definition from Dockerfile
+#2 transferring dockerfile: 979B done
+#2 DONE 0.0s
+
+#3 [gateway internal] load metadata for ghcr.io/astral-sh/uv:0.12.12@sha256:73d2665b478d8fa2de1cf105c6841f8e9cb6b09e568fc7700440c09f8fcd7ac4
+#3 DONE 0.0s
+
+#4 [sandbox-image internal] load metadata for docker.io/library/python:3.13.15-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26
+#4 DONE 0.0s
+
+#5 [gateway internal] load .dockerignore
+#5 transferring context: 477B done
+#5 DONE 0.0s
+
+#6 [sandbox-image internal] load .dockerignore
+#6 transferring context: 477B done
+#6 DONE 0.0s
+
+#7 [gateway internal] load build context
+#7 transferring context: 834B done
+#7 DONE 0.0s
+
+#8 [sandbox-image uv 1/1] FROM ghcr.io/astral-sh/uv:0.12.12@sha256:73d2665b478d8fa2de1cf105c6841f8e9cb6b09e568fc7700440c09f8fcd7ac4
+#8 resolve ghcr.io/astral-sh/uv:0.12.12@sha256:73d2665b478d8fa2de1cf105c6841f8e9cb6b09e568fc7700440c09f8fcd7ac4 done
+#8 DONE 0.0s
+
+#9 [gateway builder 1/5] FROM docker.io/library/python:3.13.15-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26
+#9 resolve docker.io/library/python:3.13.15-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26 done
+#9 DONE 0.0s
+
+#10 [gateway stage-2 4/5] COPY --from=builder /app/.venv .venv
+#10 CACHED
+
+#11 [gateway builder 5/5] RUN uv sync --frozen --no-dev --no-cache
+#11 CACHED
+
+#12 [gateway stage-2 3/5] WORKDIR /app
+#12 CACHED
+
+#13 [gateway builder 4/5] COPY pyproject.toml uv.lock ./
+#13 CACHED
+
+#14 [gateway stage-2 2/5] RUN groupadd --gid 10001 app && useradd --uid 10001 --gid app --no-create-home app
+#14 CACHED
+
+#15 [gateway stage-2 5/5] COPY services/gateway/src src
+#15 CACHED
+
+#16 [sandbox-image internal] load build context
+#16 transferring context: 698B done
+#16 DONE 0.0s
+
+#17 [sandbox-image stage-2 3/6] COPY --from=builder /app/.venv /app/.venv
+#17 CACHED
+
+#18 [sandbox-image builder 5/5] RUN uv sync --frozen --only-group sandbox --no-cache
+#18 CACHED
+
+#19 [sandbox-image stage-2 5/6] COPY services/sandbox-manager/sandbox/sandbox_worker.py /opt/sandbox_worker.py
+#19 CACHED
+
+#20 [sandbox-image builder 3/5] WORKDIR /app
+#20 CACHED
+
+#21 [sandbox-image stage-2 2/6] RUN groupadd --gid 10001 agent && useradd --uid 10001 --gid agent --no-create-home agent
+#21 CACHED
+
+#22 [sandbox-image stage-2 4/6] COPY contracts/__init__.py contracts/paths.py /opt/contracts/
+#22 CACHED
+
+#23 [sandbox-image builder 4/5] COPY pyproject.toml uv.lock ./
+#23 CACHED
+
+#24 [sandbox-image builder 2/5] COPY --from=uv /uv /usr/local/bin/uv
+#24 CACHED
+
+#25 [sandbox-image stage-2 6/6] WORKDIR /work
+#25 CACHED
+
+#26 [gateway] exporting to image
+#26 exporting layers done
+#26 exporting manifest sha256:850e053e47fb4eb203151b312e5eee72c059e9e7939897767dfdffbfc8641e5c done
+#26 exporting config sha256:bae340765f5f18a703dc6fe3cb77028f49783ed1a6b97d9fdcd177ef223d6d68 done
+#26 exporting attestation manifest sha256:78984e93e3b8f062b245958756a6e49d49569de174d0f55738b435b51df2d1a8 done
+#26 exporting manifest list sha256:2e6213ecbfd43a70f883b8eab5a6187545d37af0d180c8aff7add8f62d604c82 done
+#26 naming to docker.io/library/agentruntimeenvironment-gateway:latest done
+#26 unpacking to docker.io/library/agentruntimeenvironment-gateway:latest done
+#26 DONE 0.0s
+
+#27 [sandbox-image] exporting to image
+#27 exporting layers done
+#27 exporting manifest sha256:fa6d1daf5450ac8f84d6e1f958d0d998d176fb31e147f47c8bd1100de33b4d1b done
+#27 exporting config sha256:ca3da32a641ec607ec52cc27916e5ba98cfa0825a21efae671de39c508b279c4 done
+#27 exporting attestation manifest sha256:53cc761e32c9d5e0062b321b5518437a5aeed4b7bc2a581722eed2ddc84ee7f8 done
+#27 exporting manifest list sha256:8f46ecc921b5e1b0e5d643dfbe7b9f8e4533bb565483daf3dcfc3417a62e193e done
+#27 naming to docker.io/library/agentruntimeenvironment-sandbox:v0 done
+#27 unpacking to docker.io/library/agentruntimeenvironment-sandbox:v0 done
+#27 DONE 0.0s
+
+#28 [gateway] resolving provenance for metadata file
+#28 DONE 0.0s
+
+#29 [sandbox-image] resolving provenance for metadata file
+#29 DONE 0.0s
+
+#30 [sandbox-manager internal] load build definition from Dockerfile
+#30 transferring dockerfile: 981B done
+#30 DONE 0.0s
+
+#3 [sandbox-manager internal] load metadata for ghcr.io/astral-sh/uv:0.12.12@sha256:73d2665b478d8fa2de1cf105c6841f8e9cb6b09e568fc7700440c09f8fcd7ac4
+#3 DONE 0.0s
+
+#4 [sandbox-manager internal] load metadata for docker.io/library/python:3.13.15-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26
+#4 DONE 0.0s
+
+#31 [sandbox-manager internal] load .dockerignore
+#31 transferring context: 477B done
+#31 DONE 0.0s
+
+#32 [sandbox-manager internal] load build context
+#32 transferring context: 67.84kB done
+#32 DONE 0.0s
+
+#9 [sandbox-manager builder 1/5] FROM docker.io/library/python:3.13.15-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26
+#9 resolve docker.io/library/python:3.13.15-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26 done
+#9 DONE 0.0s
+
+#8 [sandbox-manager uv 1/1] FROM ghcr.io/astral-sh/uv:0.12.12@sha256:73d2665b478d8fa2de1cf105c6841f8e9cb6b09e568fc7700440c09f8fcd7ac4
+#8 resolve ghcr.io/astral-sh/uv:0.12.12@sha256:73d2665b478d8fa2de1cf105c6841f8e9cb6b09e568fc7700440c09f8fcd7ac4 done
+#8 DONE 0.0s
+
+#33 [sandbox-manager builder 5/5] RUN uv sync --frozen --no-dev --group sandbox-manager --no-cache
+#33 CACHED
+
+#34 [sandbox-manager stage-2 2/6] WORKDIR /app
+#34 CACHED
+
+#35 [sandbox-manager builder 4/5] COPY pyproject.toml uv.lock ./
+#35 CACHED
+
+#36 [sandbox-manager stage-2 4/6] COPY contracts contracts
+#36 CACHED
+
+#37 [sandbox-manager stage-2 5/6] COPY services/sandbox-manager/src src
+#37 CACHED
+
+#38 [sandbox-manager stage-2 3/6] COPY --from=builder /app/.venv .venv
+#38 CACHED
+
+#20 [sandbox-manager builder 3/5] WORKDIR /app
+#20 CACHED
+
+#24 [sandbox-manager builder 2/5] COPY --from=uv /uv /usr/local/bin/uv
+#24 CACHED
+
+#39 [sandbox-manager stage-2 6/6] COPY services/sandbox-manager/config.toml config.toml
+#39 CACHED
+
+#40 [sandbox-manager] exporting to image
+#40 exporting layers done
+#40 exporting manifest sha256:df5ca713adc5794a748823a31f2b984fba7ab1a9cc75bccbc9342abb3042e916 done
+#40 exporting config sha256:c9df31203a30b594edf083885d973d7f0328c8bc62b886f8d87fff19796741c1
+#40 exporting config sha256:c9df31203a30b594edf083885d973d7f0328c8bc62b886f8d87fff19796741c1 done
+#40 exporting attestation manifest sha256:c81c6bcd8e558627e26c0691618b11f2206abf33c8183fbe1a23644a42225267 done
+#40 exporting manifest list sha256:6b683c143cb0c3eb79805b645f06d6304d9c23f8e63cf28156c3858447fdc926 done
+#40 naming to docker.io/library/agentruntimeenvironment-sandbox-manager:latest done
+#40 unpacking to docker.io/library/agentruntimeenvironment-sandbox-manager:latest done
+#40 DONE 0.0s
+
+#41 [sandbox-manager] resolving provenance for metadata file
+#41 DONE 0.0s
+ Network agentruntimeenvironment_default  Creating
+ Network agentruntimeenvironment_default  Created
+ Container agentruntimeenvironment-gateway-1  Creating
+ Container agentruntimeenvironment-sandbox-image-1  Creating
+ Container agentruntimeenvironment-gateway-1  Created
+ Container agentruntimeenvironment-sandbox-image-1  Created
+ Container agentruntimeenvironment-sandbox-manager-1  Creating
+ Container agentruntimeenvironment-sandbox-manager-1  Created
+ Container agentruntimeenvironment-gateway-1  Starting
+ Container agentruntimeenvironment-sandbox-image-1  Starting
+ Container agentruntimeenvironment-sandbox-image-1  Started
+ Container agentruntimeenvironment-sandbox-image-1  Waiting
+ Container agentruntimeenvironment-gateway-1  Started
+ Container agentruntimeenvironment-sandbox-image-1  Exited
+ Container agentruntimeenvironment-sandbox-manager-1  Starting
+ Container agentruntimeenvironment-sandbox-manager-1  Started
+ Container agentruntimeenvironment-sandbox-manager-1  Waiting
+ Container agentruntimeenvironment-gateway-1  Waiting
+ Container agentruntimeenvironment-sandbox-image-1  Waiting
+ Container agentruntimeenvironment-sandbox-image-1  Exited
+ Container agentruntimeenvironment-gateway-1  Healthy
+ Container agentruntimeenvironment-sandbox-manager-1  Healthy

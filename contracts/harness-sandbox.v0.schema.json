@@ -1,0 +1,797 @@
+{
+  "$defs": {
+    "Cancel": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "0",
+          "title": "Version",
+          "type": "string"
+        },
+        "type": {
+          "const": "cancel",
+          "title": "Type",
+          "type": "string"
+        },
+        "operation_id": {
+          "format": "uuid",
+          "title": "Operation Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "operation_id"
+      ],
+      "title": "Cancel",
+      "type": "object"
+    },
+    "Cancelled": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "const": "cancelled",
+          "title": "Status",
+          "type": "string"
+        },
+        "value": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Value",
+          "type": "object"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "title": "Cancelled",
+      "type": "object"
+    },
+    "Collect": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "0",
+          "title": "Version",
+          "type": "string"
+        },
+        "type": {
+          "const": "collect",
+          "title": "Type",
+          "type": "string"
+        },
+        "session_id": {
+          "format": "uuid",
+          "title": "Session Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "session_id"
+      ],
+      "title": "Collect",
+      "type": "object"
+    },
+    "Collection": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "0",
+          "title": "Version",
+          "type": "string"
+        },
+        "type": {
+          "const": "collection",
+          "title": "Type",
+          "type": "string"
+        },
+        "session_id": {
+          "format": "uuid",
+          "title": "Session Id",
+          "type": "string"
+        },
+        "files": {
+          "additionalProperties": {
+            "$ref": "#/$defs/FileData"
+          },
+          "title": "Files",
+          "type": "object"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "session_id",
+        "files"
+      ],
+      "title": "Collection",
+      "type": "object"
+    },
+    "ErrorInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "command",
+            "timeout",
+            "sandbox",
+            "transport"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "code": {
+          "title": "Code",
+          "type": "string"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "code",
+        "message"
+      ],
+      "title": "ErrorInfo",
+      "type": "object"
+    },
+    "ErrorReply": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "0",
+          "title": "Version",
+          "type": "string"
+        },
+        "type": {
+          "const": "error",
+          "title": "Type",
+          "type": "string"
+        },
+        "error": {
+          "$ref": "#/$defs/ErrorInfo"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "error"
+      ],
+      "title": "ErrorReply",
+      "type": "object"
+    },
+    "Exec": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "0",
+          "title": "Version",
+          "type": "string"
+        },
+        "type": {
+          "const": "exec",
+          "title": "Type",
+          "type": "string"
+        },
+        "session_id": {
+          "format": "uuid",
+          "title": "Session Id",
+          "type": "string"
+        },
+        "operation_id": {
+          "format": "uuid",
+          "title": "Operation Id",
+          "type": "string"
+        },
+        "operation": {
+          "discriminator": {
+            "mapping": {
+              "ReadFile": "#/$defs/ReadFile",
+              "RunCommand": "#/$defs/RunCommand",
+              "WriteFile": "#/$defs/WriteFile"
+            },
+            "propertyName": "kind"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ReadFile"
+            },
+            {
+              "$ref": "#/$defs/WriteFile"
+            },
+            {
+              "$ref": "#/$defs/RunCommand"
+            }
+          ],
+          "title": "Operation"
+        },
+        "timeout_s": {
+          "default": 120,
+          "exclusiveMinimum": 0,
+          "maximum": 3600,
+          "title": "Timeout S",
+          "type": "number"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "session_id",
+        "operation_id",
+        "operation"
+      ],
+      "title": "Exec",
+      "type": "object"
+    },
+    "Failed": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "const": "error",
+          "title": "Status",
+          "type": "string"
+        },
+        "value": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Value",
+          "type": "object"
+        },
+        "error": {
+          "$ref": "#/$defs/ErrorInfo"
+        }
+      },
+      "required": [
+        "status",
+        "error"
+      ],
+      "title": "Failed",
+      "type": "object"
+    },
+    "FileData": {
+      "additionalProperties": false,
+      "properties": {
+        "content": {
+          "title": "Content",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^(missing|[0-9a-f]{64})$",
+          "title": "Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "content",
+        "sha256"
+      ],
+      "title": "FileData",
+      "type": "object"
+    },
+    "Finished": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "0",
+          "title": "Version",
+          "type": "string"
+        },
+        "session_id": {
+          "format": "uuid",
+          "title": "Session Id",
+          "type": "string"
+        },
+        "operation_id": {
+          "format": "uuid",
+          "title": "Operation Id",
+          "type": "string"
+        },
+        "sequence": {
+          "minimum": 1,
+          "title": "Sequence",
+          "type": "integer"
+        },
+        "type": {
+          "const": "result",
+          "title": "Type",
+          "type": "string"
+        },
+        "result": {
+          "discriminator": {
+            "mapping": {
+              "cancelled": "#/$defs/Cancelled",
+              "error": "#/$defs/Failed",
+              "ok": "#/$defs/Success"
+            },
+            "propertyName": "status"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Success"
+            },
+            {
+              "$ref": "#/$defs/Failed"
+            },
+            {
+              "$ref": "#/$defs/Cancelled"
+            }
+          ],
+          "title": "Result"
+        }
+      },
+      "required": [
+        "version",
+        "session_id",
+        "operation_id",
+        "sequence",
+        "type",
+        "result"
+      ],
+      "title": "Finished",
+      "type": "object"
+    },
+    "JsonValue": {},
+    "OperationState": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "0",
+          "title": "Version",
+          "type": "string"
+        },
+        "type": {
+          "const": "operation",
+          "title": "Type",
+          "type": "string"
+        },
+        "session_id": {
+          "format": "uuid",
+          "title": "Session Id",
+          "type": "string"
+        },
+        "operation_id": {
+          "format": "uuid",
+          "title": "Operation Id",
+          "type": "string"
+        },
+        "state": {
+          "enum": [
+            "running",
+            "finished"
+          ],
+          "title": "State",
+          "type": "string"
+        },
+        "result": {
+          "anyOf": [
+            {
+              "discriminator": {
+                "mapping": {
+                  "cancelled": "#/$defs/Cancelled",
+                  "error": "#/$defs/Failed",
+                  "ok": "#/$defs/Success"
+                },
+                "propertyName": "status"
+              },
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/Success"
+                },
+                {
+                  "$ref": "#/$defs/Failed"
+                },
+                {
+                  "$ref": "#/$defs/Cancelled"
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Result"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "session_id",
+        "operation_id",
+        "state"
+      ],
+      "title": "OperationState",
+      "type": "object"
+    },
+    "Output": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "0",
+          "title": "Version",
+          "type": "string"
+        },
+        "session_id": {
+          "format": "uuid",
+          "title": "Session Id",
+          "type": "string"
+        },
+        "operation_id": {
+          "format": "uuid",
+          "title": "Operation Id",
+          "type": "string"
+        },
+        "sequence": {
+          "minimum": 1,
+          "title": "Sequence",
+          "type": "integer"
+        },
+        "type": {
+          "enum": [
+            "stdout",
+            "stderr"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "version",
+        "session_id",
+        "operation_id",
+        "sequence",
+        "type",
+        "text"
+      ],
+      "title": "Output",
+      "type": "object"
+    },
+    "Provision": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "0",
+          "title": "Version",
+          "type": "string"
+        },
+        "type": {
+          "const": "provision",
+          "title": "Type",
+          "type": "string"
+        },
+        "session_id": {
+          "format": "uuid",
+          "title": "Session Id",
+          "type": "string"
+        },
+        "files": {
+          "maxProperties": 128,
+          "patternProperties": {
+            "^(?!.*(?:^|/)(?:\\.{1,2}|\\.git)(?:/|$))(?!.*(?:^|/)\\._are_)[^/\\\\\\x00]+(?:/[^/\\\\\\x00]+)*$": {
+              "maxLength": 65536,
+              "type": "string"
+            }
+          },
+          "propertyNames": {
+            "maxLength": 512,
+            "minLength": 1
+          },
+          "title": "Files",
+          "type": "object"
+        },
+        "read_only": {
+          "default": false,
+          "title": "Read Only",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "session_id"
+      ],
+      "title": "Provision",
+      "type": "object"
+    },
+    "ReadFile": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "ReadFile",
+          "title": "Kind",
+          "type": "string"
+        },
+        "path": {
+          "maxLength": 512,
+          "minLength": 1,
+          "pattern": "^(?!.*(?:^|/)(?:\\.{1,2}|\\.git)(?:/|$))(?!.*(?:^|/)\\._are_)[^/\\\\\\x00]+(?:/[^/\\\\\\x00]+)*$",
+          "title": "Path",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "path"
+      ],
+      "title": "ReadFile",
+      "type": "object"
+    },
+    "Release": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "0",
+          "title": "Version",
+          "type": "string"
+        },
+        "type": {
+          "const": "release",
+          "title": "Type",
+          "type": "string"
+        },
+        "session_id": {
+          "format": "uuid",
+          "title": "Session Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "session_id"
+      ],
+      "title": "Release",
+      "type": "object"
+    },
+    "Released": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "0",
+          "title": "Version",
+          "type": "string"
+        },
+        "type": {
+          "const": "released",
+          "title": "Type",
+          "type": "string"
+        },
+        "session_id": {
+          "format": "uuid",
+          "title": "Session Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "session_id"
+      ],
+      "title": "Released",
+      "type": "object"
+    },
+    "RunCommand": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "RunCommand",
+          "title": "Kind",
+          "type": "string"
+        },
+        "command": {
+          "maxLength": 8192,
+          "minLength": 1,
+          "title": "Command",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "command"
+      ],
+      "title": "RunCommand",
+      "type": "object"
+    },
+    "Session": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "0",
+          "title": "Version",
+          "type": "string"
+        },
+        "type": {
+          "const": "session",
+          "title": "Type",
+          "type": "string"
+        },
+        "session_id": {
+          "format": "uuid",
+          "title": "Session Id",
+          "type": "string"
+        },
+        "read_only": {
+          "title": "Read Only",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "session_id",
+        "read_only"
+      ],
+      "title": "Session",
+      "type": "object"
+    },
+    "Started": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "0",
+          "title": "Version",
+          "type": "string"
+        },
+        "session_id": {
+          "format": "uuid",
+          "title": "Session Id",
+          "type": "string"
+        },
+        "operation_id": {
+          "format": "uuid",
+          "title": "Operation Id",
+          "type": "string"
+        },
+        "sequence": {
+          "minimum": 1,
+          "title": "Sequence",
+          "type": "integer"
+        },
+        "type": {
+          "const": "started",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "version",
+        "session_id",
+        "operation_id",
+        "sequence",
+        "type"
+      ],
+      "title": "Started",
+      "type": "object"
+    },
+    "Success": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "const": "ok",
+          "title": "Status",
+          "type": "string"
+        },
+        "value": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Value",
+          "type": "object"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "title": "Success",
+      "type": "object"
+    },
+    "WriteFile": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "WriteFile",
+          "title": "Kind",
+          "type": "string"
+        },
+        "path": {
+          "maxLength": 512,
+          "minLength": 1,
+          "pattern": "^(?!.*(?:^|/)(?:\\.{1,2}|\\.git)(?:/|$))(?!.*(?:^|/)\\._are_)[^/\\\\\\x00]+(?:/[^/\\\\\\x00]+)*$",
+          "title": "Path",
+          "type": "string"
+        },
+        "content": {
+          "maxLength": 65536,
+          "title": "Content",
+          "type": "string"
+        },
+        "expected_sha256": {
+          "pattern": "^(missing|[0-9a-f]{64})$",
+          "title": "Expected Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "path",
+        "content",
+        "expected_sha256"
+      ],
+      "title": "WriteFile",
+      "type": "object"
+    }
+  },
+  "discriminator": {
+    "mapping": {
+      "cancel": "#/$defs/Cancel",
+      "collect": "#/$defs/Collect",
+      "collection": "#/$defs/Collection",
+      "error": "#/$defs/ErrorReply",
+      "exec": "#/$defs/Exec",
+      "operation": "#/$defs/OperationState",
+      "provision": "#/$defs/Provision",
+      "release": "#/$defs/Release",
+      "released": "#/$defs/Released",
+      "result": "#/$defs/Finished",
+      "session": "#/$defs/Session",
+      "started": "#/$defs/Started",
+      "stderr": "#/$defs/Output",
+      "stdout": "#/$defs/Output"
+    },
+    "propertyName": "type"
+  },
+  "oneOf": [
+    {
+      "$ref": "#/$defs/Provision"
+    },
+    {
+      "$ref": "#/$defs/Exec"
+    },
+    {
+      "$ref": "#/$defs/Collect"
+    },
+    {
+      "$ref": "#/$defs/Release"
+    },
+    {
+      "$ref": "#/$defs/Cancel"
+    },
+    {
+      "$ref": "#/$defs/Session"
+    },
+    {
+      "$ref": "#/$defs/Released"
+    },
+    {
+      "$ref": "#/$defs/Collection"
+    },
+    {
+      "$ref": "#/$defs/ErrorReply"
+    },
+    {
+      "$ref": "#/$defs/OperationState"
+    },
+    {
+      "$ref": "#/$defs/Started"
+    },
+    {
+      "$ref": "#/$defs/Output"
+    },
+    {
+      "$ref": "#/$defs/Finished"
+    }
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:agent-runtime:harness-sandbox:v0"
+}
