@@ -109,3 +109,8 @@ Compose получает healthy; UID 10001 и отсутствие LLM_API_KEY 
 При переносе явно указан новый src для Ruff, чтобы сохранить
 правильную классификацию локальных импортов.
 [Условия и исходные результаты](../results/2026-11-06-template-alignment/README.md).
+
+**Удалённая проверка.** Ручной Linux CI для `9170ca1` завершён успешно:
+`python` и `compose`, [запуск 42198291077](https://github.com/HermanDp45/AgentRuntimeEnvironment/actions/runs/42198291077).
+Ответ GitHub сохранён в `results/2026-11-06-template-alignment/ci.json`.
+Публикация этих свидетельств не меняет проверенную реализацию.

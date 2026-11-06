@@ -47,3 +47,10 @@ Compose получил healthy, gateway работает от UID 10001, LLM_API
 Будущие сервисы не включены в Compose; общий секретный `.env` в gateway не передаётся.
 
 Исторические результаты от 4 ноября сохранены без переписывания.
+
+## Linux CI
+
+Код переноса — [`9170ca1`](https://github.com/HermanDp45/AgentRuntimeEnvironment/commit/9170ca1517f003d4d8679360fe5666ffdcc19d21).
+[Ручной запуск 42198291077](https://github.com/HermanDp45/AgentRuntimeEnvironment/actions/runs/42198291077):
+оба задания `python` и `compose` успешны. Сохранённый ответ GitHub — [ci.json](ci.json).
+Он подтверждает установку, тесты и сборку по новым путям на чистом Linux runner.
