@@ -15,6 +15,7 @@
 [проверки харнеса v0](../results/2026-11-06-harness-v0/README.md): 42 unit и 9 инфраструктурных
 сценариев, отдельная реальная read-only проба Qwen. Это не оценка качества пары.
 Для API из текущего Docker Desktop потребовался временный DNS-обход, TLS сохранён.
+[Linux CI на 493f418](https://github.com/HermanDp45/AgentRuntimeEnvironment/actions/runs/42232088718) также прошёл: python и compose, включая CLI и очистку.
 
 ## Модели и пары
 
