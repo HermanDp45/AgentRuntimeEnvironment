@@ -1,0 +1,57 @@
+{
+  "scope": "host",
+  "domain": "inference.airi.net",
+  "queries": [
+    {
+      "server": "1.1.1.1",
+      "protocol": "UDP",
+      "error": "TimeoutError",
+      "errno": null,
+      "seconds": 10.002
+    },
+    {
+      "server": "1.1.1.1",
+      "protocol": "TCP",
+      "rcode": 0,
+      "answers": 1,
+      "seconds": 0.079
+    },
+    {
+      "server": "8.8.8.8",
+      "protocol": "UDP",
+      "error": "TimeoutError",
+      "errno": null,
+      "seconds": 10.002
+    },
+    {
+      "server": "8.8.8.8",
+      "protocol": "TCP",
+      "rcode": 0,
+      "answers": 1,
+      "seconds": 0.262
+    },
+    {
+      "server": "192.168.0.1",
+      "protocol": "UDP",
+      "rcode": 0,
+      "answers": 1,
+      "seconds": 0.024
+    },
+    {
+      "server": "192.168.0.1",
+      "protocol": "TCP",
+      "error": "TimeoutError",
+      "errno": null,
+      "seconds": 10.001
+    }
+  ],
+  "native": [
+    "194.190.0.250"
+  ],
+  "doh": {
+    "error": "SSLCertVerificationError"
+  },
+  "provider_https_by_ip": {
+    "error": "SSLCertVerificationError"
+  }
+}

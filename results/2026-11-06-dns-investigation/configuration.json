@@ -1,0 +1,24 @@
+{
+  "docker_desktop_version": "4.36.0",
+  "engine_version": "27.3.1",
+  "daemon_dns": [
+    "1.1.1.1",
+    "8.8.8.8"
+  ],
+  "daemon_dns_options": [
+    "timeout=3",
+    "attempts=2"
+  ],
+  "macos_resolver_interface": "utun4",
+  "macos_resolver": "1.1.1.1",
+  "macos_scoped_lan_resolver": "192.168.0.1",
+  "route_to_1_1_1_1_interface": "utun4",
+  "detected_processes": [
+    "AmneziaVPN-service",
+    "vpnagentd"
+  ],
+  "kernel_udp_setting": false,
+  "global_settings_changed": false,
+  "vpn_switched": false,
+  "requests_with_api_key": 0
+}

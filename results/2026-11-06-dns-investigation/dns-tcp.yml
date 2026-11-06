@@ -1,0 +1,5 @@
+# Предложение точечного исправления, не включено в основной Compose.
+services:
+  llm-proxy:
+    dns_opt:
+      - use-vc

@@ -1,0 +1,5 @@
+ Network are-dns-investigation_default  Removing
+ Network are-dns-investigation_default  Removed
+Diagnostic containers: none
+Diagnostic networks: none
+DNS Compose networks: none

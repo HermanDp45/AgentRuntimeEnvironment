@@ -1,0 +1,105 @@
+{
+  "scope": "container",
+  "domain": "inference.airi.net",
+  "queries": [
+    {
+      "server": "1.1.1.1",
+      "protocol": "UDP",
+      "error": "TimeoutError",
+      "errno": null,
+      "seconds": 2.007
+    },
+    {
+      "server": "1.1.1.1",
+      "protocol": "TCP",
+      "rcode": 0,
+      "answers": 1,
+      "seconds": 0.097
+    },
+    {
+      "server": "8.8.8.8",
+      "protocol": "UDP",
+      "error": "TimeoutError",
+      "errno": null,
+      "seconds": 2.007
+    },
+    {
+      "server": "8.8.8.8",
+      "protocol": "TCP",
+      "rcode": 0,
+      "answers": 1,
+      "seconds": 0.112
+    },
+    {
+      "server": "192.168.0.1",
+      "protocol": "UDP",
+      "rcode": 0,
+      "answers": 1,
+      "seconds": 0.041
+    },
+    {
+      "server": "192.168.0.1",
+      "protocol": "TCP",
+      "error": "TimeoutError",
+      "errno": null,
+      "seconds": 2.009
+    },
+    {
+      "server": "127.0.0.11",
+      "protocol": "UDP",
+      "error": "TimeoutError",
+      "errno": null,
+      "seconds": 2.009
+    },
+    {
+      "server": "127.0.0.11",
+      "protocol": "TCP",
+      "rcode": 0,
+      "answers": 1,
+      "seconds": 0.099
+    },
+    {
+      "server": "192.168.65.7",
+      "protocol": "UDP",
+      "rcode": 0,
+      "answers": 1,
+      "seconds": 0.002
+    },
+    {
+      "server": "192.168.65.7",
+      "protocol": "TCP",
+      "rcode": 0,
+      "answers": 1,
+      "seconds": 0.002
+    },
+    {
+      "server": "192.168.65.1",
+      "protocol": "UDP",
+      "error": "TimeoutError",
+      "errno": null,
+      "seconds": 2.008
+    },
+    {
+      "server": "192.168.65.1",
+      "protocol": "TCP",
+      "error": "TimeoutError",
+      "errno": null,
+      "seconds": 2.008
+    }
+  ],
+  "native": {
+    "error": "gaierror",
+    "errno": -3
+  },
+  "doh": {
+    "status": 200,
+    "rcode": 0,
+    "addresses": [
+      "194.190.0.250"
+    ]
+  },
+  "provider_https_by_ip": {
+    "status_line": "HTTP/1.1 404 Not Found",
+    "tls": "TLSv1.3"
+  }
+}

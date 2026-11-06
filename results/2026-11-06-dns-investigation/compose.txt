@@ -1,0 +1,3 @@
+ Network are-dns-investigation_default  Creating
+ Network are-dns-investigation_default  Created
+{"addresses": ["194.190.0.250"], "https_status": 404}
