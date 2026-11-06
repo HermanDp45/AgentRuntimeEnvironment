@@ -1,0 +1,3 @@
+QT_QPA_PLATFORM=offscreen uv run --frozen --offline --group gui pytest -q tests/ui
+........                                                                 [100%]
+8 passed in 4.05s

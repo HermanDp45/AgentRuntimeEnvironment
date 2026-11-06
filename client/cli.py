@@ -3,9 +3,12 @@
 import argparse
 import json
 import os
+from functools import partial
 from uuid import uuid4
 
 import httpx2
+
+from client import api
 
 
 def main():
@@ -15,18 +18,8 @@ def main():
     args = parser.parse_args()
     session, run = str(uuid4()), str(uuid4())
     token = os.getenv("CLIENT_TOKEN", "local-dev-token")
-    with httpx2.Client(
-        base_url=args.url,
-        headers={"Authorization": "Bearer " + token},
-        timeout=httpx2.Timeout(20, connect=5),
-        follow_redirects=False,
-        trust_env=False,
-    ) as client:
-
-        def post(path, kind, **data):
-            response = client.post(path, json={"version": "0", "type": kind, **data})
-            response.raise_for_status()
-            return response.json()
+    with api.connect(args.url, token) as client:
+        post = partial(api.post, client)
 
         created = False
         try:

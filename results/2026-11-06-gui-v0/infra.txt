@@ -1,0 +1,4 @@
+docker compose -p are-offline -f docker-compose.yml -f tests/infra/compose.yml exec -T llm-proxy python -c "import os; assert os.environ['LLM_PROVIDER_URL'] == 'http://mock-llm:8000'"
+SANDBOX_TEST_URL=http://127.0.0.1:18081 HARNESS_TEST_URL=http://127.0.0.1:18080 uv run --frozen --offline pytest -q tests/infra
+.........                                                                [100%]
+9 passed in 15.20s

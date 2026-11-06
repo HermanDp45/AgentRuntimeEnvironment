@@ -28,6 +28,7 @@ extend-exclude = ["baf/**/fixture/**", "baf/B1-read/B1.1-service-port/check.py"]
 select = ["E", "F", "I", "UP", "B"]
 
 [dependency-groups]
+gui = ["pyside6-essentials==6.10.1"]
 dev = [
     "docker==7.2.0",
     "jsonschema==4.26.0",

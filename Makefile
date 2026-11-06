@@ -5,6 +5,16 @@ TEST_COMPOSE = docker compose -p $(TEST_PROJECT) -f docker-compose.yml -f tests/
 
 .PHONY: setup run up down check test-ci test-ui test-infra baf-smoke baf bench-fs bench-sandbox
 .PHONY: up-test test-agent test-lifecycle down-test
+.PHONY: setup-gui gui
+
+setup-gui:
+	uv sync --frozen --group gui
+
+gui:
+	uv run --frozen --offline --group gui python -m client.gui
+
+test-ui:
+	QT_QPA_PLATFORM=offscreen uv run --frozen --offline --group gui pytest -q tests/ui
 
 setup:
 	uv sync --frozen
@@ -43,6 +53,6 @@ test-lifecycle:
 down-test:
 	$(TEST_COMPOSE) down -v --remove-orphans
 
-test-ui baf-smoke baf bench-fs bench-sandbox:
+baf-smoke baf bench-fs bench-sandbox:
 	@printf '%s\n' '$@: ещё не реализовано; см. TASKS.md' >&2
 	@exit 2
