@@ -289,3 +289,8 @@ make test-ci проходит: lock/Ruff, 42 unit-теста; 9 инфрастр
 два обращения к модели. make up-test + make test-agent — 9 passed; имена внутренних
 сервисов также разрешаются с TCP DNS. Оба стенда остановлены, глобальные настройки
 не трогались. [Исходные результаты](../results/2026-11-06-dns-fix/README.md).
+
+**Linux CI.** [Запуск 42240257435](https://github.com/HermanDp45/AgentRuntimeEnvironment/actions/runs/42240257435) на 449b8d6
+прошёл: python и compose, в том числе 9 HTTP/CLI-сценариев и очистка.
+Результат сохранён в results/2026-11-06-dns-fix/ci.json; следующий коммит
+добавляет свидетельства без изменения проверенной конфигурации.
