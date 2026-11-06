@@ -8,7 +8,7 @@
 
 **Сейчас работает только gateway с `GET /health` → `200 {"status":"ok"}`.**
 Харнес, сандбоксы, LLM-прокси, клиент и монтирование ещё не реализованы.
-Стек основы — Python/FastAPI; планируемый клиент — PySide6, выбор харнеса ещё обсуждается.
+Стек основы — Python/FastAPI; планируемый клиент — PySide6, выбран собственный небольшой харнес.
 Монтирование WebDAV/rclone рассматривается как кандидат, а не принятое решение.
 
 Репозиторий следует [официальному шаблону](https://github.com/deeppavlov/agentic-course-itmo/tree/main/projects/templates/track-a-agent-runtime).
