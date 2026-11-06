@@ -1,0 +1,32 @@
+[
+  {
+    "target": "test-ui",
+    "exit_code": 2,
+    "stderr": "test-ui: ещё не реализовано; см. TASKS.md\nmake: *** [test-ui] Error 2\n"
+  },
+  {
+    "target": "test-infra",
+    "exit_code": 2,
+    "stderr": "test-infra: ещё не реализовано; см. TASKS.md\nmake: *** [test-infra] Error 2\n"
+  },
+  {
+    "target": "baf-smoke",
+    "exit_code": 2,
+    "stderr": "baf-smoke: ещё не реализовано; см. TASKS.md\nmake: *** [baf-smoke] Error 2\n"
+  },
+  {
+    "target": "baf",
+    "exit_code": 2,
+    "stderr": "baf: ещё не реализовано; см. TASKS.md\nmake: *** [baf] Error 2\n"
+  },
+  {
+    "target": "bench-fs",
+    "exit_code": 2,
+    "stderr": "bench-fs: ещё не реализовано; см. TASKS.md\nmake: *** [bench-fs] Error 2\n"
+  },
+  {
+    "target": "bench-sandbox",
+    "exit_code": 2,
+    "stderr": "bench-sandbox: ещё не реализовано; см. TASKS.md\nmake: *** [bench-sandbox] Error 2\n"
+  }
+]

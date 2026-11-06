@@ -13,11 +13,13 @@ package = false
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-pythonpath = ["src"]
+pythonpath = ["services/gateway/src"]
 
 [tool.ruff]
 target-version = "py313"
 line-length = 100
+src = ["services/gateway/src"]
+extend-exclude = ["baf/**/fixture/**", "baf/B1-read/B1.1-service-port/check.py"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]

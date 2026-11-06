@@ -1,0 +1,90 @@
+{
+  "course": {
+    "repository": "deeppavlov/agentic-course-itmo",
+    "revision": "b01ddf7b89e5c603985e3d5b5af958bebc7b1972"
+  },
+  "template_files": [
+    ".env.example",
+    ".gitignore",
+    "Makefile",
+    "README.md",
+    "baf/B1-read/B1.1-service-port/check.py",
+    "baf/B1-read/B1.1-service-port/fixture/README.md",
+    "baf/B1-read/B1.1-service-port/fixture/config/app.yaml",
+    "baf/B1-read/B1.1-service-port/fixture/src/main.py",
+    "baf/B1-read/B1.1-service-port/task.yaml",
+    "baf/README.md",
+    "baf/catalog.yaml",
+    "client/README.md",
+    "contracts/README.md",
+    "docker-compose.yml",
+    "docs/adr/0000-template.md",
+    "docs/adr/README.md",
+    "docs/baf.md",
+    "docs/harness.md",
+    "docs/report.md",
+    "services/gateway/README.md",
+    "services/harness/README.md",
+    "services/llm-proxy/README.md",
+    "services/sandbox-manager/README.md",
+    "tests/infra/README.md",
+    "tests/ui/README.md"
+  ],
+  "missing_files": [],
+  "readme_sections": [
+    "Что это",
+    "Архитектура",
+    "Запуск сервера",
+    "Клиент",
+    "Тесты",
+    "Структура",
+    "Модели"
+  ],
+  "required_make_targets": [
+    "baf",
+    "baf-smoke",
+    "bench-fs",
+    "bench-sandbox",
+    "down",
+    "test-ci",
+    "test-infra",
+    "test-ui",
+    "up"
+  ],
+  "imported_sha256": {
+    "baf/catalog.yaml": "09ffc3ae6bc4821d674d4d1b74ce7164893673df14e4ffb8353eba1e967a2692",
+    "baf/B1-read/B1.1-service-port/check.py": "ae46ff621e8d867bc7e4bfb4d99947ffd3a5da3567cc41ccd2b8a570190de44b",
+    "baf/B1-read/B1.1-service-port/fixture/README.md": "9d1823c424a40da7392f2fa8b75aa84f077a43dfab7dfef625902fbecc1b5051",
+    "baf/B1-read/B1.1-service-port/fixture/config/app.yaml": "27fd818568b7a3521e12d11b6ef8ec1c4e90f0ab82c07e1077948df7fda1563d",
+    "baf/B1-read/B1.1-service-port/fixture/src/main.py": "e8bc64c3e7bf42284fd46486a2d82cd4e5779e6bff92d73dd79790eff9a63690",
+    "baf/B1-read/B1.1-service-port/task.yaml": "140815b10a21e8871b3a56ca507d16e88b3a187459cdef2b645610bdb7b6ba19"
+  },
+  "gateway_and_http_test_unchanged": true,
+  "local_markdown_links": "passed",
+  "checker_cases": [
+    {
+      "case": "missing",
+      "exit_code": 0,
+      "result": {
+        "pass": false,
+        "reason": "answer.txt не создан"
+      }
+    },
+    {
+      "case": "old_port",
+      "exit_code": 0,
+      "result": {
+        "pass": false,
+        "reason": "ожидалось 8137, получено '8080'"
+      }
+    },
+    {
+      "case": "correct",
+      "exit_code": 0,
+      "result": {
+        "pass": true,
+        "reason": "ok"
+      }
+    }
+  ]
+}

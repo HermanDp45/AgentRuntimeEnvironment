@@ -16,7 +16,7 @@ ENV PATH="/app/.venv/bin:$PATH" \
 RUN groupadd --gid 10001 app && useradd --uid 10001 --gid app --no-create-home app
 WORKDIR /app
 COPY --from=builder /app/.venv .venv
-COPY src src
+COPY services/gateway/src src
 USER 10001:10001
 EXPOSE 8080
 CMD ["uvicorn", "agent_runtime.gateway:app", "--host", "0.0.0.0", "--port", "8080"]

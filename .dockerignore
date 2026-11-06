@@ -1,7 +1,9 @@
 *
 !pyproject.toml
 !uv.lock
-!src/
-!src/**
+!services/
+!services/gateway/
+!services/gateway/src/
+!services/gateway/src/**
 **/__pycache__/
 **/*.py[cod]

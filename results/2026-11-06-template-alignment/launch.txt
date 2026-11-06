@@ -1,0 +1,8 @@
+$ make up
+$ docker compose ps --format '{{.Service}} {{.State}} {{.Health}}'
+gateway running healthy
+HTTP 200 {"status":"ok"}; UID 10001; LLM_API_KEY absent
+
+$ make run
+$ curl --fail --silent --show-error http://127.0.0.1:8080/health
+{"status":"ok"}

@@ -1,0 +1,22 @@
+# Десктоп-клиент
+
+Статус: не реализован. Планируемый стек — Python/PySide6; сборка пока отсутствует.
+
+Нужны подключение по адресу и токену, выбор локальной папки и монтирование в `/work`,
+чат, поток событий, отмена и переподключение. Сначала подключение, затем монтирование
+на двух машинах; задачи C1-05 и C2-02/C2-04 — в [TASKS.md](../TASKS.md).
+
+## Headless / CLI-режим
+
+Планируемый интерфейс по шаблону курса, команды ещё не работают:
+
+```text
+client connect --server <url> --token <token>
+client mount --folder ./workdir --mode rw
+client send "<сообщение>"
+client edit --file input.txt --append READY
+client cancel
+```
+
+Один транспорт и одна логика сессии должны использоваться GUI и headless-режимом.
+Автосценарии — в [tests/ui/](../tests/ui/README.md), контракты — в [contracts/](../contracts/README.md).
