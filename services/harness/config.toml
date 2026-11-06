@@ -1,0 +1,12 @@
+max_model_calls = 20
+max_tool_calls = 64
+active_timeout_s = 600
+model_timeout_s = 60
+tool_timeout_s = 120
+approval_timeout_s = 300
+max_context_bytes = 1048576
+max_reply_bytes = 262144
+max_sessions = 4
+max_runs_per_session = 16
+idle_s = 900
+max_tokens = 1024

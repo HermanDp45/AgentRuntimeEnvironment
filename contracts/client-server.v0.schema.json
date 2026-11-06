@@ -205,6 +205,41 @@
       "title": "ClientTask",
       "type": "object"
     },
+    "Collection": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "0",
+          "title": "Version",
+          "type": "string"
+        },
+        "type": {
+          "const": "collection",
+          "title": "Type",
+          "type": "string"
+        },
+        "session_id": {
+          "format": "uuid",
+          "title": "Session Id",
+          "type": "string"
+        },
+        "files": {
+          "additionalProperties": {
+            "$ref": "#/$defs/FileData"
+          },
+          "title": "Files",
+          "type": "object"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "session_id",
+        "files"
+      ],
+      "title": "Collection",
+      "type": "object"
+    },
     "ErrorInfo": {
       "additionalProperties": false,
       "properties": {
@@ -213,7 +248,9 @@
             "command",
             "timeout",
             "sandbox",
-            "transport"
+            "transport",
+            "model",
+            "limit"
           ],
           "title": "Kind",
           "type": "string"
@@ -286,7 +323,101 @@
       "title": "Failed",
       "type": "object"
     },
+    "FileData": {
+      "additionalProperties": false,
+      "properties": {
+        "content": {
+          "title": "Content",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^(missing|[0-9a-f]{64})$",
+          "title": "Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "content",
+        "sha256"
+      ],
+      "title": "FileData",
+      "type": "object"
+    },
+    "FixtureSession": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "0",
+          "title": "Version",
+          "type": "string"
+        },
+        "type": {
+          "const": "session.fixture",
+          "title": "Type",
+          "type": "string"
+        },
+        "session_id": {
+          "format": "uuid",
+          "title": "Session Id",
+          "type": "string"
+        },
+        "files": {
+          "maxProperties": 128,
+          "patternProperties": {
+            "^(?!.*(?:^|/)(?:\\.{1,2}|\\.git)(?:/|$))(?!.*(?:^|/)\\._are_)[^/\\\\\\x00]+(?:/[^/\\\\\\x00]+)*$": {
+              "maxLength": 65536,
+              "type": "string"
+            }
+          },
+          "propertyNames": {
+            "maxLength": 512,
+            "minLength": 1
+          },
+          "title": "Files",
+          "type": "object"
+        },
+        "read_only": {
+          "default": false,
+          "title": "Read Only",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "session_id"
+      ],
+      "title": "FixtureSession",
+      "type": "object"
+    },
     "JsonValue": {},
+    "Released": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "0",
+          "title": "Version",
+          "type": "string"
+        },
+        "type": {
+          "const": "released",
+          "title": "Type",
+          "type": "string"
+        },
+        "session_id": {
+          "format": "uuid",
+          "title": "Session Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "session_id"
+      ],
+      "title": "Released",
+      "type": "object"
+    },
     "Resume": {
       "additionalProperties": false,
       "properties": {
@@ -446,6 +577,92 @@
       "title": "RunResult",
       "type": "object"
     },
+    "RunState": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "0",
+          "title": "Version",
+          "type": "string"
+        },
+        "type": {
+          "const": "run.state",
+          "title": "Type",
+          "type": "string"
+        },
+        "session_id": {
+          "format": "uuid",
+          "title": "Session Id",
+          "type": "string"
+        },
+        "run_id": {
+          "format": "uuid",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "state": {
+          "enum": [
+            "running",
+            "waiting_approval",
+            "finished"
+          ],
+          "title": "State",
+          "type": "string"
+        },
+        "pending_operation_id": {
+          "anyOf": [
+            {
+              "format": "uuid",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pending Operation Id"
+        },
+        "result": {
+          "anyOf": [
+            {
+              "discriminator": {
+                "mapping": {
+                  "cancelled": "#/$defs/Cancelled",
+                  "error": "#/$defs/Failed",
+                  "ok": "#/$defs/Success"
+                },
+                "propertyName": "status"
+              },
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/Success"
+                },
+                {
+                  "$ref": "#/$defs/Failed"
+                },
+                {
+                  "$ref": "#/$defs/Cancelled"
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Result"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "session_id",
+        "run_id",
+        "state"
+      ],
+      "title": "RunState",
+      "type": "object"
+    },
     "Session": {
       "additionalProperties": false,
       "properties": {
@@ -504,14 +721,18 @@
   "discriminator": {
     "mapping": {
       "approval": "#/$defs/Approval",
+      "collection": "#/$defs/Collection",
       "error": "#/$defs/ErrorReply",
+      "released": "#/$defs/Released",
       "resume": "#/$defs/Resume",
       "run.cancel": "#/$defs/ClientCancel",
       "run.event": "#/$defs/RunEvent",
       "run.result": "#/$defs/RunResult",
+      "run.state": "#/$defs/RunState",
       "session": "#/$defs/Session",
       "session.close": "#/$defs/ClientClose",
       "session.create": "#/$defs/ClientSession",
+      "session.fixture": "#/$defs/FixtureSession",
       "task": "#/$defs/ClientTask"
     },
     "propertyName": "type"
@@ -519,6 +740,9 @@
   "oneOf": [
     {
       "$ref": "#/$defs/ClientSession"
+    },
+    {
+      "$ref": "#/$defs/FixtureSession"
     },
     {
       "$ref": "#/$defs/ClientTask"
@@ -539,10 +763,19 @@
       "$ref": "#/$defs/Session"
     },
     {
+      "$ref": "#/$defs/Collection"
+    },
+    {
+      "$ref": "#/$defs/Released"
+    },
+    {
       "$ref": "#/$defs/RunEvent"
     },
     {
       "$ref": "#/$defs/RunResult"
+    },
+    {
+      "$ref": "#/$defs/RunState"
     },
     {
       "$ref": "#/$defs/ErrorReply"

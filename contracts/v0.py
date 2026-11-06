@@ -29,7 +29,7 @@ class Message(BaseModel):
 
 class ErrorInfo(BaseModel):
     model_config = ConfigDict(extra="forbid")
-    kind: Literal["command", "timeout", "sandbox", "transport"]
+    kind: Literal["command", "timeout", "sandbox", "transport", "model", "limit"]
     code: str
     message: str
 
@@ -187,6 +187,10 @@ class ClientSession(Message):
     read_only: StrictBool = False
 
 
+class FixtureSession(Provision):
+    type: Literal["session.fixture"]
+
+
 class ClientTask(Message):
     type: Literal["task"]
     session_id: UUID
@@ -235,16 +239,29 @@ class RunResult(Message):
     result: Result
 
 
+class RunState(Message):
+    type: Literal["run.state"]
+    session_id: UUID
+    run_id: UUID
+    state: Literal["running", "waiting_approval", "finished"]
+    pending_operation_id: UUID | None = None
+    result: Result | None = None
+
+
 ClientMessage = Annotated[
     ClientSession
+    | FixtureSession
     | ClientTask
     | Approval
     | ClientCancel
     | Resume
     | ClientClose
     | Session
+    | Collection
+    | Released
     | RunEvent
     | RunResult
+    | RunState
     | ErrorReply,
     Field(discriminator="type"),
 ]

@@ -1,0 +1,29 @@
+services:
+  gateway:
+    environment:
+      CLIENT_TOKENS: fixture-client-token
+
+  llm-proxy:
+    environment:
+      LLM_PROVIDER_URL: http://mock-llm:8000
+      LLM_API_KEY: fixture-provider-secret
+      LLM_MODEL: fixture-model
+    depends_on:
+      mock-llm:
+        condition: service_healthy
+
+  mock-llm:
+    build:
+      context: .
+      dockerfile: services/llm-proxy/Dockerfile
+      target: testing
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=16m
+    healthcheck:
+      test: [CMD, python, -c, "from urllib.request import urlopen; urlopen('http://127.0.0.1:8000/health', timeout=2).close()"]
+      interval: 5s
+      timeout: 3s
+      retries: 5

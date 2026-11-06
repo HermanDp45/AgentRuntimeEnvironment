@@ -8,6 +8,7 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "fastapi" },
+    { name = "httpx2" },
     { name = "pydantic" },
     { name = "uvicorn" },
 ]
@@ -15,7 +16,6 @@ dependencies = [
 [package.dev-dependencies]
 dev = [
     { name = "docker" },
-    { name = "httpx2" },
     { name = "jsonschema" },
     { name = "pytest" },
     { name = "ruff" },
@@ -30,6 +30,7 @@ sandbox-manager = [
 [package.metadata]
 requires-dist = [
     { name = "fastapi", specifier = "==0.162.0" },
+    { name = "httpx2", specifier = "==2.16.0" },
     { name = "pydantic", specifier = "==2.14.2" },
     { name = "uvicorn", specifier = "==0.54.0" },
 ]
@@ -37,7 +38,6 @@ requires-dist = [
 [package.metadata.requires-dev]
 dev = [
     { name = "docker", specifier = "==7.2.0" },
-    { name = "httpx2", specifier = "==2.16.0" },
     { name = "jsonschema", specifier = "==4.26.0" },
     { name = "pytest", specifier = "==9.2.0" },
     { name = "ruff", specifier = "==0.17.3" },

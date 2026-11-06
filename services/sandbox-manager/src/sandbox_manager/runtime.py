@@ -173,32 +173,32 @@ class Runtime:
                     )
                 )
             result = result or failure("sandbox", "missing_result")
-            operation.emit("result", result=result.model_dump())
-        with self.lock:
-            session.busy = None
-            session.touched = time.monotonic()
-            # Только метаданные: ни текста команды, ни содержимого файлов.
-            try:
-                trace_path = self.state_dir / "operations.jsonl"
-                if trace_path.exists() and trace_path.stat().st_size > 1024 * 1024:
-                    trace_path.unlink()
-                with trace_path.open("a", encoding="utf-8") as trace:
-                    trace.write(
-                        json.dumps(
-                            {
-                                "session_id": str(request.session_id),
-                                "operation_id": str(request.operation_id),
-                                "kind": request.operation.kind,
-                                "duration_s": round(time.monotonic() - started, 6),
-                                "status": result.status,
-                            }
+            with self.lock:
+                session.busy = None
+                operation.emit("result", result=result.model_dump())
+                session.touched = time.monotonic()
+                # Только метаданные: ни текста команды, ни содержимого файлов.
+                try:
+                    trace_path = self.state_dir / "operations.jsonl"
+                    if trace_path.exists() and trace_path.stat().st_size > 1024 * 1024:
+                        trace_path.unlink()
+                    with trace_path.open("a", encoding="utf-8") as trace:
+                        trace.write(
+                            json.dumps(
+                                {
+                                    "session_id": str(request.session_id),
+                                    "operation_id": str(request.operation_id),
+                                    "kind": request.operation.kind,
+                                    "duration_s": round(time.monotonic() - started, 6),
+                                    "status": result.status,
+                                }
+                            )
+                            + "\n"
                         )
-                        + "\n"
-                    )
-            except OSError:
-                logging.getLogger(__name__).warning("Operation metadata could not be saved")
-            finally:
-                operation.done.set()
+                except OSError:
+                    logging.getLogger(__name__).warning("Operation metadata could not be saved")
+                finally:
+                    operation.done.set()
 
     def _stop(self, session, operation, reason):
         with session.gate:

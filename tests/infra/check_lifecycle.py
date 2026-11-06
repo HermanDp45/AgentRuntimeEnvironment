@@ -20,11 +20,12 @@ def main():
         .strip()
     )
     base = os.environ.get("SANDBOX_TEST_URL", "http://" + address)
+    compose_env = {**os.environ, "SANDBOX_MANAGER_PORT": address.rsplit(":", 1)[1]}
     client = docker.from_env()
     labels = {"label": f"are.owner={namespace}"}
 
     def compose(*args):
-        subprocess.run(["docker", "compose", *args], check=True)
+        subprocess.run(["docker", "compose", *args], check=True, env=compose_env)
 
     def provision():
         body = {

@@ -1,0 +1,253 @@
+{
+  "fixture": {
+    "note.txt": "PORT=7319"
+  },
+  "events": [
+    {
+      "version": "0",
+      "type": "run.event",
+      "session_id": "1ebed35d-d86a-43f7-b94a-a8db3db0831d",
+      "run_id": "ebe4b26f-1ca1-4364-9c1c-3ab29181c6ef",
+      "sequence": 1,
+      "event": "status",
+      "data": {
+        "phase": "started"
+      }
+    },
+    {
+      "version": "0",
+      "type": "run.event",
+      "session_id": "1ebed35d-d86a-43f7-b94a-a8db3db0831d",
+      "run_id": "ebe4b26f-1ca1-4364-9c1c-3ab29181c6ef",
+      "sequence": 2,
+      "event": "status",
+      "data": {
+        "phase": "model_reply",
+        "model_call": 1,
+        "duration_s": 1.148853999999801,
+        "usage": {
+          "prompt_tokens": 732,
+          "total_tokens": 753,
+          "completion_tokens": 21
+        },
+        "model": "Qwen/Qwen3-235B-A22B-Instruct-2507"
+      }
+    },
+    {
+      "version": "0",
+      "type": "run.event",
+      "session_id": "1ebed35d-d86a-43f7-b94a-a8db3db0831d",
+      "run_id": "ebe4b26f-1ca1-4364-9c1c-3ab29181c6ef",
+      "sequence": 3,
+      "event": "tool",
+      "data": {
+        "phase": "requested",
+        "operation_id": "cc13a2be-538a-4b80-ad89-50bb96f5bfa8",
+        "kind": "ReadFile"
+      }
+    },
+    {
+      "version": "0",
+      "type": "run.event",
+      "session_id": "1ebed35d-d86a-43f7-b94a-a8db3db0831d",
+      "run_id": "ebe4b26f-1ca1-4364-9c1c-3ab29181c6ef",
+      "sequence": 4,
+      "event": "tool",
+      "data": {
+        "phase": "executed",
+        "operation_id": "cc13a2be-538a-4b80-ad89-50bb96f5bfa8",
+        "kind": "ReadFile",
+        "duration_s": 0.22685150000006615,
+        "status": "ok",
+        "exit_code": null
+      }
+    },
+    {
+      "version": "0",
+      "type": "run.event",
+      "session_id": "1ebed35d-d86a-43f7-b94a-a8db3db0831d",
+      "run_id": "ebe4b26f-1ca1-4364-9c1c-3ab29181c6ef",
+      "sequence": 5,
+      "event": "tool",
+      "data": {
+        "phase": "finished",
+        "operation_id": "cc13a2be-538a-4b80-ad89-50bb96f5bfa8",
+        "kind": "ReadFile",
+        "result": {
+          "status": "ok",
+          "value": {
+            "content": "PORT=7319",
+            "sha256": "9cae105be9efe2ad445f9632f9e7dcb20a78156a4b6b7dded2f5d9f3b24ea10a"
+          }
+        }
+      }
+    },
+    {
+      "version": "0",
+      "type": "run.event",
+      "session_id": "1ebed35d-d86a-43f7-b94a-a8db3db0831d",
+      "run_id": "ebe4b26f-1ca1-4364-9c1c-3ab29181c6ef",
+      "sequence": 6,
+      "event": "status",
+      "data": {
+        "phase": "model_reply",
+        "model_call": 2,
+        "duration_s": 0.37520345899997665,
+        "usage": {
+          "prompt_tokens": 841,
+          "total_tokens": 846,
+          "completion_tokens": 5
+        },
+        "model": "Qwen/Qwen3-235B-A22B-Instruct-2507"
+      }
+    },
+    {
+      "version": "0",
+      "type": "run.event",
+      "session_id": "1ebed35d-d86a-43f7-b94a-a8db3db0831d",
+      "run_id": "ebe4b26f-1ca1-4364-9c1c-3ab29181c6ef",
+      "sequence": 7,
+      "event": "message",
+      "data": {
+        "role": "assistant",
+        "text": "7319"
+      }
+    },
+    {
+      "version": "0",
+      "type": "run.result",
+      "session_id": "1ebed35d-d86a-43f7-b94a-a8db3db0831d",
+      "run_id": "ebe4b26f-1ca1-4364-9c1c-3ab29181c6ef",
+      "sequence": 8,
+      "result": {
+        "status": "ok",
+        "value": {
+          "message": "7319",
+          "model_calls": 2,
+          "usage": [
+            {
+              "prompt_tokens": 732,
+              "total_tokens": 753,
+              "completion_tokens": 21
+            },
+            {
+              "prompt_tokens": 841,
+              "total_tokens": 846,
+              "completion_tokens": 5
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "passed": true,
+  "result": {
+    "status": "ok",
+    "value": {
+      "message": "7319",
+      "model_calls": 2,
+      "usage": [
+        {
+          "prompt_tokens": 732,
+          "total_tokens": 753,
+          "completion_tokens": 21
+        },
+        {
+          "prompt_tokens": 841,
+          "total_tokens": 846,
+          "completion_tokens": 5
+        }
+      ]
+    }
+  },
+  "trace": [
+    {
+      "trace_id": "ebe4b26f-1ca1-4364-9c1c-3ab29181c6ef",
+      "session_id": "1ebed35d-d86a-43f7-b94a-a8db3db0831d",
+      "sequence": 1,
+      "time": "2026-11-06T13:58:43.065443+00:00",
+      "event": "status",
+      "phase": "started"
+    },
+    {
+      "trace_id": "ebe4b26f-1ca1-4364-9c1c-3ab29181c6ef",
+      "session_id": "1ebed35d-d86a-43f7-b94a-a8db3db0831d",
+      "sequence": 2,
+      "time": "2026-11-06T13:58:44.214567+00:00",
+      "event": "status",
+      "phase": "model_reply",
+      "duration_s": 1.148853999999801,
+      "usage": {
+        "prompt_tokens": 732,
+        "total_tokens": 753,
+        "completion_tokens": 21
+      },
+      "model": "Qwen/Qwen3-235B-A22B-Instruct-2507"
+    },
+    {
+      "trace_id": "ebe4b26f-1ca1-4364-9c1c-3ab29181c6ef",
+      "session_id": "1ebed35d-d86a-43f7-b94a-a8db3db0831d",
+      "sequence": 3,
+      "time": "2026-11-06T13:58:44.215158+00:00",
+      "event": "tool",
+      "phase": "requested",
+      "operation_id": "cc13a2be-538a-4b80-ad89-50bb96f5bfa8",
+      "kind": "ReadFile"
+    },
+    {
+      "trace_id": "ebe4b26f-1ca1-4364-9c1c-3ab29181c6ef",
+      "session_id": "1ebed35d-d86a-43f7-b94a-a8db3db0831d",
+      "sequence": 4,
+      "time": "2026-11-06T13:58:44.442134+00:00",
+      "event": "tool",
+      "phase": "executed",
+      "operation_id": "cc13a2be-538a-4b80-ad89-50bb96f5bfa8",
+      "kind": "ReadFile",
+      "duration_s": 0.22685150000006615,
+      "status": "ok",
+      "exit_code": null
+    },
+    {
+      "trace_id": "ebe4b26f-1ca1-4364-9c1c-3ab29181c6ef",
+      "session_id": "1ebed35d-d86a-43f7-b94a-a8db3db0831d",
+      "sequence": 5,
+      "time": "2026-11-06T13:58:44.442243+00:00",
+      "event": "tool",
+      "phase": "finished",
+      "operation_id": "cc13a2be-538a-4b80-ad89-50bb96f5bfa8",
+      "kind": "ReadFile"
+    },
+    {
+      "trace_id": "ebe4b26f-1ca1-4364-9c1c-3ab29181c6ef",
+      "session_id": "1ebed35d-d86a-43f7-b94a-a8db3db0831d",
+      "sequence": 6,
+      "time": "2026-11-06T13:58:44.817527+00:00",
+      "event": "status",
+      "phase": "model_reply",
+      "duration_s": 0.37520345899997665,
+      "usage": {
+        "prompt_tokens": 841,
+        "total_tokens": 846,
+        "completion_tokens": 5
+      },
+      "model": "Qwen/Qwen3-235B-A22B-Instruct-2507"
+    },
+    {
+      "trace_id": "ebe4b26f-1ca1-4364-9c1c-3ab29181c6ef",
+      "session_id": "1ebed35d-d86a-43f7-b94a-a8db3db0831d",
+      "sequence": 7,
+      "time": "2026-11-06T13:58:44.817716+00:00",
+      "event": "message"
+    },
+    {
+      "trace_id": "ebe4b26f-1ca1-4364-9c1c-3ab29181c6ef",
+      "session_id": "1ebed35d-d86a-43f7-b94a-a8db3db0831d",
+      "sequence": 8,
+      "time": "2026-11-06T13:58:44.817900+00:00",
+      "event": "result",
+      "status": "ok",
+      "duration_s": 1.7524685420000878
+    }
+  ],
+  "seconds": 2.122
+}

@@ -1,0 +1,9 @@
+uv lock --check --offline
+Resolved 37 packages in 1ms
+uv run --frozen --offline ruff check .
+All checks passed!
+uv run --frozen --offline ruff format --check .
+68 files already formatted
+uv run --frozen --offline pytest -q
+sssssssss..........................................                      [100%]
+42 passed, 9 skipped in 0.49s

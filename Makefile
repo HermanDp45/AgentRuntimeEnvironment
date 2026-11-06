@@ -1,7 +1,10 @@
 export UV_CACHE_DIR ?= $(CURDIR)/.cache/uv
 export UV_PYTHON_INSTALL_DIR ?= $(CURDIR)/.cache/python
+TEST_PROJECT ?= are-offline
+TEST_COMPOSE = docker compose -p $(TEST_PROJECT) -f docker-compose.yml -f tests/infra/compose.yml
 
 .PHONY: setup run up down check test-ci test-ui test-infra baf-smoke baf bench-fs bench-sandbox
+.PHONY: up-test test-agent test-lifecycle down-test
 
 setup:
 	uv sync --frozen
@@ -26,6 +29,19 @@ test-ci: check
 
 test-infra:
 	SANDBOX_TEST_URL="$${SANDBOX_TEST_URL:-http://$$(docker compose port sandbox-manager 8081)}" uv run --frozen --offline pytest -q tests/infra
+
+up-test:
+	GATEWAY_PORT=18080 SANDBOX_MANAGER_PORT=18081 $(TEST_COMPOSE) up --build --wait --wait-timeout 90
+
+test-agent:
+	$(TEST_COMPOSE) exec -T llm-proxy python -c "import os; assert os.environ['LLM_PROVIDER_URL'] == 'http://mock-llm:8000'"
+	SANDBOX_TEST_URL=http://127.0.0.1:18081 HARNESS_TEST_URL=http://127.0.0.1:18080 uv run --frozen --offline pytest -q tests/infra
+
+test-lifecycle:
+	COMPOSE_PROJECT_NAME=$(TEST_PROJECT) COMPOSE_FILE=docker-compose.yml:tests/infra/compose.yml uv run --frozen --offline python tests/infra/check_lifecycle.py
+
+down-test:
+	$(TEST_COMPOSE) down -v --remove-orphans
 
 test-ui baf-smoke baf bench-fs bench-sandbox:
 	@printf '%s\n' '$@: ещё не реализовано; см. TASKS.md' >&2

@@ -1,0 +1,41 @@
+COMPOSE_PROJECT_NAME=are-offline COMPOSE_FILE=docker-compose.yml:tests/infra/compose.yml uv run --frozen --offline python tests/infra/check_lifecycle.py
+ Container are-offline-sandbox-manager-1  Killing
+ Container are-offline-sandbox-manager-1  Killed
+ Container are-offline-sandbox-image-1  Created
+ Container are-offline-sandbox-manager-1  Created
+ Container are-offline-sandbox-image-1  Starting
+ Container are-offline-sandbox-image-1  Started
+ Container are-offline-sandbox-image-1  Waiting
+ Container are-offline-sandbox-image-1  Exited
+ Container are-offline-sandbox-manager-1  Starting
+ Container are-offline-sandbox-manager-1  Started
+ Container are-offline-sandbox-manager-1  Waiting
+ Container are-offline-sandbox-image-1  Waiting
+ Container are-offline-sandbox-image-1  Exited
+ Container are-offline-sandbox-manager-1  Healthy
+ Container are-offline-sandbox-manager-1  Stopping
+ Container are-offline-sandbox-manager-1  Stopped
+{
+  "resources": {
+    "Memory": 1073741824,
+    "MemorySwap": 1073741824,
+    "NanoCpus": 1000000000,
+    "PidsLimit": 128,
+    "NetworkMode": "none",
+    "ReadonlyRootfs": true,
+    "CapDrop": [
+      "ALL"
+    ],
+    "SecurityOpt": [
+      "no-new-privileges:true",
+      "seccomp=builtin"
+    ],
+    "Tmpfs": {
+      "/tmp": "rw,noexec,nosuid,nodev,size=16777216,uid=10001,gid=10001",
+      "/work": "rw,nosuid,nodev,size=67108864,uid=10001,gid=10001,mode=0755"
+    }
+  },
+  "image": "sha256:0afdcb3e41da9d30ea0c819f2983ba2a85ab8f86620bbb65cd1e9a63f3ac13e1",
+  "startup_orphan_cleanup": true,
+  "graceful_cleanup": true
+}

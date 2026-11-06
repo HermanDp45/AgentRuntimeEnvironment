@@ -12,6 +12,17 @@
 !services/sandbox-manager/src/**
 !services/sandbox-manager/sandbox/
 !services/sandbox-manager/sandbox/**
+!services/harness/
+!services/harness/Dockerfile
+!services/harness/config.toml
+!services/harness/src/
+!services/harness/src/**
+!services/llm-proxy/
+!services/llm-proxy/Dockerfile
+!services/llm-proxy/src/
+!services/llm-proxy/src/**
+!services/llm-proxy/testing/
+!services/llm-proxy/testing/**
 !contracts/
 !contracts/**
 **/__pycache__/

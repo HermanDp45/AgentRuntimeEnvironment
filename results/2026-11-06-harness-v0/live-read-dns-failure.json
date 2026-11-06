@@ -1,0 +1,64 @@
+{
+  "fixture": {
+    "note.txt": "PORT=7319"
+  },
+  "events": [
+    {
+      "version": "0",
+      "type": "run.event",
+      "session_id": "c513b67e-4d94-4186-8d78-04ac20cd668e",
+      "run_id": "a246dfb0-5c62-4bd9-a47e-62e8be5ff61c",
+      "sequence": 1,
+      "event": "status",
+      "data": {
+        "phase": "started"
+      }
+    },
+    {
+      "version": "0",
+      "type": "run.result",
+      "session_id": "c513b67e-4d94-4186-8d78-04ac20cd668e",
+      "run_id": "a246dfb0-5c62-4bd9-a47e-62e8be5ff61c",
+      "sequence": 2,
+      "result": {
+        "status": "error",
+        "value": {},
+        "error": {
+          "kind": "transport",
+          "code": "llm_unavailable",
+          "message": "llm unavailable"
+        }
+      }
+    }
+  ],
+  "passed": false,
+  "result": {
+    "status": "error",
+    "value": {},
+    "error": {
+      "kind": "transport",
+      "code": "llm_unavailable",
+      "message": "llm unavailable"
+    }
+  },
+  "trace": [
+    {
+      "trace_id": "a246dfb0-5c62-4bd9-a47e-62e8be5ff61c",
+      "session_id": "c513b67e-4d94-4186-8d78-04ac20cd668e",
+      "sequence": 1,
+      "time": "2026-11-06T13:52:16.239765+00:00",
+      "event": "status",
+      "phase": "started"
+    },
+    {
+      "trace_id": "a246dfb0-5c62-4bd9-a47e-62e8be5ff61c",
+      "session_id": "c513b67e-4d94-4186-8d78-04ac20cd668e",
+      "sequence": 2,
+      "time": "2026-11-06T13:52:24.271023+00:00",
+      "event": "result",
+      "status": "error",
+      "duration_s": 8.031152127999917
+    }
+  ],
+  "seconds": 8.435
+}

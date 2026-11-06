@@ -119,7 +119,9 @@
             "command",
             "timeout",
             "sandbox",
-            "transport"
+            "transport",
+            "model",
+            "limit"
           ],
           "title": "Kind",
           "type": "string"

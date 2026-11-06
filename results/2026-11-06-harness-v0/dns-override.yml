@@ -1,0 +1,6 @@
+# Диагностический снимок DNS на 2026-11-06; не постоянная настройка сервера.
+# Адрес разрешён macOS для inference.airi.net. TLS-проверка остаётся включённой.
+services:
+  llm-proxy:
+    extra_hosts:
+      - "inference.airi.net:194.190.0.250"

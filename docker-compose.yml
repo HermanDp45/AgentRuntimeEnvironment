@@ -1,4 +1,49 @@
 services:
+  llm-proxy:
+    build:
+      context: .
+      dockerfile: services/llm-proxy/Dockerfile
+      target: production
+    environment:
+      LLM_PROVIDER_URL: "${LLM_PROVIDER_URL:-https://inference.airi.net}"
+      LLM_API_KEY: "${LLM_API_KEY:-}"
+      LLM_MODEL: "${LLM_MODEL:-Qwen/Qwen3-235B-A22B-Instruct-2507}"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=16m
+    healthcheck:
+      test: [CMD, python, -c, "from urllib.request import urlopen; urlopen('http://127.0.0.1:8000/health', timeout=2).close()"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  harness:
+    build:
+      context: .
+      dockerfile: services/harness/Dockerfile
+    environment:
+      LLM_URL: http://llm-proxy:8000
+      SANDBOX_URL: http://sandbox-manager:8081
+    depends_on:
+      llm-proxy:
+        condition: service_healthy
+      sandbox-manager:
+        condition: service_healthy
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=16m
+      - /runs:rw,noexec,nosuid,nodev,size=64m,uid=10001,gid=10001,mode=0700
+    stop_grace_period: 45s
+    healthcheck:
+      test: [CMD, python, -c, "from urllib.request import urlopen; urlopen('http://127.0.0.1:8000/health', timeout=2).close()"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
   sandbox-image:
     image: "${COMPOSE_PROJECT_NAME:-agentruntimeenvironment}-sandbox:v0"
     build:
@@ -44,6 +89,12 @@ services:
     build:
       context: .
       dockerfile: services/gateway/Dockerfile
+    environment:
+      HARNESS_URL: http://harness:8000
+      CLIENT_TOKENS: "${CLIENT_TOKENS:-local-dev-token}"
+    depends_on:
+      harness:
+        condition: service_healthy
     ports:
       - "127.0.0.1:${GATEWAY_PORT:-8080}:8080"
     init: true

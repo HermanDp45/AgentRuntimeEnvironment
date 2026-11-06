@@ -1,0 +1,40 @@
+{
+  "gateway": {
+    "user": "10001:10001",
+    "read_only": true,
+    "cap_drop": [
+      "ALL"
+    ],
+    "has_llm_api_key": false,
+    "mount_targets": []
+  },
+  "harness": {
+    "user": "10001:10001",
+    "read_only": true,
+    "cap_drop": [
+      "ALL"
+    ],
+    "has_llm_api_key": false,
+    "mount_targets": []
+  },
+  "llm-proxy": {
+    "user": "10001:10001",
+    "read_only": true,
+    "cap_drop": [
+      "ALL"
+    ],
+    "has_llm_api_key": true,
+    "mount_targets": []
+  },
+  "sandbox-manager": {
+    "user": "0",
+    "read_only": true,
+    "cap_drop": [
+      "ALL"
+    ],
+    "has_llm_api_key": false,
+    "mount_targets": [
+      "/var/run/docker.sock"
+    ]
+  }
+}
