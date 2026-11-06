@@ -1,0 +1,23 @@
+{
+  "endpoint": "https://inference.airi.net/v1/chat/completions",
+  "model": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+  "checks": [
+    {
+      "name": "text",
+      "request": {
+        "model": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly OK and nothing else."
+          }
+        ],
+        "max_tokens": 8,
+        "temperature": 0
+      },
+      "pass": false,
+      "error": "URLError",
+      "seconds": 1.317
+    }
+  ]
+}
