@@ -1,0 +1,8 @@
+{
+  "ssh_image": "gcr.io/k8s-minikube/kicbase:v0.0.51@sha256:4a1c825b61479e6c898851ea66f13c620aaeab6002746e95067fc2c4b38a0b24",
+  "mount_image": "rclone/rclone:1.75.2@sha256:2687085f718d3c628f7fdfb77c52a1d344332aed543110bb88088f2c70d43eb5",
+  "loopback_reverse_ssh": true,
+  "client_to_fuse": true,
+  "fuse_to_client": true,
+  "containers_removed": true
+}

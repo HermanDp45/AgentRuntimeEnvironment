@@ -1,0 +1,25 @@
+[
+  {
+    "mode": "rw",
+    "initial_read": true,
+    "client_to_linux": true,
+    "linux_to_client": true,
+    "rename_over_existing": true,
+    "read_fails_after_disconnect": true,
+    "disconnect_read_seconds": 5.061,
+    "original_preserved_during_disconnect": true,
+    "write_fails_after_disconnect": true,
+    "read_recovers_after_restart": true,
+    "container_removed": true
+  },
+  {
+    "mode": "ro",
+    "initial_read": true,
+    "client_to_linux": true,
+    "write_refused": true,
+    "read_fails_after_disconnect": true,
+    "disconnect_read_seconds": 5.058,
+    "read_recovers_after_restart": true,
+    "container_removed": true
+  }
+]
