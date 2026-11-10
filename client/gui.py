@@ -1,4 +1,4 @@
-"""Учебный чат: HTTP-команды и SSE, без доступа к папкам Mac."""
+"""Настольный чат с учебной или локальной рабочей папкой."""
 
 import argparse
 import os
@@ -18,6 +18,7 @@ from PySide6.QtGui import (
 )
 from PySide6.QtWidgets import (
     QApplication,
+    QFileDialog,
     QFrame,
     QHBoxLayout,
     QLabel,
@@ -35,11 +36,21 @@ from PySide6.QtWidgets import (
 
 from client import api
 from client.appearance import DiffHighlight, apply_theme
+from client.workdir import Workdir
 
 
 def error_message(error):
     if isinstance(error, httpx2.HTTPStatusError):
         code = error.response.status_code
+        if code == 503:
+            try:
+                detail = error.response.json().get("error", {}).get("code")
+            except ValueError:
+                detail = None
+            if detail == "workdir_image_missing":
+                return "Образ рабочей папки не установлен. Запустите make up из репозитория."
+            if detail == "workdir_unavailable":
+                return "Сервер не смог подключиться к выбранной папке."
         if code in (401, 403):
             return "Сервер отклонил токен клиента."
         return f"Сервер вернул HTTP {code}. Проверьте состояние сессии."
@@ -150,9 +161,11 @@ class ChatWindow(QMainWindow):
         self.close_done = False
         self.release_started = False
         self.last_files = {}
+        self.workdir = None
+        self.folder = None
         self.setWindowTitle("Agent Runtime")
         self.resize(1120, 780)
-        self.setMinimumSize(720, 640)
+        self.setMinimumSize(720, 685)
         root = QWidget()
         root.setObjectName("workspace")
         self.setCentralWidget(root)
@@ -171,7 +184,8 @@ class ChatWindow(QMainWindow):
         heading.addWidget(label("Рабочая среда агента", "caption"))
         header.addWidget(brand)
         header.addLayout(heading, 1)
-        header.addWidget(label("Учебная сессия", "badge"))
+        self.mode_badge = label("Учебная сессия", "badge")
+        header.addWidget(self.mode_badge)
         layout.addLayout(header)
         layout.addWidget(
             self.connection_panel(url, token or os.getenv("CLIENT_TOKEN", "local-dev-token"))
@@ -197,8 +211,9 @@ class ChatWindow(QMainWindow):
 
     def connection_panel(self, url, token):
         widget = panel("connection")
-        row = QHBoxLayout(widget)
-        row.setContentsMargins(13, 10, 13, 12)
+        layout = QVBoxLayout(widget)
+        layout.setContentsMargins(13, 10, 13, 12)
+        row = QHBoxLayout()
         row.setSpacing(12)
         self.url = QLineEdit(url)
         self.url.setAccessibleName("Адрес сервера")
@@ -211,7 +226,31 @@ class ChatWindow(QMainWindow):
         row.addLayout(labeled_field("Сервер", self.url), 3)
         row.addLayout(labeled_field("Токен", self.token), 2)
         row.addWidget(self.connect_button, 0, Qt.AlignmentFlag.AlignBottom)
+        layout.addLayout(row)
+        folder_row = QHBoxLayout()
+        self.folder_path = QLineEdit()
+        self.folder_path.setReadOnly(True)
+        self.folder_path.setPlaceholderText("Учебная папка")
+        self.folder_path.setAccessibleName("Рабочая папка")
+        self.folder_button = QPushButton("Выбрать папку…")
+        self.folder_button.clicked.connect(self.choose_folder)
+        folder_row.addWidget(self.folder_path, 1)
+        folder_row.addWidget(self.folder_button)
+        layout.addLayout(folder_row)
         return widget
+
+    @Slot()
+    def choose_folder(self):
+        folder = QFileDialog.getExistingDirectory(self, "Рабочая папка", self.folder or "")
+        if folder:
+            self.folder = folder
+            self.folder_path.setText(folder)
+            self.mode_badge.setText("Локальная папка")
+            self.session_hint.setText("Подтверждённые правки сохраняются в выбранной папке.")
+            self.file_content.setToolTip(
+                "Просмотр до 128 текстовых файлов размером до 64 КиБ. "
+                "Служебные и двоичные файлы скрыты."
+            )
 
     def conversation_panel(self):
         widget = panel()
@@ -285,9 +324,9 @@ class ChatWindow(QMainWindow):
         layout.setContentsMargins(13, 12, 13, 12)
         layout.setSpacing(8)
         layout.addWidget(label("Сессия", "section"))
-        hint = label("Учебные файлы удаляются при закрытии чата.", "caption")
-        hint.setWordWrap(True)
-        layout.addWidget(hint)
+        self.session_hint = label("Учебные файлы удаляются при закрытии чата.", "caption")
+        self.session_hint.setWordWrap(True)
+        layout.addWidget(self.session_hint)
         self.activity = text_view("activity", "Здесь появятся действия агента.")
         self.activity.setMaximumBlockCount(2000)
         self.file_content = text_view("fileContent", "Выберите файл.", fixed=True)
@@ -299,9 +338,17 @@ class ChatWindow(QMainWindow):
         files.addWidget(self.file_list)
         files.addWidget(self.file_content)
         files.setSizes([96, 360])
+        file_panel = QWidget()
+        file_layout = QVBoxLayout(file_panel)
+        file_layout.setContentsMargins(0, 0, 0, 0)
+        file_layout.addWidget(files, 1)
+        self.refresh_files = QPushButton("Обновить файлы")
+        self.refresh_files.clicked.connect(self.collect_files)
+        self.refresh_files.hide()
+        file_layout.addWidget(self.refresh_files, 0, Qt.AlignmentFlag.AlignRight)
         tabs = QTabWidget()
         tabs.addTab(self.activity, "Действия")
-        tabs.addTab(files, "Файлы")
+        tabs.addTab(file_panel, "Файлы")
         layout.addWidget(tabs, 1)
         return widget
 
@@ -359,6 +406,7 @@ class ChatWindow(QMainWindow):
             bool(self.session) and not busy and not self.stream and not self.closing
         )
         self.cancel_button.setEnabled(bool(self.run_id) and not self.closing)
+        self.refresh_files.setEnabled(self.send_button.isEnabled())
 
     @Slot()
     def connect_chat(self):
@@ -373,26 +421,46 @@ class ChatWindow(QMainWindow):
         if parsed.scheme not in ("http", "https") or not parsed.host or parsed.userinfo:
             self.show_error("Укажите HTTP/HTTPS-адрес без логина и пароля в URL.")
             return
-        self.client = api.connect(url, self.token.text())
+        kind, payload = "session.fixture", {"files": {"note.txt": "original"}}
+        if self.folder:
+            if parsed.host not in ("localhost", "127.0.0.1", "::1"):
+                self.show_error("Выбранная папка подключается к локальному Docker-серверу.")
+                return
+            try:
+                self.workdir = Workdir(self.folder)
+            except OSError as error:
+                self.show_error(f"Не удалось открыть папку: {error}")
+                return
+            kind = "session.create"
+            payload = {"port": self.workdir.server_port, "export_token": self.workdir.token}
+        try:
+            self.client = api.connect(url, self.token.text())
+        except (ValueError, UnicodeError):
+            self.close_workdir()
+            self.show_error("Проверьте токен клиента: он должен содержать символы ASCII.")
+            return
         self.session = str(uuid4())
         self.url.setEnabled(False)
         self.token.setEnabled(False)
         self.connect_button.setEnabled(False)
-        self.status.setText("Создаём учебную сессию…")
+        self.folder_button.setEnabled(False)
+        self.status.setText(
+            "Подключаем рабочую папку…" if self.workdir else "Создаём учебную сессию…"
+        )
         self.job(
-            lambda: api.post(
-                self.client,
-                "/v0/sessions",
-                "session.fixture",
-                session_id=self.session,
-                files={"note.txt": "original"},
-            ),
+            lambda: api.post(self.client, "/v0/sessions", kind, session_id=self.session, **payload),
             self.connected,
             self.connection_failed,
         )
 
+    def close_workdir(self):
+        if self.workdir:
+            self.workdir.close()
+            self.workdir = None
+
     @Slot(object)
     def connection_failed(self, error):
+        self.close_workdir()
         if isinstance(error, httpx2.HTTPStatusError) and error.response.status_code in (401, 403):
             # Отказ авторизации однозначен: сессия не создавалась.
             self.client.close()
@@ -400,6 +468,7 @@ class ChatWindow(QMainWindow):
             self.url.setEnabled(True)
             self.token.setEnabled(True)
             self.connect_button.setEnabled(True)
+            self.folder_button.setEnabled(True)
             self.show_error(error)
         else:
             # После неоднозначного POST сохраняем UUID для закрытия сессии.
@@ -409,7 +478,10 @@ class ChatWindow(QMainWindow):
     def connected(self, _):
         if self.closing:
             return
-        self.status.setText("Готов к задаче · учебная сессия")
+        self.status.setText(
+            "Рабочая папка подключена" if self.workdir else "Готов к задаче · учебная сессия"
+        )
+        self.refresh_files.setVisible(bool(self.workdir))
         self.connect_button.setText("Подключено")
         self.set_busy(False)
         self.collect_files()
@@ -627,7 +699,7 @@ class ChatWindow(QMainWindow):
         self.closing = True
         self.set_busy(True)
         self.approval.setEnabled(False)
-        self.status.setText("Закрываем сессию и удаляем учебную папку…")
+        self.status.setText("Закрываем сессию…")
         if self.stream:
             self.stream.requestInterruption()
         # Сначала завершаем текущие POST, затем закрываем созданную ими сессию.
@@ -642,6 +714,9 @@ class ChatWindow(QMainWindow):
             return
         if self.release_started:
             if self.stream:
+                return
+            if self.workdir:
+                self.job(self.close_workdir, lambda _: None)
                 return
             self.close_done = True
             self.client.close()

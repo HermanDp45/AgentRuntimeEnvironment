@@ -64,6 +64,14 @@ class Provision(Message):
     read_only: StrictBool = False
 
 
+class MountedProvision(Message):
+    type: Literal["provision.mount"]
+    session_id: UUID
+    port: Annotated[int, Field(strict=True, ge=1024, le=65535)]
+    export_token: str = Field(pattern=r"^[A-Za-z0-9_-]{43}$", repr=False)
+    read_only: StrictBool = False
+
+
 class Exec(Message):
     type: Literal["exec"]
     session_id: UUID
@@ -164,6 +172,7 @@ class Finished(EventBase):
 Event = Annotated[Started | Output | Finished, Field(discriminator="type")]
 SandboxMessage = Annotated[
     Provision
+    | MountedProvision
     | Exec
     | Collect
     | Release
@@ -180,11 +189,8 @@ SandboxMessage = Annotated[
 ]
 
 
-class ClientSession(Message):
+class ClientSession(MountedProvision):
     type: Literal["session.create"]
-    session_id: UUID
-    folder: str = Field(min_length=1, max_length=4096)
-    read_only: StrictBool = False
 
 
 class FixtureSession(Provision):

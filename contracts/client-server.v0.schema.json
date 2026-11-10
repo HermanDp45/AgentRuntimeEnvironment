@@ -144,10 +144,15 @@
           "title": "Session Id",
           "type": "string"
         },
-        "folder": {
-          "maxLength": 4096,
-          "minLength": 1,
-          "title": "Folder",
+        "port": {
+          "maximum": 65535,
+          "minimum": 1024,
+          "title": "Port",
+          "type": "integer"
+        },
+        "export_token": {
+          "pattern": "^[A-Za-z0-9_-]{43}$",
+          "title": "Export Token",
           "type": "string"
         },
         "read_only": {
@@ -160,7 +165,8 @@
         "version",
         "type",
         "session_id",
-        "folder"
+        "port",
+        "export_token"
       ],
       "title": "ClientSession",
       "type": "object"

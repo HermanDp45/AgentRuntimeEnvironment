@@ -98,7 +98,7 @@ class Runtime:
                 return
             if len(self.sessions) >= self.config["max_sessions"]:
                 raise Rejected("session_limit")
-            for content in request.files.values():
+            for content in getattr(request, "files", {}).values():
                 if len(content.encode("utf-8")) > self.config["file_bytes"]:
                     raise Rejected("file_too_large", 422)
             container = self.backend.provision(request)

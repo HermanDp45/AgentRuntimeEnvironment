@@ -1,5 +1,6 @@
 export UV_CACHE_DIR ?= $(CURDIR)/.cache/uv
 export UV_PYTHON_INSTALL_DIR ?= $(CURDIR)/.cache/python
+WORKDIR_IMAGE = rclone/rclone:1.75.2@sha256:2687085f718d3c628f7fdfb77c52a1d344332aed543110bb88088f2c70d43eb5
 TEST_PROJECT ?= are-offline
 TEST_COMPOSE = docker compose -p $(TEST_PROJECT) -f docker-compose.yml -f tests/infra/compose.yml
 
@@ -24,6 +25,7 @@ run:
 	uv run --frozen --offline uvicorn agent_runtime.gateway:app --app-dir services/gateway/src --host 127.0.0.1 --port 8080
 
 up:
+	@docker image inspect $(WORKDIR_IMAGE) >/dev/null 2>&1 || docker pull $(WORKDIR_IMAGE)
 	docker compose up --build --wait --wait-timeout 60
 
 down:

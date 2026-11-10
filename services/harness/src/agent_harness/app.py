@@ -18,6 +18,7 @@ from contracts.v0 import (
     Approval,
     ClientCancel,
     ClientClose,
+    ClientSession,
     ClientTask,
     FixtureSession,
     Released,
@@ -98,7 +99,7 @@ def create_app(runtime=None):
         return {"status": "ok"}
 
     @app.post("/v0/sessions", response_model=Session)
-    async def provision(body: FixtureSession, request: Request):
+    async def provision(body: FixtureSession | ClientSession, request: Request):
         await request.app.state.runtime.provision(body)
         return Session(
             version="0", type="session", session_id=body.session_id, read_only=body.read_only

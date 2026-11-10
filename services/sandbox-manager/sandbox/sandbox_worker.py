@@ -118,11 +118,18 @@ def clean_stage(root, path, stage):
     return {}
 
 
-def collect(root, limit):
+def collect(root, limit, mounted=False):
     files, size, entries = {}, 0, 0
-    for directory, names, leaves in os.walk(root, followlinks=False):
+
+    def report(error):
+        if mounted:
+            raise error
+
+    for directory, names, leaves in os.walk(root, followlinks=False, onerror=report):
         entries += len(names) + len(leaves)
         if entries > 512:
+            if mounted:
+                return files
             raise WorkerError("collection_too_large", "Too many directory entries")
         names[:] = [name for name in names if name != ".git"]
         for name in names + leaves:
@@ -133,7 +140,14 @@ def collect(root, limit):
                 raise WorkerError("invalid_path", "Symbolic links are not collected")
             if name in leaves:
                 relative = path.relative_to(root).as_posix()
-                data = read_file(root, relative, limit)
+                try:
+                    data = read_file(root, relative, limit)
+                except (UnicodeError, WorkerError):
+                    if mounted:
+                        continue
+                    raise
+                if mounted and (len(files) >= 128 or size >= 256 * 1024):
+                    return files
                 size += len(data["content"].encode("utf-8"))
                 if len(files) >= 128 or size > 128 * limit:
                     raise WorkerError("collection_too_large", "Collection exceeds its limit")
@@ -224,7 +238,7 @@ def execute(request, root=Path("/work")):
             limit,
         )
     if kind == "Collect":
-        return {"files": collect(root, limit)}
+        return {"files": collect(root, limit, request.get("mounted", False))}
     if kind == "CleanStage":
         return clean_stage(root, request["path"], request["stage"])
     if kind == "Freeze":

@@ -6,7 +6,8 @@ from pathlib import Path
 
 import docker
 
-from contracts.v0 import Failed, Success
+from contracts.v0 import Failed, MountedProvision, Success
+from sandbox_manager.workdir import MountedWorkdir
 
 
 class DockerBackend:
@@ -15,44 +16,65 @@ class DockerBackend:
         self.client = docker.from_env(version="auto", timeout=10)
         self.image = self.client.images.get(config["image"]).id
         self.gate = threading.RLock()
+        self.mounts = {}
 
     def health(self):
         self.client.ping()
         self.client.images.get(self.image)
 
     def cleanup(self):
-        for container in self.client.containers.list(
-            all=True, filters={"label": f"are.owner={self.namespace}"}
-        ):
+        filters = {"label": f"are.owner={self.namespace}"}
+        containers = self.client.containers.list(all=True, filters=filters)
+        for container in sorted(containers, key=lambda item: "are.mount" in item.labels):
             container.remove(force=True)
+        for volume in self.client.volumes.list(filters=filters):
+            volume.remove()
+        for network in self.client.networks.list(filters=filters):
+            network.remove()
 
     def provision(self, request):
         config = self.config
         uid = 0 if request.read_only else 10001
-        container = self.client.containers.create(
-            self.image,
-            ["idle"],
-            name=f"are-{self.namespace}-{request.session_id.hex}",
-            user="10001:10001",
-            detach=True,
-            read_only=True,
-            network_mode="none",
-            cap_drop=["ALL"],
-            security_opt=["no-new-privileges:true", "seccomp=builtin"],
-            mem_limit=config["memory"],
-            memswap_limit=config["memory"],
-            nano_cpus=int(config["cpus"] * 1_000_000_000),
-            pids_limit=config["pids"],
-            labels={"are.owner": self.namespace, "are.session": str(request.session_id)},
-            tmpfs={
-                "/work": (
-                    f"rw,nosuid,nodev,size={config['work_bytes']},uid={uid},gid={uid},mode=0755"
-                ),
-                "/tmp": f"rw,noexec,nosuid,nodev,size={config['tmp_bytes']},uid=10001,gid=10001",
-            },
-        )
+        tmpfs = {
+            "/tmp": f"rw,noexec,nosuid,nodev,size={config['tmp_bytes']},uid=10001,gid=10001",
+        }
+        mount = None
+        mounts = []
+        if isinstance(request, MountedProvision):
+            mount = MountedWorkdir(self.client, request, self.namespace)
+            mounts.append(
+                docker.types.Mount(
+                    "/work", mount.volume.name, type="volume", read_only=True, no_copy=True
+                )
+            )
+        else:
+            tmpfs["/work"] = (
+                f"rw,nosuid,nodev,size={config['work_bytes']},uid={uid},gid={uid},mode=0755"
+            )
+        container = None
         try:
+            container = self.client.containers.create(
+                self.image,
+                ["idle"],
+                name=f"are-{self.namespace}-{request.session_id.hex}",
+                user="10001:10001",
+                detach=True,
+                read_only=True,
+                network_mode="none",
+                cap_drop=["ALL"],
+                security_opt=["no-new-privileges:true", "seccomp=builtin"],
+                mem_limit=config["memory"],
+                memswap_limit=config["memory"],
+                nano_cpus=int(config["cpus"] * 1_000_000_000),
+                pids_limit=config["pids"],
+                labels={"are.owner": self.namespace, "are.session": str(request.session_id)},
+                tmpfs=tmpfs,
+                mounts=mounts,
+            )
             container.start()
+            if mount:
+                self.mounts[container.id] = mount
+                return container
             for path, content in request.files.items():
                 result = self.worker(
                     container,
@@ -73,7 +95,10 @@ class DockerBackend:
                     raise ValueError(result.error.code)
             return container
         except Exception:
-            container.remove(force=True)
+            if container is not None:
+                container.remove(force=True)
+            if mount:
+                mount.close()
             raise
 
     def worker(
@@ -86,6 +111,9 @@ class DockerBackend:
         cancelled=lambda: False,
         user="10001:10001",
     ):
+        if payload["kind"] in ("ReadFile", "RunCommand", "Collect"):
+            if mount := self.mounts.get(container.id):
+                mount.refresh()
         payload = {
             **payload,
             "limit": self.config[
@@ -125,6 +153,11 @@ class DockerBackend:
 
     def execute(self, container, request, output, gate, cancelled, backup_dir):
         operation = request.operation
+        if operation.kind == "WriteFile" and (mount := self.mounts.get(container.id)):
+            with gate:
+                if cancelled():
+                    return None
+            return mount.write(operation)
         payload = operation.model_dump()
         stage = f"._are_{request.operation_id.hex}.tmp"
         backup = Path(backup_dir) / f"{request.operation_id}.bak"
@@ -160,7 +193,13 @@ class DockerBackend:
             raise RuntimeError("Sandbox cancellation failed")
 
     def collect(self, container):
-        return self.worker(container, {"kind": "Collect"})
+        return self.worker(container, {"kind": "Collect", "mounted": container.id in self.mounts})
 
     def release(self, container):
-        container.remove(force=True)
+        try:
+            container.remove(force=True)
+        except docker.errors.NotFound:
+            pass
+        if mount := self.mounts.get(container.id):
+            mount.close()
+            del self.mounts[container.id]

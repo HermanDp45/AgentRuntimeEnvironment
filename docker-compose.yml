@@ -71,6 +71,8 @@ services:
     environment:
       SANDBOX_NAMESPACE: "${COMPOSE_PROJECT_NAME:-agentruntimeenvironment}"
       SANDBOX_IMAGE: "${COMPOSE_PROJECT_NAME:-agentruntimeenvironment}-sandbox:v0"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     read_only: true

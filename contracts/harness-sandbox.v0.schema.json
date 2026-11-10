@@ -340,6 +340,51 @@
       "type": "object"
     },
     "JsonValue": {},
+    "MountedProvision": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "0",
+          "title": "Version",
+          "type": "string"
+        },
+        "type": {
+          "const": "provision.mount",
+          "title": "Type",
+          "type": "string"
+        },
+        "session_id": {
+          "format": "uuid",
+          "title": "Session Id",
+          "type": "string"
+        },
+        "port": {
+          "maximum": 65535,
+          "minimum": 1024,
+          "title": "Port",
+          "type": "integer"
+        },
+        "export_token": {
+          "pattern": "^[A-Za-z0-9_-]{43}$",
+          "title": "Export Token",
+          "type": "string"
+        },
+        "read_only": {
+          "default": false,
+          "title": "Read Only",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "session_id",
+        "port",
+        "export_token"
+      ],
+      "title": "MountedProvision",
+      "type": "object"
+    },
     "OperationState": {
       "additionalProperties": false,
       "properties": {
@@ -743,6 +788,7 @@
       "exec": "#/$defs/Exec",
       "operation": "#/$defs/OperationState",
       "provision": "#/$defs/Provision",
+      "provision.mount": "#/$defs/MountedProvision",
       "release": "#/$defs/Release",
       "released": "#/$defs/Released",
       "result": "#/$defs/Finished",
@@ -756,6 +802,9 @@
   "oneOf": [
     {
       "$ref": "#/$defs/Provision"
+    },
+    {
+      "$ref": "#/$defs/MountedProvision"
     },
     {
       "$ref": "#/$defs/Exec"

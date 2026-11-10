@@ -13,7 +13,7 @@ os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 pytest.importorskip("PySide6", reason="Install GUI dependencies: make setup-gui")
 from PySide6.QtCore import Qt  # noqa: E402
 from PySide6.QtTest import QTest  # noqa: E402
-from PySide6.QtWidgets import QApplication  # noqa: E402
+from PySide6.QtWidgets import QApplication, QFileDialog  # noqa: E402
 
 from client import api  # noqa: E402
 from client.gui import ChatWindow  # noqa: E402
@@ -315,3 +315,49 @@ def test_gui_over_http_with_real_sandbox(qt_app):
             lambda: not window.isVisible() and not window.jobs and not window.stream,
             timeout=25,
         )
+
+
+@pytest.mark.docker
+@pytest.mark.skipif(not os.getenv("HARNESS_TEST_URL"), reason="Use make up-test")
+def test_selected_folder_is_live_and_changes_stay_after_close(qt_app, tmp_path, monkeypatch):
+    note = tmp_path / "note.txt"
+    note.write_text("original")
+    (tmp_path / ".git").mkdir()
+    (tmp_path / ".git" / "config").write_text("private")
+    monkeypatch.setattr(QFileDialog, "getExistingDirectory", lambda *args: str(tmp_path))
+    window = ChatWindow(os.environ["HARNESS_TEST_URL"], "fixture-client-token")
+    window.show()
+    try:
+        QTest.mouseClick(window.folder_button, Qt.MouseButton.LeftButton)
+        assert window.folder_path.text() == str(tmp_path)
+        connect(qt_app, window)
+        assert window.file_content.toPlainText() == "original"
+        assert ".git/config" not in window.last_files
+        send(window, "test:edit")
+        wait(qt_app, window.approval.isVisible, timeout=20)
+        assert note.read_text() == "original"
+        operation = window.pending
+        QTest.mouseClick(window.allow, Qt.MouseButton.LeftButton)
+        wait(qt_app, lambda: window.pending and window.pending != operation, timeout=20)
+        assert note.read_text() == "changed"
+        QTest.mouseClick(window.allow, Qt.MouseButton.LeftButton)
+        wait(qt_app, window.send_button.isEnabled, timeout=20)
+        assert window.file_content.toPlainText() == "changed"
+        note.write_text("edited-on-client")
+        QTest.mouseClick(window.refresh_files, Qt.MouseButton.LeftButton)
+        wait(qt_app, lambda: window.file_content.toPlainText() == "edited-on-client")
+        wait(qt_app, window.send_button.isEnabled)
+        send(window, "test:deny")
+        wait(qt_app, window.approval.isVisible, timeout=20)
+        QTest.mouseClick(window.allow, Qt.MouseButton.LeftButton)
+        wait(qt_app, window.send_button.isEnabled, timeout=20)
+        assert not (tmp_path / "forbidden.txt").exists()
+    finally:
+        window.close()
+        wait(
+            qt_app,
+            lambda: not window.isVisible() and not window.jobs and not window.stream,
+            timeout=25,
+        )
+    assert note.read_text() == "edited-on-client"
+    assert (tmp_path / ".git" / "config").read_text() == "private"

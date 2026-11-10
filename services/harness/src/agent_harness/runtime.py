@@ -8,6 +8,8 @@ from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from pathlib import Path
 
+import httpx2
+
 from agent_harness.clients import SandboxClient, json_request
 from agent_harness.loop import SYSTEM, Engine, Stop
 from agent_harness.tools import failure
@@ -73,15 +75,29 @@ class Runtime:
                 return
             if len(self.sessions) >= self.config["max_sessions"]:
                 raise Rejected("session_limit")
-            await json_request(
-                self.sandbox_http,
-                "POST",
-                "/v0/provision",
-                json={**request.model_dump(mode="json"), "type": "provision"},
-            )
-            self.sessions[request.session_id] = Session(
-                request, SandboxClient(self.sandbox_http, request.session_id)
-            )
+            payload = {
+                **request.model_dump(mode="json"),
+                "type": "provision.mount" if request.type == "session.create" else "provision",
+            }
+            try:
+                response = await self.sandbox_http.post("/v0/provision", json=payload)
+                response.raise_for_status()
+            except httpx2.HTTPStatusError as error:
+                try:
+                    code = error.response.json().get("error", {}).get("code", "")
+                except ValueError:
+                    code = ""
+                if code in ("workdir_image_missing", "workdir_unavailable"):
+                    raise Rejected(code, 503) from None
+                raise Stop(failure("transport", "upstream_unavailable")) from None
+            except httpx2.HTTPError:
+                raise Stop(failure("transport", "upstream_unavailable")) from None
+            session = Session(request, SandboxClient(self.sandbox_http, request.session_id))
+            if request.type == "session.create":
+                session.history[0]["content"] += (
+                    "\nShell commands can read /work. Use write_file for approved changes."
+                )
+            self.sessions[request.session_id] = session
 
     def session(self, identifier):
         session = self.sessions.get(identifier)

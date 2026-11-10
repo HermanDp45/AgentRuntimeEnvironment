@@ -10,7 +10,17 @@ from fastapi import FastAPI, Header, Query, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse, StreamingResponse
 
-from contracts.v0 import Cancel, Collect, Collection, Exec, Provision, Release, Released, Session
+from contracts.v0 import (
+    Cancel,
+    Collect,
+    Collection,
+    Exec,
+    MountedProvision,
+    Provision,
+    Release,
+    Released,
+    Session,
+)
 from sandbox_manager.backend import DockerBackend
 from sandbox_manager.runtime import Rejected, Runtime
 
@@ -91,7 +101,7 @@ def create_app(runtime=None):
         return {"status": "ok"}
 
     @app.post("/v0/provision", response_model=Session)
-    def provision(body: Provision, request: Request):
+    def provision(body: Provision | MountedProvision, request: Request):
         request.app.state.runtime.provision(body)
         return Session(
             version="0", type="session", session_id=body.session_id, read_only=body.read_only
