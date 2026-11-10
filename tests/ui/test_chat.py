@@ -169,10 +169,14 @@ def send(window, message):
 @pytest.mark.parametrize("approved", [True, False])
 def test_preview_approval_history_and_cleanup(qt_app, chat, approved):
     window, server = chat
+    if not approved:
+        window.resize(window.minimumSize())
     connect(qt_app, window)
     assert window.file_content.toPlainText() == "original"
     send(window, "edit")
     wait(qt_app, window.approval.isVisible)
+    assert window.preview.geometry().bottom() < window.deny.geometry().top()
+    assert window.approval.rect().contains(window.deny.geometry())
     assert "-original" in window.preview.toPlainText()
     assert server.files["note.txt"]["content"] == "original"
     assert not window.send_button.isEnabled()

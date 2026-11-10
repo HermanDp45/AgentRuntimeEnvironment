@@ -6,11 +6,19 @@ import sys
 from uuid import uuid4
 
 import httpx2
-from PySide6.QtCore import QThread, QTimer, Signal, Slot
-from PySide6.QtGui import QKeySequence, QShortcut
+from PySide6.QtCore import Qt, QThread, QTimer, Signal, Slot
+from PySide6.QtGui import (
+    QFont,
+    QFontDatabase,
+    QKeySequence,
+    QShortcut,
+    QTextBlockFormat,
+    QTextCharFormat,
+    QTextCursor,
+)
 from PySide6.QtWidgets import (
     QApplication,
-    QGroupBox,
+    QFrame,
     QHBoxLayout,
     QLabel,
     QLineEdit,
@@ -20,11 +28,13 @@ from PySide6.QtWidgets import (
     QPushButton,
     QSplitter,
     QTabWidget,
+    QTextEdit,
     QVBoxLayout,
     QWidget,
 )
 
 from client import api
+from client.appearance import DiffHighlight, apply_theme
 
 
 def error_message(error):
@@ -94,10 +104,39 @@ class Stream(QThread):
         return False
 
 
-def text_view():
+def label(text, style):
+    widget = QLabel(text)
+    widget.setObjectName(style)
+    widget.setTextFormat(Qt.TextFormat.PlainText)
+    return widget
+
+
+def panel(name="panel"):
+    widget = QFrame()
+    widget.setObjectName(name)
+    return widget
+
+
+def text_view(name, placeholder="", fixed=False):
     view = QPlainTextEdit()
+    view.setObjectName(name)
+    view.setPlaceholderText(placeholder)
     view.setReadOnly(True)
+    view.document().setDocumentMargin(10)
+    if fixed:
+        view.setFont(QFontDatabase.systemFont(QFontDatabase.SystemFont.FixedFont))
+        view.setLineWrapMode(QPlainTextEdit.LineWrapMode.NoWrap)
     return view
+
+
+def labeled_field(title, field):
+    layout = QVBoxLayout()
+    layout.setSpacing(4)
+    caption = label(title, "fieldLabel")
+    caption.setBuddy(field)
+    layout.addWidget(caption)
+    layout.addWidget(field)
+    return layout
 
 
 class ChatWindow(QMainWindow):
@@ -111,86 +150,186 @@ class ChatWindow(QMainWindow):
         self.close_done = False
         self.release_started = False
         self.last_files = {}
-        self.setWindowTitle("Agent Runtime — учебный чат")
-        self.resize(1080, 780)
+        self.setWindowTitle("Agent Runtime")
+        self.resize(1120, 780)
+        self.setMinimumSize(720, 640)
         root = QWidget()
+        root.setObjectName("workspace")
         self.setCentralWidget(root)
         layout = QVBoxLayout(root)
-        layout.setContentsMargins(18, 16, 18, 16)
+        layout.setContentsMargins(22, 18, 22, 15)
+        layout.setSpacing(12)
+
+        header = QHBoxLayout()
+        header.setSpacing(12)
+        brand = label("AR", "brand")
+        brand.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        brand.setFixedSize(44, 44)
+        heading = QVBoxLayout()
+        heading.setSpacing(2)
+        heading.addWidget(label("Agent Runtime", "title"))
+        heading.addWidget(label("Рабочая среда агента", "caption"))
+        header.addWidget(brand)
+        header.addLayout(heading, 1)
+        header.addWidget(label("Учебная сессия", "badge"))
+        layout.addLayout(header)
+        layout.addWidget(
+            self.connection_panel(url, token or os.getenv("CLIENT_TOKEN", "local-dev-token"))
+        )
+
+        split = QSplitter()
+        split.setChildrenCollapsible(False)
+        split.setHandleWidth(12)
+        split.addWidget(self.conversation_panel())
+        split.addWidget(self.session_panel())
+        split.setStretchFactor(0, 3)
+        split.setStretchFactor(1, 2)
+        split.setSizes([660, 400])
+        layout.addWidget(split, 1)
+
+        self.status = label("Нет подключения", "status")
+        self.status.setWordWrap(True)
+        layout.addWidget(self.status)
+        hints = QApplication.styleHints()
+        hints.colorSchemeChanged.connect(self.set_theme)
+        self.set_theme(hints.colorScheme())
+        self.set_busy(False)
+
+    def connection_panel(self, url, token):
+        widget = panel("connection")
+        row = QHBoxLayout(widget)
+        row.setContentsMargins(13, 10, 13, 12)
+        row.setSpacing(12)
         self.url = QLineEdit(url)
         self.url.setAccessibleName("Адрес сервера")
-        self.token = QLineEdit(token or os.getenv("CLIENT_TOKEN", "local-dev-token"))
+        self.token = QLineEdit(token)
         self.token.setEchoMode(QLineEdit.EchoMode.Password)
         self.token.setAccessibleName("Токен клиента")
         self.connect_button = QPushButton("Подключить чат")
+        self.connect_button.setProperty("primary", True)
         self.connect_button.clicked.connect(self.connect_chat)
-        connection = QHBoxLayout()
-        for widget in (
-            QLabel("Сервер"),
-            self.url,
-            QLabel("Токен"),
-            self.token,
-            self.connect_button,
-        ):
-            connection.addWidget(widget)
-        layout.addLayout(connection)
-        banner = QLabel(
-            "Учебная папка: note.txt = original. Папки Mac не подключены. "
-            "При закрытии окна временные файлы удаляются."
-        )
-        banner.setWordWrap(True)
-        layout.addWidget(banner)
-        self.chat, self.activity, self.file_content = text_view(), text_view(), text_view()
-        self.chat.setPlaceholderText("Подключите чат и отправьте задачу агенту.")
-        self.activity.setMaximumBlockCount(2000)
-        self.file_list = QListWidget()
-        self.file_list.currentTextChanged.connect(self.show_file)
-        files = QSplitter()
-        files.addWidget(self.file_list)
-        files.addWidget(self.file_content)
-        files.setSizes([130, 300])
-        tabs = QTabWidget()
-        tabs.addTab(self.activity, "Действия")
-        tabs.addTab(files, "Файлы")
-        split = QSplitter()
-        split.addWidget(self.chat)
-        split.addWidget(tabs)
-        split.setSizes([590, 430])
-        layout.addWidget(split, 1)
-        self.approval = QGroupBox("Нужно разрешение")
-        approval_layout = QVBoxLayout(self.approval)
+        row.addLayout(labeled_field("Сервер", self.url), 3)
+        row.addLayout(labeled_field("Токен", self.token), 2)
+        row.addWidget(self.connect_button, 0, Qt.AlignmentFlag.AlignBottom)
+        return widget
+
+    def conversation_panel(self):
+        widget = panel()
+        layout = QVBoxLayout(widget)
+        layout.setContentsMargins(15, 12, 15, 12)
+        layout.setSpacing(8)
+        layout.addWidget(label("Чат", "section"))
+        self.chat = QTextEdit()
+        self.chat.setObjectName("chat")
+        self.chat.setReadOnly(True)
+        self.chat.setAcceptRichText(False)
+        self.chat.setPlaceholderText("Подключите чат, чтобы отправить первую задачу.")
+        self.chat.document().setDocumentMargin(10)
+        self.chat.setMinimumHeight(72)
+        layout.addWidget(self.chat, 1)
+        layout.addWidget(self.approval_panel())
+
+        self.message = QPlainTextEdit()
+        self.message.setObjectName("composer")
+        self.message.setPlaceholderText("Например: прочитай note.txt и замени original на changed")
+        self.message.setFixedHeight(73)
+        self.message.setAccessibleName("Сообщение агенту")
+        self.message.setTabChangesFocus(True)
+        self.message.document().setDocumentMargin(10)
+        layout.addWidget(self.message)
+        actions = QHBoxLayout()
+        shortcut = QKeySequence("Ctrl+Return")
+        shortcut_hint = shortcut.toString(QKeySequence.SequenceFormat.NativeText)
+        actions.addWidget(label(f"Отправка · {shortcut_hint}", "caption"))
+        actions.addStretch()
+        self.send_button, self.cancel_button = QPushButton("Отправить"), QPushButton("Отмена")
+        self.send_button.setProperty("primary", True)
+        self.send_button.clicked.connect(self.send)
+        self.cancel_button.clicked.connect(self.cancel)
+        actions.addWidget(self.cancel_button)
+        actions.addWidget(self.send_button)
+        layout.addLayout(actions)
+        QShortcut(shortcut, self, activated=self.send)
+        return widget
+
+    def approval_panel(self):
+        self.approval = panel("approval")
+        layout = QVBoxLayout(self.approval)
+        layout.setContentsMargins(10, 8, 10, 8)
+        layout.setSpacing(6)
+        layout.addWidget(label("Нужно разрешение", "approvalTitle"))
         self.operation = QLabel()
-        self.preview = text_view()
-        self.preview.setMaximumHeight(155)
-        approval_layout.addWidget(self.operation)
-        approval_layout.addWidget(self.preview)
+        self.operation.setWordWrap(True)
+        self.operation.setTextFormat(Qt.TextFormat.PlainText)
+        self.preview = text_view("preview", fixed=True)
+        self.preview.setMinimumHeight(60)
+        self.preview.setMaximumHeight(108)
+        self.diff = DiffHighlight(self.preview.document())
+        layout.addWidget(self.operation)
+        layout.addWidget(self.preview)
         decisions = QHBoxLayout()
         self.allow, self.deny = QPushButton("Разрешить"), QPushButton("Отклонить")
+        self.allow.setProperty("primary", True)
         self.allow.clicked.connect(lambda: self.decide(True))
         self.deny.clicked.connect(lambda: self.decide(False))
         decisions.addStretch()
         decisions.addWidget(self.deny)
         decisions.addWidget(self.allow)
-        approval_layout.addLayout(decisions)
-        layout.addWidget(self.approval)
+        layout.addLayout(decisions)
         self.approval.hide()
-        self.message = QPlainTextEdit()
-        self.message.setPlaceholderText("Например: прочитай note.txt и замени original на changed")
-        self.message.setMaximumHeight(90)
-        self.message.setAccessibleName("Сообщение агенту")
-        layout.addWidget(self.message)
-        actions = QHBoxLayout()
-        self.status = QLabel("Нет подключения")
-        self.status.setWordWrap(True)
-        self.send_button, self.cancel_button = QPushButton("Отправить"), QPushButton("Отмена")
-        self.send_button.clicked.connect(self.send)
-        self.cancel_button.clicked.connect(self.cancel)
-        actions.addWidget(self.status, 1)
-        actions.addWidget(self.cancel_button)
-        actions.addWidget(self.send_button)
-        layout.addLayout(actions)
-        QShortcut(QKeySequence("Ctrl+Return"), self, activated=self.send)
-        self.set_busy(False)
+        return self.approval
+
+    def session_panel(self):
+        widget = panel()
+        layout = QVBoxLayout(widget)
+        layout.setContentsMargins(13, 12, 13, 12)
+        layout.setSpacing(8)
+        layout.addWidget(label("Сессия", "section"))
+        hint = label("Учебные файлы удаляются при закрытии чата.", "caption")
+        hint.setWordWrap(True)
+        layout.addWidget(hint)
+        self.activity = text_view("activity", "Здесь появятся действия агента.")
+        self.activity.setMaximumBlockCount(2000)
+        self.file_content = text_view("fileContent", "Выберите файл.", fixed=True)
+        self.file_list = QListWidget()
+        self.file_list.setAccessibleName("Файлы сессии")
+        self.file_list.currentTextChanged.connect(self.show_file)
+        files = QSplitter(Qt.Orientation.Vertical)
+        files.setChildrenCollapsible(False)
+        files.addWidget(self.file_list)
+        files.addWidget(self.file_content)
+        files.setSizes([96, 360])
+        tabs = QTabWidget()
+        tabs.addTab(self.activity, "Действия")
+        tabs.addTab(files, "Файлы")
+        layout.addWidget(tabs, 1)
+        return widget
+
+    @Slot(Qt.ColorScheme)
+    def set_theme(self, scheme):
+        self.diff.colors = apply_theme(
+            self,
+            scheme,
+            (self.url, self.token, self.chat, self.activity, self.file_content, self.message),
+        )
+        self.diff.rehighlight()
+
+    def append_message(self, author, message):
+        cursor = QTextCursor(self.chat.document())
+        cursor.movePosition(QTextCursor.MoveOperation.End)
+        header = QTextBlockFormat()
+        header.setTopMargin(12)
+        header.setBottomMargin(5)
+        if cursor.position():
+            cursor.insertBlock(header)
+        else:
+            cursor.setBlockFormat(header)
+        bold = QTextCharFormat()
+        bold.setFontWeight(QFont.Weight.Bold)
+        cursor.insertText(author, bold)
+        cursor.insertBlock(QTextBlockFormat(), QTextCharFormat())
+        cursor.insertText(message, QTextCharFormat())
+        self.chat.verticalScrollBar().setValue(self.chat.verticalScrollBar().maximum())
 
     def job(self, action, success, failure=None):
         worker = Job(action, self)
@@ -282,7 +421,7 @@ class ChatWindow(QMainWindow):
         if not self.send_button.isEnabled() or not message:
             return
         self.run_id = str(uuid4())
-        self.chat.appendPlainText("Вы\n" + message + "\n")
+        self.append_message("Вы", message)
         self.message.clear()
         self.set_busy(True)
         self.cancel_button.setEnabled(False)
@@ -355,7 +494,7 @@ class ChatWindow(QMainWindow):
         data = event["data"]
         kind = event["event"]
         if kind == "message":
-            self.chat.appendPlainText("Агент\n" + data["text"] + "\n")
+            self.append_message("Агент", data["text"])
         elif kind == "approval_required":
             self.pending = data["operation_id"]
             operation = data["operation"]
@@ -364,6 +503,7 @@ class ChatWindow(QMainWindow):
                 if operation["kind"] == "WriteFile"
                 else "Выполнение команды в сандбоксе"
             )
+            self.diff.enabled = "diff" in data
             self.preview.setPlainText(data.get("diff", operation.get("command", "")))
             self.allow.setEnabled(True)
             self.deny.setEnabled(True)
