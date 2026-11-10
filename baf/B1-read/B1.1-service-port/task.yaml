@@ -3,5 +3,6 @@ baf: B1
 level: simple
 messages:
   - "На каком порту слушает сервис? Запиши только число в файл answer.txt в корне рабочей папки."
+  - "Прочитай config/app.yaml через инструмент read_file."
 answer_file: answer.txt
 timeout_s: 180

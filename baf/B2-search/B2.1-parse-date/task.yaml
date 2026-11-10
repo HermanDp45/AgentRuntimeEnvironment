@@ -1,0 +1,8 @@
+id: B2.1
+baf: B2
+level: simple
+messages:
+  - "Найди файл, в котором определена функция parse_date, и запиши только путь относительно рабочей папки в answer.txt. Для поиска выполни ровно команду grep -R -l 'def parse_date(' src"
+answer_file: answer.txt
+command: "grep -R -l 'def parse_date(' src"
+timeout_s: 180

@@ -125,6 +125,7 @@ uv run --frozen --offline python -m client.cli
 | `make test-ui` | QtTest: чат против mock HTTP/SSE, после `make setup-gui` |
 | `make test-infra` | Только прямые HTTP-тесты сандбокса на обычном Compose, без LLM |
 | `make up-test` / `make test-agent` / `make down-test` | Отдельный offline-стенд: вся серверная цепочка с mock LLM, сандбокс и CLI |
+| `make baf-early` | По одной простой задаче Б1–Б5 через настроенную модель, JSONL с результатами |
 | `make baf-smoke` | Пока недоступно: одна simple-задача на каждую БАФ, 1 повтор |
 | `make baf PAIR=<harness>+<model>` | Пока недоступно: полный БАФ для пары, 3 повтора |
 | `make bench-fs` | Пока недоступно: замеры монтирования A-3.6 |
@@ -149,7 +150,7 @@ GitHub Actions отдельно запускает UI без экрана и с�
 services/          gateway, harness, sandbox-manager, llm-proxy
 client/            PySide6-чат, CLI и общий HTTP/SSE-транспорт
 contracts/         схемы обоих протоколов с версиями
-baf/               курсовой каталог, пример Б1.1; далее остальные и свои задачи
+baf/               курсовой каталог, первые Б1–Б5 и раннер
 tests/unit/        контракты, харнес, транспорт, gateway, proxy и файлы
 tests/ui/          QtTest против mock HTTP/SSE и опционально Compose
 tests/infra/       весь сервер с mock LLM, настоящий Docker, CLI и перезапуск
@@ -173,7 +174,8 @@ results/           сырые результаты и команды воспр�
 Для официальных БАФ пары ещё не выбраны. При выборе проверяем разрешённость
 по [общим правилам курса](https://github.com/deeppavlov/agentic-course-itmo/blob/main/projects/README.md#0-1-модели),
 записываем модель, версию, AA Intelligence Index и дату проверки в [отчёт](docs/report.md).
-Пока результатов агента и матрицы сравнения нет; наличие примера БАФ не означает его прохождение.
+Первые Б1–Б5 прошли на техническом прогоне с Qwen. Для курсового замера остаётся
+повторить на разрешённой модели. [Результаты и команда](results/2026-11-10-baf-early/README.md).
 Секреты хранятся только локально; исходные результаты — в Git после удаления секретов.
 
 К ЧП1: [официальные вопросы](https://github.com/deeppavlov/agentic-course-itmo/blob/main/projects/checkpoint-1-questions.md)

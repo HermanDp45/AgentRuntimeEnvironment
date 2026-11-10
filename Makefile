@@ -3,7 +3,7 @@ export UV_PYTHON_INSTALL_DIR ?= $(CURDIR)/.cache/python
 TEST_PROJECT ?= are-offline
 TEST_COMPOSE = docker compose -p $(TEST_PROJECT) -f docker-compose.yml -f tests/infra/compose.yml
 
-.PHONY: setup run up down check test-ci test-ui test-infra baf-smoke baf bench-fs bench-sandbox
+.PHONY: setup run up down check test-ci test-ui test-infra baf-early baf-smoke baf bench-fs bench-sandbox
 .PHONY: up-test test-agent test-lifecycle down-test
 .PHONY: setup-gui gui
 
@@ -52,6 +52,9 @@ test-lifecycle:
 
 down-test:
 	$(TEST_COMPOSE) down -v --remove-orphans
+
+baf-early:
+	uv run --frozen --offline python -m baf.runner $(BAF_ARGS)
 
 baf-smoke baf bench-fs bench-sandbox:
 	@printf '%s\n' '$@: ещё не реализовано; см. TASKS.md' >&2

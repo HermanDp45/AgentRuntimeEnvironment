@@ -1,0 +1,7 @@
+id: B3.1
+baf: B3
+level: simple
+messages:
+  - "Прочитай spec.md и создай config.json в корне рабочей папки по этой спецификации."
+answer_file: config.json
+timeout_s: 180

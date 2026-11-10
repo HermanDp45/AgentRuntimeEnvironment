@@ -1,0 +1,8 @@
+id: B5.1
+baf: B5
+level: simple
+messages:
+  - "Выполни ровно команду python stats.py data.csv и запиши только медиану из её вывода в answer.txt в корне рабочей папки."
+answer_file: answer.txt
+command: python stats.py data.csv
+timeout_s: 180
