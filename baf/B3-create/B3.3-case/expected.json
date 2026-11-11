@@ -1,0 +1,15 @@
+{
+  "outputs": {
+    "countries.yaml": {
+      "yaml": {
+        "norway": "NO",
+        "ontario": "ON"
+      }
+    },
+    "postal.yaml": {
+      "yaml": {
+        "code": "0123"
+      }
+    }
+  }
+}

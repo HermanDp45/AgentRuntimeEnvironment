@@ -38,6 +38,7 @@ class ReadFile(BaseModel):
     model_config = ConfigDict(extra="forbid")
     kind: Literal["ReadFile"]
     path: SafePath
+    encoding: Literal["utf-8", "cp1251"] = "utf-8"
 
 
 class WriteFile(ReadFile):

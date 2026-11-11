@@ -1,0 +1,105 @@
+uv sync --frozen --group gui --group packaging
+Prepared 5 packages in 1.75s
+Installed 5 packages in 15ms
+ + altgraph==0.17.5
+ + macholib==1.16.4
+ + pyinstaller==6.16.0
+ + pyinstaller-hooks-contrib==2026.10
+ + setuptools==84.2.1
+PYINSTALLER_CONFIG_DIR=/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.cache/pyinstaller uv run --frozen --offline --group gui --group packaging pyinstaller --noconfirm --windowed --onedir --name AgentRuntime --paths . --specpath build --distpath dist --workpath build/pyinstaller client/desktop.py
+125 INFO: PyInstaller: 6.16.0, contrib hooks: 2026.10
+125 INFO: Python: 3.13.15
+136 INFO: Platform: macOS-26.3-arm64-arm-64bit-Mach-O
+136 INFO: Python environment: /Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.venv
+137 INFO: wrote build/AgentRuntime.spec
+143 INFO: Module search paths (PYTHONPATH):
+['/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.cache/python/cpython-3.13.15-macos-aarch64-none/lib/python313.zip',
+ '/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.cache/python/cpython-3.13.15-macos-aarch64-none/lib/python3.13',
+ '/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.cache/python/cpython-3.13.15-macos-aarch64-none/lib/python3.13/lib-dynload',
+ '/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.venv/lib/python3.13/site-packages',
+ '/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment',
+ '/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment']
+240 INFO: checking Analysis
+240 INFO: Building Analysis because Analysis-00.toc is non existent
+240 INFO: Looking for Python shared library...
+253 INFO: Using Python shared library: /Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.cache/python/cpython-3.13.15-macos-aarch64-none/lib/libpython3.13.dylib
+253 INFO: Running Analysis Analysis-00.toc
+253 INFO: Target bytecode optimization level: 0
+253 INFO: Initializing module dependency graph...
+254 INFO: Initializing module graph hook caches...
+258 INFO: Analyzing modules for base_library.zip ...
+752 INFO: Processing standard module hook 'hook-encodings.py' from '/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.venv/lib/python3.13/site-packages/PyInstaller/hooks'
+1055 INFO: Processing standard module hook 'hook-heapq.py' from '/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.venv/lib/python3.13/site-packages/PyInstaller/hooks'
+1651 INFO: Processing standard module hook 'hook-pickle.py' from '/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.venv/lib/python3.13/site-packages/PyInstaller/hooks'
+2435 INFO: Caching module dependency graph...
+2461 INFO: Analyzing /Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/client/desktop.py
+2505 INFO: Processing standard module hook 'hook-platform.py' from '/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.venv/lib/python3.13/site-packages/PyInstaller/hooks'
+2525 INFO: Processing standard module hook 'hook-xml.py' from '/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.venv/lib/python3.13/site-packages/PyInstaller/hooks'
+2546 INFO: Processing standard module hook 'hook-sysconfig.py' from '/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.venv/lib/python3.13/site-packages/PyInstaller/hooks'
+2553 INFO: Processing standard module hook 'hook-_osx_support.py' from '/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.venv/lib/python3.13/site-packages/PyInstaller/hooks'
+2556 INFO: Processing standard module hook 'hook-_ctypes.py' from '/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.venv/lib/python3.13/site-packages/PyInstaller/hooks'
+2661 INFO: Processing pre-safe-import-module hook 'hook-typing_extensions.py' from '/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.venv/lib/python3.13/site-packages/PyInstaller/hooks/pre_safe_import_module'
+2663 INFO: SetuptoolsInfo: initializing cached setuptools info...
+3108 INFO: Processing standard module hook 'hook-multiprocessing.util.py' from '/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.venv/lib/python3.13/site-packages/PyInstaller/hooks'
+3554 INFO: Processing standard module hook 'hook-urllib3.py' from '/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.venv/lib/python3.13/site-packages/_pyinstaller_hooks_contrib/stdhooks'
+4000 INFO: Processing standard module hook 'hook-certifi.py' from '/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.venv/lib/python3.13/site-packages/_pyinstaller_hooks_contrib/stdhooks'
+4025 INFO: Processing standard module hook 'hook-charset_normalizer.py' from '/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.venv/lib/python3.13/site-packages/_pyinstaller_hooks_contrib/stdhooks'
+4173 INFO: Processing standard module hook 'hook-anyio.py' from '/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.venv/lib/python3.13/site-packages/_pyinstaller_hooks_contrib/stdhooks'
+5050 INFO: Processing standard module hook 'hook-difflib.py' from '/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.venv/lib/python3.13/site-packages/PyInstaller/hooks'
+5126 INFO: Processing standard module hook 'hook-pygments.py' from '/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.venv/lib/python3.13/site-packages/PyInstaller/hooks'
+5561 INFO: Processing standard module hook 'hook-PySide6.py' from '/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.venv/lib/python3.13/site-packages/PyInstaller/hooks'
+5698 INFO: Processing standard module hook 'hook-shiboken6.py' from '/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.venv/lib/python3.13/site-packages/PyInstaller/hooks'
+5800 INFO: Processing standard module hook 'hook-PySide6.QtNetwork.py' from '/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.venv/lib/python3.13/site-packages/PyInstaller/hooks'
+7679 INFO: Processing standard module hook 'hook-PySide6.QtCore.py' from '/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.venv/lib/python3.13/site-packages/PyInstaller/hooks'
+8201 INFO: Processing standard module hook 'hook-PySide6.QtGui.py' from '/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.venv/lib/python3.13/site-packages/PyInstaller/hooks'
+8797 INFO: Processing standard module hook 'hook-PySide6.QtWidgets.py' from '/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.venv/lib/python3.13/site-packages/PyInstaller/hooks'
+8994 INFO: Processing standard module hook 'hook-xml.etree.cElementTree.py' from '/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.venv/lib/python3.13/site-packages/PyInstaller/hooks'
+8995 INFO: Processing module hooks (post-graph stage)...
+9056 INFO: Processing pre-safe-import-module hook 'hook-packaging.py' from '/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.venv/lib/python3.13/site-packages/PyInstaller/hooks/pre_safe_import_module'
+9160 INFO: Processing standard module hook 'hook-PySide6.QtDBus.py' from '/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.venv/lib/python3.13/site-packages/PyInstaller/hooks'
+10314 INFO: Performing binary vs. data reclassification (120 entries)
+10351 INFO: Looking for ctypes DLLs
+10366 INFO: Analyzing run-time hooks ...
+10368 INFO: Including run-time hook 'pyi_rth_inspect.py' from '/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.venv/lib/python3.13/site-packages/PyInstaller/hooks/rthooks'
+10369 INFO: Including run-time hook 'pyi_rth_pyside6.py' from '/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.venv/lib/python3.13/site-packages/PyInstaller/hooks/rthooks'
+10370 INFO: Processing pre-find-module-path hook 'hook-_pyi_rth_utils.py' from '/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.venv/lib/python3.13/site-packages/PyInstaller/hooks/pre_find_module_path'
+10371 INFO: Processing standard module hook 'hook-_pyi_rth_utils.py' from '/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.venv/lib/python3.13/site-packages/PyInstaller/hooks'
+10373 INFO: Including run-time hook 'pyi_rth_pkgutil.py' from '/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.venv/lib/python3.13/site-packages/PyInstaller/hooks/rthooks'
+10374 INFO: Including run-time hook 'pyi_rth_multiprocessing.py' from '/Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.venv/lib/python3.13/site-packages/PyInstaller/hooks/rthooks'
+10379 INFO: Creating base_library.zip...
+10390 INFO: Looking for dynamic libraries
+10583 INFO: Warnings written to /Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/build/pyinstaller/AgentRuntime/warn-AgentRuntime.txt
+10597 INFO: Graph cross-reference written to /Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/build/pyinstaller/AgentRuntime/xref-AgentRuntime.html
+10671 INFO: checking PYZ
+10671 INFO: Building PYZ because PYZ-00.toc is non existent
+10671 INFO: Building PYZ (ZlibArchive) /Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/build/pyinstaller/AgentRuntime/PYZ-00.pyz
+11007 INFO: Building PYZ (ZlibArchive) /Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/build/pyinstaller/AgentRuntime/PYZ-00.pyz completed successfully.
+11014 INFO: EXE target arch: arm64
+11014 INFO: Code signing identity: None
+11020 INFO: checking PKG
+11020 INFO: Building PKG because PKG-00.toc is non existent
+11020 INFO: Building PKG (CArchive) AgentRuntime.pkg
+11028 INFO: Building PKG (CArchive) AgentRuntime.pkg completed successfully.
+11028 INFO: Bootloader /Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/.venv/lib/python3.13/site-packages/PyInstaller/bootloader/Darwin-64bit/runw
+11028 INFO: checking EXE
+11028 INFO: Building EXE because EXE-00.toc is non existent
+11028 INFO: Building EXE from EXE-00.toc
+11028 INFO: Copying bootloader EXE to /Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/build/pyinstaller/AgentRuntime/AgentRuntime
+11029 INFO: Converting EXE to target arch (arm64)
+12249 INFO: Removing signature(s) from EXE
+12264 INFO: Modifying Mach-O image UUID(s) in EXE
+12269 INFO: Appending PKG archive to EXE
+12271 INFO: Fixing EXE headers for code signing
+12275 INFO: Rewriting the executable's macOS SDK version (15.5.0) to match the SDK version of the Python library (15.0.0) in order to avoid inconsistent behavior and potential UI issues in the frozen application.
+12275 INFO: Re-signing the EXE
+12294 INFO: Building EXE from EXE-00.toc completed successfully.
+12295 INFO: checking COLLECT
+12295 INFO: Building COLLECT because COLLECT-00.toc is non existent
+12296 INFO: Building COLLECT COLLECT-00.toc
+14481 INFO: Building COLLECT COLLECT-00.toc completed successfully.
+14483 INFO: checking BUNDLE
+14483 INFO: Building BUNDLE because BUNDLE-00.toc is non existent
+14483 INFO: Building BUNDLE BUNDLE-00.toc
+14827 INFO: Signing the BUNDLE...
+14910 INFO: Building BUNDLE BUNDLE-00.toc completed successfully.
+14913 INFO: Build complete! The results are available in: /Users/hermann/code_space/git_projects/AgentRuntimeEnvironment/dist

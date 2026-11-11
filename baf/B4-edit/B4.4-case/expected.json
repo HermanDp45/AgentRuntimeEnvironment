@@ -1,0 +1,7 @@
+{
+  "outputs": {
+    "app.ini": {
+      "text": "[dev]\ntimeout=10\n[prod]\ntimeout=30\n"
+    }
+  }
+}

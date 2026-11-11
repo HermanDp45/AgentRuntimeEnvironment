@@ -1,0 +1,7 @@
+id: B7.1
+baf: B7
+level: simple
+messages:
+  - "По schedule.csv определи, успеет ли пассажир на пересадку: требуется минимум 15 минут. Запиши yes/no и число доступных минут через пробел в answer.txt."
+answer_file: answer.txt
+timeout_s: 180

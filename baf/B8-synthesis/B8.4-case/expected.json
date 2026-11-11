@@ -1,0 +1,11 @@
+{
+  "outputs": {
+    "totals.json": {
+      "json": {
+        "Ann": 7,
+        "Bob": 8,
+        "Cara": 0
+      }
+    }
+  }
+}

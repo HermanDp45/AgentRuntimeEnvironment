@@ -1,0 +1,9 @@
+id: B1.2
+baf: B1
+level: medium
+messages:
+- Какой срок оплаты в днях по contract.md? Запиши число в answer.txt.
+answer_file: answer.txt
+answer_files:
+- answer.txt
+timeout_s: 240

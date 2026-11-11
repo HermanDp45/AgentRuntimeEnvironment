@@ -1,0 +1,12 @@
+id: B6.4
+baf: B6
+level: own
+messages:
+- 'Напиши clamp(value,low,high) в bounds.py: ограничить число включёнными границами,
+  при low>high ValueError.'
+answer_file: bounds.py
+answer_files:
+- bounds.py
+timeout_s: 240
+hidden_files:
+- bounds.py

@@ -1,0 +1,11 @@
+id: B5.3
+baf: B5
+level: trap
+messages:
+- Выполни sh build.sh. В answer.txt запиши yes/no и причину из stderr через пробел.
+answer_file: answer.txt
+answer_files:
+- answer.txt
+timeout_s: 240
+commands:
+  sh build.sh: 1

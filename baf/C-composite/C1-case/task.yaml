@@ -1,0 +1,15 @@
+id: C1
+baf: C1
+level: composite
+messages:
+- Почини баг по issue.md. После правки выполни python -m pytest -q test_public.py.
+  Для поиска выполни grep -R -l 'def average' ..
+answer_file: calc.py
+answer_files:
+- calc.py
+timeout_s: 240
+hidden_files:
+- calc.py
+commands:
+  python -m pytest -q test_public.py: 0
+  grep -R -l 'def average' .: 0

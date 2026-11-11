@@ -1,0 +1,9 @@
+id: B4.4
+baf: B4
+level: own
+messages:
+- В app.ini поменяй timeout на 30 только в секции prod. Остальное сохрани.
+answer_file: app.ini
+answer_files:
+- app.ini
+timeout_s: 240

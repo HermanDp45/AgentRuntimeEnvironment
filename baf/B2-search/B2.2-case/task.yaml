@@ -1,0 +1,13 @@
+id: B2.2
+baf: B2
+level: medium
+messages:
+- Найди все файлы чтения DB_URL. Выполни grep -R -l 'os.environ\["DB_URL"\]' src и
+  запиши пути по одному на строку в лексикографическом порядке в answer.txt.
+answer_file: answer.txt
+answer_files:
+- answer.txt
+timeout_s: 240
+commands:
+  grep -R -l 'os.environ\["DB_URL"\]' src: 0
+requires_mount: true

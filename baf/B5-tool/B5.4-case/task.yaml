@@ -1,0 +1,12 @@
+id: B5.4
+baf: B5
+level: own
+messages:
+- Запусти python status.py. Статус определяется JSON stdout, а не предупреждением
+  stderr. Запиши status в answer.txt.
+answer_file: answer.txt
+answer_files:
+- answer.txt
+timeout_s: 240
+commands:
+  python status.py: 0

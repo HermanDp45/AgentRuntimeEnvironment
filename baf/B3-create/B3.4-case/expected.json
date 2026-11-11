@@ -1,0 +1,11 @@
+{
+  "outputs": {
+    "settings.json": {
+      "json": {
+        "enabled": false,
+        "retries": 0,
+        "label": "null"
+      }
+    }
+  }
+}

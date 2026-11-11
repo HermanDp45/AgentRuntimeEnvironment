@@ -2,6 +2,7 @@
 
 import json
 import os
+import shlex
 import time
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
@@ -209,3 +210,139 @@ def test_parallel_sessions_and_release_running_command(sessions):
     assert http("/v0/release", message("release", session_id=first))[0] == 200
     assert http(f"/v0/operations/{busy['operation_id']}")[0] == 404
     assert command(second, "echo still-alive")["status"] == "ok"
+
+
+def python_probe(session, source, timeout_s=15):
+    result = command(session, "python -c " + shlex.quote(source), timeout_s=timeout_s)
+    assert result["status"] == "ok", result
+    return json.loads(result["value"]["stdout"])
+
+
+def test_cpu_quota_throttles_bounded_parallel_load(sessions):
+    session = sessions()
+    observed = python_probe(
+        session,
+        r"""
+import json, os, pathlib, subprocess, sys
+root = pathlib.Path('/sys/fs/cgroup')
+quota, period = root.joinpath('cpu.max').read_text().split()
+assert quota != 'max' and 0 < int(quota) <= int(period)
+assert len(os.sched_getaffinity(0)) >= 2, 'CPU test needs two available CPUs'
+def throttled():
+    fields = dict(line.split() for line in root.joinpath('cpu.stat').read_text().splitlines())
+    return int(fields['nr_throttled'])
+before = throttled()
+children = []
+try:
+    for _ in range(4):
+        children.append(subprocess.Popen([sys.executable, '-c',
+            'import time; end=time.monotonic()+2;\nwhile time.monotonic()<end: pass']))
+    for child in children:
+        assert child.wait(timeout=5) == 0
+finally:
+    for child in children:
+        if child.poll() is None:
+            child.kill()
+        child.wait()
+print(json.dumps({'before': before, 'after': throttled()}))
+""",
+    )
+    assert observed["after"] > observed["before"], observed
+    assert command(session, "echo reusable")["status"] == "ok"
+
+
+def test_memory_limit_kills_allocating_child_and_session_survives(sessions):
+    session = sessions({"keep.txt": "keep"})
+    observed = python_probe(
+        session,
+        """
+import json, pathlib, subprocess, sys
+root = pathlib.Path('/sys/fs/cgroup')
+limit = int(root.joinpath('memory.max').read_text())
+assert 0 < limit <= 1024**3, 'Refuse unbounded memory probe'
+assert root.joinpath('memory.swap.max').read_text().strip() == '0'
+def killed():
+    lines = root.joinpath('memory.events').read_text().splitlines()
+    return int(dict(line.split() for line in lines)['oom_kill'])
+before = killed()
+# Максимальный oom_score_adj делает нагрузочный процесс первым кандидатом OOM.
+source = ("from pathlib import Path; "
+          "Path('/proc/self/oom_score_adj').write_text('1000'); "
+          "data=bytearray(%d)" % (limit + 8*1024**2))
+child = subprocess.Popen([sys.executable, '-c', source])
+try:
+    code = child.wait(timeout=10)
+finally:
+    if child.poll() is None:
+        child.kill()
+    child.wait()
+print(json.dumps({'code': code, 'before': before, 'after': killed()}))
+""",
+    )
+    assert observed["code"] == -9, observed
+    assert observed["after"] > observed["before"], observed
+    assert (
+        finish(start(session, {"kind": "ReadFile", "path": "keep.txt"}))["value"]["content"]
+        == "keep"
+    )
+
+
+def test_pid_limit_rejects_bounded_spawn_and_recovers(sessions):
+    session = sessions()
+    observed = python_probe(
+        session,
+        """
+import errno, json, os, pathlib, signal, time
+root = pathlib.Path('/sys/fs/cgroup')
+limit = int(root.joinpath('pids.max').read_text())
+assert 0 < limit <= 128, 'Refuse unbounded process probe'
+children, blocked = [], False
+try:
+    for _ in range(limit + 1):
+        try:
+            pid = os.fork()
+            if pid == 0:
+                time.sleep(8)
+                os._exit(0)
+            children.append(pid)
+        except OSError as error:
+            assert error.errno == errno.EAGAIN
+            blocked = True
+            break
+    peak = int(root.joinpath('pids.current').read_text())
+finally:
+    for child in children:
+        try:
+            os.kill(child, signal.SIGKILL)
+        except ProcessLookupError:
+            pass
+    for child in children:
+        os.waitpid(child, 0)
+print(json.dumps({'blocked': blocked, 'spawned': len(children), 'peak': peak, 'limit': limit}))
+""",
+    )
+    assert observed["blocked"] and 0 < observed["spawned"] < observed["limit"], observed
+    assert observed["peak"] <= observed["limit"], observed
+    assert command(session, "echo reusable")["value"]["stdout"] == "reusable\n"
+
+
+@pytest.mark.skipif(not os.environ.get("HARNESS_TEST_URL"), reason="Canary needs offline Compose")
+def test_server_canaries_are_absent_from_sandbox(sessions):
+    session = sessions()
+    observed = python_probe(
+        session,
+        """
+import json, os, pathlib
+values = [str(dict(os.environ))]
+for path in pathlib.Path('/proc').glob('[0-9]*/environ'):
+    try:
+        values.append(path.read_bytes().decode(errors='replace'))
+    except (PermissionError, FileNotFoundError, ProcessLookupError):
+        pass
+print(json.dumps({'values': values, 'secrets': pathlib.Path('/run/secrets').exists()}))
+""",
+    )
+    # Значения остаются в тестовом процессе и не передаются команде сандбокса.
+    assert "fixture-provider-secret" not in str(observed)
+    assert "fixture-manager-canary-C2" not in str(observed)
+    assert not observed["secrets"]

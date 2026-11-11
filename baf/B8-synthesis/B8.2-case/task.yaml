@@ -1,0 +1,12 @@
+id: B8.2
+baf: B8
+level: medium
+messages:
+- 'Собери решения meetings/*.md в decisions.json: массив объектов decision,date,owner
+  по дате. Сначала получи список файлов командой find meetings -type f.'
+answer_file: decisions.json
+answer_files:
+- decisions.json
+timeout_s: 240
+commands:
+  find meetings -type f: 0

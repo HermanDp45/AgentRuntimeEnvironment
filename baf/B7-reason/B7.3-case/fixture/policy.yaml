@@ -1,0 +1,4 @@
+rules:
+ - {role: Z, resource: Q, effect: allow}
+ - {role: Z, resource: Q, effect: deny}
+priority: unspecified

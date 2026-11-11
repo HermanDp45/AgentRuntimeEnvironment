@@ -1,0 +1,9 @@
+id: B3.4
+baf: B3
+level: own
+messages:
+- Создай settings.json по spec.md.
+answer_file: settings.json
+answer_files:
+- settings.json
+timeout_s: 240

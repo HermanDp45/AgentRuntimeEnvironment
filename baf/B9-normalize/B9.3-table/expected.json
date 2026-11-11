@@ -1,0 +1,21 @@
+{
+  "rows": [
+    {
+      "name": "Cara",
+      "date": "2026-02-04",
+      "quantity": 3
+    }
+  ],
+  "errors": [
+    {
+      "row": 2,
+      "field": "date",
+      "code": "ambiguous_date"
+    },
+    {
+      "row": 3,
+      "field": "quantity",
+      "code": "negative_quantity"
+    }
+  ]
+}

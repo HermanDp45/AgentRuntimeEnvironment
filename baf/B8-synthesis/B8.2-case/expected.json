@@ -1,0 +1,58 @@
+{
+  "outputs": {
+    "decisions.json": {
+      "json": [
+        {
+          "decision": "Выпустить модуль 1",
+          "date": "2026-01-01",
+          "owner": "owner1"
+        },
+        {
+          "decision": "Выпустить модуль 2",
+          "date": "2026-01-02",
+          "owner": "owner2"
+        },
+        {
+          "decision": "Выпустить модуль 3",
+          "date": "2026-01-03",
+          "owner": "owner3"
+        },
+        {
+          "decision": "Выпустить модуль 4",
+          "date": "2026-01-04",
+          "owner": "owner4"
+        },
+        {
+          "decision": "Выпустить модуль 5",
+          "date": "2026-01-05",
+          "owner": "owner5"
+        },
+        {
+          "decision": "Выпустить модуль 6",
+          "date": "2026-01-06",
+          "owner": "owner6"
+        },
+        {
+          "decision": "Выпустить модуль 7",
+          "date": "2026-01-07",
+          "owner": "owner7"
+        },
+        {
+          "decision": "Выпустить модуль 8",
+          "date": "2026-01-08",
+          "owner": "owner8"
+        },
+        {
+          "decision": "Выпустить модуль 9",
+          "date": "2026-01-09",
+          "owner": "owner9"
+        },
+        {
+          "decision": "Выпустить модуль 10",
+          "date": "2026-01-10",
+          "owner": "owner10"
+        }
+      ]
+    }
+  }
+}

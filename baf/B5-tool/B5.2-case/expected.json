@@ -1,0 +1,8 @@
+{
+  "outputs": {
+    "failed.txt": {
+      "text": "test_02\ntest_07\ntest_19",
+      "strip": true
+    }
+  }
+}

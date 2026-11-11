@@ -1,0 +1,12 @@
+id: B5.2
+baf: B5
+level: medium
+messages:
+- Выполни python -m pytest -q test_sample.py и запиши имена упавших тестов по одному
+  на строку в failed.txt, по порядку имени.
+answer_file: failed.txt
+answer_files:
+- failed.txt
+timeout_s: 240
+commands:
+  python -m pytest -q test_sample.py: 1

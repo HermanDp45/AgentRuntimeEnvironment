@@ -565,6 +565,15 @@
           "pattern": "^(?!.*(?:^|/)(?:\\.{1,2}|\\.git)(?:/|$))(?!.*(?:^|/)\\._are_)[^/\\\\\\x00]+(?:/[^/\\\\\\x00]+)*$",
           "title": "Path",
           "type": "string"
+        },
+        "encoding": {
+          "default": "utf-8",
+          "enum": [
+            "utf-8",
+            "cp1251"
+          ],
+          "title": "Encoding",
+          "type": "string"
         }
       },
       "required": [
@@ -756,6 +765,15 @@
           "minLength": 1,
           "pattern": "^(?!.*(?:^|/)(?:\\.{1,2}|\\.git)(?:/|$))(?!.*(?:^|/)\\._are_)[^/\\\\\\x00]+(?:/[^/\\\\\\x00]+)*$",
           "title": "Path",
+          "type": "string"
+        },
+        "encoding": {
+          "default": "utf-8",
+          "enum": [
+            "utf-8",
+            "cp1251"
+          ],
+          "title": "Encoding",
           "type": "string"
         },
         "content": {

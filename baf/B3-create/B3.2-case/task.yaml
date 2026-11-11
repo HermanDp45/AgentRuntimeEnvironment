@@ -1,0 +1,9 @@
+id: B3.2
+baf: B3
+level: medium
+messages:
+- Создай report.csv из task.md, сортировка по дате, заголовок date,value.
+answer_file: report.csv
+answer_files:
+- report.csv
+timeout_s: 240

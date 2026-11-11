@@ -1,0 +1,13 @@
+id: B4.2
+baf: B4
+level: medium
+messages:
+- Переименуй calc_total в compute_total в total.py и app.py, остальное сохрани.
+answer_file: total.py
+answer_files:
+- total.py
+- app.py
+timeout_s: 240
+hidden_files:
+- total.py
+- app.py

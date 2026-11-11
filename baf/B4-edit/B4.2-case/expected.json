@@ -1,0 +1,10 @@
+{
+  "outputs": {
+    "total.py": {
+      "ast": "def compute_total(items):\n    return sum(items)\n"
+    },
+    "app.py": {
+      "ast": "from total import compute_total\nvalue = compute_total([1, 2])\n"
+    }
+  }
+}

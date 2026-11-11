@@ -6,10 +6,15 @@ import json
 from contracts.v0 import Failed, ReadFile, RunCommand, WriteFile
 
 SPECS = {
-    "read_file": (ReadFile, "Read a UTF-8 file relative to /work; returns content and SHA-256."),
+    "read_file": (
+        ReadFile,
+        "Read a text file (utf-8 by default, or explicit cp1251) "
+        "relative to /work; returns content and SHA-256.",
+    ),
     "write_file": (
         WriteFile,
-        "Write a UTF-8 file after approval. Use its SHA-256 or missing for a new file.",
+        "Write a text file with the original encoding (utf-8 or cp1251) "
+        "after approval. Use its SHA-256 or missing for a new file.",
     ),
     "run_command": (
         RunCommand,
@@ -51,7 +56,9 @@ def parse(call):
 async def preview(operation, execute):
     data = {"operation": operation.model_dump()}
     if isinstance(operation, WriteFile):
-        old = await execute(ReadFile(kind="ReadFile", path=operation.path))
+        old = await execute(
+            ReadFile(kind="ReadFile", path=operation.path, encoding=operation.encoding)
+        )
         if old.status == "error":
             if old.error.code != "not_found" or operation.expected_sha256 != "missing":
                 return old, None

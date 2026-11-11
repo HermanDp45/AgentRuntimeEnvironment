@@ -1,0 +1,9 @@
+id: B7.4
+baf: B7
+level: own
+messages:
+- По rules.md выбери единственный допустимый слот. Номер в answer.txt.
+answer_file: answer.txt
+answer_files:
+- answer.txt
+timeout_s: 240

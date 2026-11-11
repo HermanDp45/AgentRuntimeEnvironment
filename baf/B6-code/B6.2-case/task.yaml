@@ -1,0 +1,11 @@
+id: B6.2
+baf: B6
+level: medium
+messages:
+- Реализуй aggregate(lines) в parse_logs.py по spec.md.
+answer_file: parse_logs.py
+answer_files:
+- parse_logs.py
+timeout_s: 240
+hidden_files:
+- parse_logs.py

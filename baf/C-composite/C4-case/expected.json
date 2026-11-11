@@ -1,0 +1,24 @@
+{
+  "outputs": {
+    "clean.json": {
+      "json": [
+        {
+          "name": "A",
+          "amount_cents": 1050
+        },
+        {
+          "name": "C",
+          "amount_cents": 200
+        }
+      ]
+    },
+    "report.json": {
+      "json": {
+        "total_cents": 1250,
+        "rejected_rows": [
+          3
+        ]
+      }
+    }
+  }
+}

@@ -101,3 +101,39 @@ CLIENT_TOKEN=fixture-client-token uv run --frozen --offline --group gui python -
 
 Отправьте test:edit: появятся два подтверждения, затем изменённый файл и вывод команды.
 Автопроверки — make test-ui; [подробности](../tests/ui/README.md).
+
+## Headless-сценарий с временной папкой
+
+Раннер БАФ использует тот же session.create и WebDAV-экспорт, что и GUI:
+
+```bash
+make up-test
+BAF_ARGS='--mount --task B9.3 --repeat 2' make baf-smoke
+make down-test
+```
+
+Это локальный macOS + Docker Desktop сценарий с синтетической копией fixture.
+Он автоматически подключает папку, разрешает только целевую запись task.yaml,
+проверяет итог и закрывает сессию. Каждый повтор получает новую папку.
+Пользовательские папки не используются. Удалённое подключение остаётся отдельной проверкой.
+
+## Сборка приложения
+
+```bash
+make build-client
+open dist/AgentRuntime.app
+```
+
+PyInstaller 6.16.0 и зависимости закреплены в uv.lock, группа packaging.
+На macOS создаётся .app с Python и Qt внутри, исходное .venv при запуске не нужно.
+Проверенный вариант — текущая macOS arm64, ad-hoc подпись. Для распространения
+на другие компьютеры подпись/notarization и отдельная проверка ещё нужны.
+
+Проверка загрузки окна из сборки без экрана:
+
+```bash
+QT_QPA_PLATFORM=offscreen dist/AgentRuntime.app/Contents/MacOS/AgentRuntime --smoke-test
+```
+
+Это проверка запуска пакета. UI-сценарии подключения и переподключения покрываются
+отдельными QtTest; этот короткий запуск не подменяет сетевые тесты.

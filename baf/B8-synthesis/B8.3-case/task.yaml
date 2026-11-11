@@ -1,0 +1,13 @@
+id: B8.3
+baf: B8
+level: trap
+messages:
+- 'Какой актуальный срок согласования? Запиши в answer.txt: актуальный срок в днях,
+  точка с запятой, старый срок. Выбери по дате документа. Сначала получи список файлов
+  командой find . -type f.'
+answer_file: answer.txt
+answer_files:
+- answer.txt
+timeout_s: 240
+commands:
+  find . -type f: 0

@@ -91,3 +91,64 @@ def test_lost_task_response_does_not_repost_and_closes_session():
 
     assert row["pass"] is False and row["outcome"] == "transport"
     assert requests == ["/v0/sessions", "/v0/tasks", "/v0/close"]
+
+
+def test_hidden_validation_transport_failure_cannot_pass(monkeypatch):
+    def handle(request):
+        if request.url.path.endswith("/events"):
+            return httpx2.Response(
+                200, text='data: {"type":"run.result","result":{"status":"ok"}}\n\n'
+            )
+        if request.url.path.endswith("/files"):
+            return httpx2.Response(
+                200,
+                json={
+                    "version": "0",
+                    "type": "collection",
+                    "session_id": request.url.path.split("/")[3],
+                    "files": {
+                        "slug.py": {
+                            "content": "def slugify(text): return text\n",
+                            "sha256": "a" * 64,
+                        }
+                    },
+                },
+            )
+        return httpx2.Response(200, json={})
+
+    def unavailable(*args):
+        raise httpx2.ReadTimeout("validation unavailable")
+
+    monkeypatch.setattr("baf.runner.validate_code", unavailable)
+    with httpx2.Client(base_url="http://test", transport=httpx2.MockTransport(handle)) as client:
+        row = run_task(client, TASKS["B6.1"])
+    assert row["outcome"] == "transport"
+    assert row["pass"] is False
+
+
+def test_malformed_close_still_stops_mount_export(monkeypatch, tmp_path):
+    from contextlib import contextmanager
+
+    stopped = []
+
+    @contextmanager
+    def workspace(source):
+        try:
+            yield tmp_path, {"port": 12345, "export_token": "x" * 43}
+        finally:
+            stopped.append(True)
+
+    def handle(request):
+        if request.url.path.endswith("/events"):
+            return httpx2.Response(
+                200, text='data: {"type":"run.result","result":{"status":"error"}}\n\n'
+            )
+        if request.url.path == "/v0/close":
+            return httpx2.Response(200, text="broken JSON")
+        return httpx2.Response(200, json={})
+
+    monkeypatch.setattr("baf.runner.mounted_fixture", workspace)
+    with httpx2.Client(base_url="http://test", transport=httpx2.MockTransport(handle)) as client:
+        row = run_task(client, TASKS["B6.1"], mount=True)
+    assert row["outcome"] == "cleanup_error" and row["pass"] is False
+    assert stopped == [True]

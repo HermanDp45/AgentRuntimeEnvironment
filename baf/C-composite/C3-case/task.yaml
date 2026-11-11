@@ -1,0 +1,17 @@
+id: C3
+baf: C3
+level: composite
+messages:
+- Добавь unique.py с unique(items), сохраняющей первый порядок элементов; test_unique.py
+  с тестом и README.md с описанием. После правки выполни python -m pytest -q test_unique.py.
+answer_file: unique.py
+answer_files:
+- unique.py
+- test_unique.py
+- README.md
+timeout_s: 240
+hidden_files:
+- unique.py
+- test_unique.py
+commands:
+  python -m pytest -q test_unique.py: 0

@@ -1,0 +1,12 @@
+id: B2.3
+baf: B2
+level: trap
+messages:
+- Найди функцию parse_date для ISO 8601 с обязательной таймзоной. Путь запиши в answer.txt.
+  Сначала получи список файлов командой find src -type f.
+answer_file: answer.txt
+answer_files:
+- answer.txt
+timeout_s: 240
+commands:
+  find src -type f: 0

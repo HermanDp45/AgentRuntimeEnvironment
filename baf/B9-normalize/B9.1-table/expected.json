@@ -1,0 +1,13 @@
+{
+  "rows": [
+    {
+      "name": "Alice",
+      "quantity": 2
+    },
+    {
+      "name": "Bob",
+      "quantity": 0
+    }
+  ],
+  "errors": []
+}

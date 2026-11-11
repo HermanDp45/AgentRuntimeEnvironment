@@ -1,0 +1,11 @@
+id: B8.1
+baf: B8
+level: simple
+messages:
+- Посчитай общую сумму amount по пяти файлам sales/*.csv за первый квартал 2026. Запиши
+  только целое число в answer.txt. Сначала получи список файлов командой find sales
+  -type f.
+answer_file: answer.txt
+timeout_s: 180
+commands:
+  find sales -type f: 0

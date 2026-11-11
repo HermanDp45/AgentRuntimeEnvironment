@@ -1,0 +1,846 @@
+uv lock --check --offline
+Resolved 40 packages in 21ms
+uv run --frozen --offline ruff check .
+All checks passed!
+uv run --frozen --offline ruff format --check .
+104 files already formatted
+uv run --frozen --offline pytest -q
+ssssssssssssssss.......ss............................................... [ 98%]
+.                                                                        [100%]
+55 passed, 18 skipped in 2.77s
+GATEWAY_PORT=18080 SANDBOX_MANAGER_PORT=18081 docker compose -p are-offline -f docker-compose.yml -f tests/infra/compose.yml up --build --wait --wait-timeout 90
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [sandbox-image internal] load build definition from Dockerfile
+#1 DONE 0.0s
+
+#2 [mock-llm internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.13kB done
+#2 DONE 0.0s
+
+#1 [sandbox-image internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.06kB done
+#1 DONE 0.0s
+
+#3 [sandbox-image internal] load metadata for ghcr.io/astral-sh/uv:0.12.12@sha256:73d2665b478d8fa2de1cf105c6841f8e9cb6b09e568fc7700440c09f8fcd7ac4
+#3 DONE 0.0s
+
+#4 [sandbox-image internal] load metadata for docker.io/library/python:3.13.15-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26
+#4 DONE 0.0s
+
+#5 [mock-llm internal] load .dockerignore
+#5 transferring context: 767B done
+#5 DONE 0.0s
+
+#6 [sandbox-image internal] load .dockerignore
+#6 transferring context: 767B done
+#6 DONE 0.0s
+
+#7 [mock-llm internal] load build context
+#7 transferring context: 13.97kB done
+#7 DONE 0.0s
+
+#8 [sandbox-image builder 1/5] FROM docker.io/library/python:3.13.15-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26
+#8 resolve docker.io/library/python:3.13.15-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26 done
+#8 DONE 0.0s
+
+#9 [mock-llm uv 1/1] FROM ghcr.io/astral-sh/uv:0.12.12@sha256:73d2665b478d8fa2de1cf105c6841f8e9cb6b09e568fc7700440c09f8fcd7ac4
+#9 resolve ghcr.io/astral-sh/uv:0.12.12@sha256:73d2665b478d8fa2de1cf105c6841f8e9cb6b09e568fc7700440c09f8fcd7ac4 done
+#9 DONE 0.0s
+
+#10 [mock-llm builder 5/5] RUN uv sync --frozen --no-dev --no-cache
+#10 CACHED
+
+#11 [mock-llm production 2/5] RUN groupadd --gid 10001 app && useradd --uid 10001 --gid app --no-create-home app
+#11 CACHED
+
+#12 [mock-llm production 4/5] COPY --from=builder /app/.venv .venv
+#12 CACHED
+
+#13 [mock-llm builder 4/5] COPY pyproject.toml uv.lock ./
+#13 CACHED
+
+#14 [mock-llm production 3/5] WORKDIR /app
+#14 CACHED
+
+#15 [mock-llm production 5/5] COPY services/llm-proxy/src src
+#15 CACHED
+
+#16 [sandbox-image internal] load build context
+#16 transferring context: 12.20kB done
+#16 DONE 0.0s
+
+#17 [mock-llm testing 1/1] COPY services/llm-proxy/testing /test
+#17 DONE 0.0s
+
+#18 [sandbox-image stage-2 4/6] COPY contracts/__init__.py contracts/paths.py /opt/contracts/
+#18 CACHED
+
+#19 [sandbox-image builder 4/5] COPY pyproject.toml uv.lock ./
+#19 CACHED
+
+#20 [sandbox-image builder 5/5] RUN uv sync --frozen --only-group sandbox --no-cache
+#20 CACHED
+
+#21 [sandbox-image stage-2 3/6] COPY --from=builder /app/.venv /app/.venv
+#21 CACHED
+
+#22 [sandbox-image stage-2 2/6] RUN groupadd --gid 10001 agent && useradd --uid 10001 --gid agent --no-create-home agent
+#22 CACHED
+
+#23 [sandbox-image builder 3/5] WORKDIR /app
+#23 CACHED
+
+#24 [sandbox-image builder 2/5] COPY --from=uv /uv /usr/local/bin/uv
+#24 CACHED
+
+#25 [sandbox-image stage-2 5/6] COPY services/sandbox-manager/sandbox/sandbox_worker.py /opt/sandbox_worker.py
+#25 CACHED
+
+#26 [sandbox-image stage-2 6/6] WORKDIR /work
+#26 CACHED
+
+#27 [sandbox-image] exporting to image
+#27 exporting layers done
+#27 exporting manifest sha256:fdaec4a94c2390fc4bcb03273c0574e0551bab52f1e55317943e53b126c6db15 done
+#27 exporting config sha256:51cbd927369507f985cfc1c7c7494947a56be3396a5cd3969745c7437ec62530 done
+#27 exporting attestation manifest sha256:0f69d6e03e5e0a21d8796c0fc5314711298ebc4a4cc51c56a574194b0870ce3c done
+#27 exporting manifest list sha256:5016dc7171afb266f9c2567c51ce2bbefb134c5901a13d91a6567a27ddf3d3c1 done
+#27 naming to docker.io/library/are-offline-sandbox:v0 done
+#27 unpacking to docker.io/library/are-offline-sandbox:v0 done
+#27 DONE 0.0s
+
+#28 [mock-llm] exporting to image
+#28 exporting layers 0.0s done
+#28 exporting manifest sha256:3630322ffe3ed52b056b2e439c93f2c7663cf1f33b1abc1211243442f5b1d774 done
+#28 exporting config sha256:6d6eb0a9180d18db2fe7136c4fd76766994fceee2d5e82b74a7031e4a275e48d done
+#28 exporting attestation manifest sha256:78d5c698f7641ea763c426d9de17573213d495754de92877c2ef02ef1c3c530b 0.0s done
+#28 exporting manifest list sha256:ca910ee71e09c328c2b1ad2a1f5178a03585100f8d6399d2a45175e35eba04ac
+#28 exporting manifest list sha256:ca910ee71e09c328c2b1ad2a1f5178a03585100f8d6399d2a45175e35eba04ac done
+#28 naming to docker.io/library/are-offline-mock-llm:latest done
+#28 unpacking to docker.io/library/are-offline-mock-llm:latest 0.0s done
+#28 DONE 0.1s
+
+#29 [sandbox-image] resolving provenance for metadata file
+#29 DONE 0.0s
+
+#30 [mock-llm] resolving provenance for metadata file
+#30 DONE 0.0s
+
+#31 [sandbox-manager internal] load build definition from Dockerfile
+#31 transferring dockerfile: 981B done
+#31 DONE 0.0s
+
+#4 [sandbox-manager internal] load metadata for docker.io/library/python:3.13.15-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26
+#4 DONE 0.0s
+
+#3 [sandbox-manager internal] load metadata for ghcr.io/astral-sh/uv:0.12.12@sha256:73d2665b478d8fa2de1cf105c6841f8e9cb6b09e568fc7700440c09f8fcd7ac4
+#3 DONE 0.0s
+
+#32 [sandbox-manager internal] load .dockerignore
+#32 transferring context: 767B done
+#32 DONE 0.0s
+
+#33 [sandbox-manager internal] load build context
+#33 transferring context: 86.73kB done
+#33 DONE 0.0s
+
+#9 [llm-proxy uv 1/1] FROM ghcr.io/astral-sh/uv:0.12.12@sha256:73d2665b478d8fa2de1cf105c6841f8e9cb6b09e568fc7700440c09f8fcd7ac4
+#9 resolve ghcr.io/astral-sh/uv:0.12.12@sha256:73d2665b478d8fa2de1cf105c6841f8e9cb6b09e568fc7700440c09f8fcd7ac4 0.0s done
+#9 DONE 0.0s
+
+#8 [llm-proxy builder 1/5] FROM docker.io/library/python:3.13.15-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26
+#8 resolve docker.io/library/python:3.13.15-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26 0.0s done
+#8 DONE 0.0s
+
+#34 [sandbox-manager stage-2 5/6] COPY services/sandbox-manager/src src
+#34 CACHED
+
+#35 [sandbox-manager builder 5/5] RUN uv sync --frozen --no-dev --group sandbox-manager --no-cache
+#35 CACHED
+
+#36 [sandbox-manager stage-2 3/6] COPY --from=builder /app/.venv .venv
+#36 CACHED
+
+#37 [sandbox-manager builder 4/5] COPY pyproject.toml uv.lock ./
+#37 CACHED
+
+#38 [sandbox-manager stage-2 2/6] WORKDIR /app
+#38 CACHED
+
+#39 [sandbox-manager stage-2 4/6] COPY contracts contracts
+#39 CACHED
+
+#40 [sandbox-manager stage-2 6/6] COPY services/sandbox-manager/config.toml config.toml
+#40 CACHED
+
+#41 [llm-proxy internal] load build definition from Dockerfile
+#41 transferring dockerfile: 1.13kB done
+#41 DONE 0.0s
+
+#4 [llm-proxy internal] load metadata for docker.io/library/python:3.13.15-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26
+#4 DONE 0.0s
+
+#42 [llm-proxy internal] load .dockerignore
+#42 transferring context: 767B done
+#42 DONE 0.0s
+
+#43 [sandbox-manager] exporting to image
+#43 exporting layers done
+#43 exporting manifest sha256:94d43530974829997c381dbbd10251dbf707b8f68244ae3f947a9a2535c69365 done
+#43 exporting config sha256:3dc323aace6a2733df1a80095080559993742a59d9cd7e0781bd61f93c9fc125 done
+#43 exporting attestation manifest sha256:6d6f89f14abeaca34f2f3a0fc9516d89b303e048ba8eeb9737130f42d0a8b6a5 done
+#43 exporting manifest list sha256:887eef6216f0765b5edd10917eba38fa2b60a9b9798b3d445cdbace8d3e3e345 done
+#43 naming to docker.io/library/are-offline-sandbox-manager:latest done
+#43 unpacking to docker.io/library/are-offline-sandbox-manager:latest done
+#43 DONE 0.0s
+
+#44 [llm-proxy internal] load build context
+#44 transferring context: 3.90kB done
+#44 DONE 0.0s
+
+#45 [llm-proxy builder 4/5] COPY pyproject.toml uv.lock ./
+#45 CACHED
+
+#46 [llm-proxy production 4/5] COPY --from=builder /app/.venv .venv
+#46 CACHED
+
+#47 [llm-proxy builder 5/5] RUN uv sync --frozen --no-dev --no-cache
+#47 CACHED
+
+#24 [llm-proxy builder 2/5] COPY --from=uv /uv /usr/local/bin/uv
+#24 CACHED
+
+#23 [llm-proxy builder 3/5] WORKDIR /app
+#23 CACHED
+
+#14 [llm-proxy production 3/5] WORKDIR /app
+#14 CACHED
+
+#11 [llm-proxy production 2/5] RUN groupadd --gid 10001 app && useradd --uid 10001 --gid app --no-create-home app
+#11 CACHED
+
+#48 [llm-proxy production 5/5] COPY services/llm-proxy/src src
+#48 CACHED
+
+#49 [llm-proxy] exporting to image
+#49 exporting layers done
+#49 exporting manifest sha256:105a3311a26ff8a3c43d7e7820f800e44a2b82bf1ee75401ff5dd373192b9c80 done
+#49 exporting config sha256:137e83a09e0a0a6c5da1ece79ac869d003197ea987a9114385bf8680fe35512c done
+#49 exporting attestation manifest sha256:3627d55b3a62303c730078df56120e3ce9fe2ceb00ea42adb8898bff1d464997 done
+#49 exporting manifest list sha256:ecd64827b82da758dff37676295a5296edd73096f0bf9eb2a5e558a1d79c8f51 done
+#49 naming to docker.io/library/are-offline-llm-proxy:latest done
+#49 unpacking to docker.io/library/are-offline-llm-proxy:latest done
+#49 DONE 0.0s
+
+#50 [sandbox-manager] resolving provenance for metadata file
+#50 DONE 0.0s
+
+#51 [llm-proxy] resolving provenance for metadata file
+#51 DONE 0.0s
+
+#52 [harness internal] load build definition from Dockerfile
+#52 transferring dockerfile: 1.04kB done
+#52 DONE 0.0s
+
+#3 [harness internal] load metadata for ghcr.io/astral-sh/uv:0.12.12@sha256:73d2665b478d8fa2de1cf105c6841f8e9cb6b09e568fc7700440c09f8fcd7ac4
+#3 DONE 0.0s
+
+#4 [harness internal] load metadata for docker.io/library/python:3.13.15-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26
+#4 DONE 0.0s
+
+#53 [harness internal] load .dockerignore
+#53 transferring context: 767B done
+#53 DONE 0.0s
+
+#54 [harness internal] load build context
+#54 transferring context: 38.65kB done
+#54 DONE 0.0s
+
+#9 [harness uv 1/1] FROM ghcr.io/astral-sh/uv:0.12.12@sha256:73d2665b478d8fa2de1cf105c6841f8e9cb6b09e568fc7700440c09f8fcd7ac4
+#9 resolve ghcr.io/astral-sh/uv:0.12.12@sha256:73d2665b478d8fa2de1cf105c6841f8e9cb6b09e568fc7700440c09f8fcd7ac4 done
+#9 DONE 0.0s
+
+#8 [harness builder 1/5] FROM docker.io/library/python:3.13.15-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26
+#8 resolve docker.io/library/python:3.13.15-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26 done
+#8 DONE 0.0s
+
+#23 [harness builder 3/5] WORKDIR /app
+#23 CACHED
+
+#55 [harness builder 5/5] RUN uv sync --frozen --no-dev --no-cache
+#55 CACHED
+
+#56 [harness stage-2 4/7] COPY --from=builder /app/.venv .venv
+#56 CACHED
+
+#57 [harness stage-2 2/7] RUN groupadd --gid 10001 app && useradd --uid 10001 --gid app --no-create-home app
+#57 CACHED
+
+#24 [harness builder 2/5] COPY --from=uv /uv /usr/local/bin/uv
+#24 CACHED
+
+#58 [harness builder 4/5] COPY pyproject.toml uv.lock ./
+#58 CACHED
+
+#59 [harness stage-2 3/7] WORKDIR /app
+#59 CACHED
+
+#60 [harness stage-2 5/7] COPY contracts contracts
+#60 CACHED
+
+#61 [harness stage-2 6/7] COPY services/harness/src src
+#61 CACHED
+
+#62 [harness stage-2 7/7] COPY services/harness/config.toml config.toml
+#62 CACHED
+
+#63 [harness] exporting to image
+#63 exporting layers done
+#63 exporting manifest sha256:2a19377e40f4e2ba641b3d16ac994ec0c039182f672e22befc250cf5ce20b848 done
+#63 exporting config sha256:8dde1400b0747c5f5045f6d30e731fe28280e6ceaf4fb85e508ddd0a0e05bf09 done
+#63 exporting attestation manifest sha256:0320def202134c262dd007d28924b50fbdbb13cb1a8fbfb70658cca0b9188ea2
+#63 exporting attestation manifest sha256:0320def202134c262dd007d28924b50fbdbb13cb1a8fbfb70658cca0b9188ea2 done
+#63 exporting manifest list sha256:fd8a34a799747e54af3b8e8fe34015c3cfc101e218d485114d40ae20f220e19f done
+#63 naming to docker.io/library/are-offline-harness:latest done
+#63 unpacking to docker.io/library/are-offline-harness:latest done
+#63 DONE 0.0s
+
+#64 [harness] resolving provenance for metadata file
+#64 DONE 0.0s
+
+#65 [gateway internal] load build definition from Dockerfile
+#65 transferring dockerfile: 979B done
+#65 DONE 0.0s
+
+#4 [gateway internal] load metadata for docker.io/library/python:3.13.15-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26
+#4 DONE 0.0s
+
+#3 [gateway internal] load metadata for ghcr.io/astral-sh/uv:0.12.12@sha256:73d2665b478d8fa2de1cf105c6841f8e9cb6b09e568fc7700440c09f8fcd7ac4
+#3 DONE 0.0s
+
+#66 [gateway internal] load .dockerignore
+#66 transferring context: 767B done
+#66 DONE 0.0s
+
+#67 [gateway internal] load build context
+#67 transferring context: 3.80kB done
+#67 DONE 0.0s
+
+#9 [gateway uv 1/1] FROM ghcr.io/astral-sh/uv:0.12.12@sha256:73d2665b478d8fa2de1cf105c6841f8e9cb6b09e568fc7700440c09f8fcd7ac4
+#9 resolve ghcr.io/astral-sh/uv:0.12.12@sha256:73d2665b478d8fa2de1cf105c6841f8e9cb6b09e568fc7700440c09f8fcd7ac4 0.0s done
+#9 DONE 0.1s
+
+#8 [gateway builder 1/5] FROM docker.io/library/python:3.13.15-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26
+#8 resolve docker.io/library/python:3.13.15-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26 0.0s done
+#8 DONE 0.1s
+
+#23 [gateway builder 3/5] WORKDIR /app
+#23 CACHED
+
+#24 [gateway builder 2/5] COPY --from=uv /uv /usr/local/bin/uv
+#24 CACHED
+
+#68 [gateway builder 4/5] COPY pyproject.toml uv.lock ./
+#68 CACHED
+
+#69 [gateway builder 5/5] RUN uv sync --frozen --no-dev --no-cache
+#69 CACHED
+
+#14 [gateway stage-2 3/5] WORKDIR /app
+#14 CACHED
+
+#70 [gateway stage-2 4/5] COPY --from=builder /app/.venv .venv
+#70 CACHED
+
+#11 [gateway stage-2 2/5] RUN groupadd --gid 10001 app && useradd --uid 10001 --gid app --no-create-home app
+#11 CACHED
+
+#71 [gateway stage-2 5/5] COPY services/gateway/src src
+#71 CACHED
+
+#72 [gateway] exporting to image
+#72 exporting layers done
+#72 exporting manifest sha256:ab827887a74bc889b73afbe77ea75c4338948fa770d5aedde48d434e5e963363 done
+#72 exporting config sha256:5465238ae425fbfe41cd76f1fc4eef046f7ecfdf387aa3bdf23804bbfb4dc199 done
+#72 exporting attestation manifest sha256:d4dac964d77eb2b82ce48edc5ef0cd889214069e6ef952600c28f2194d502dd4 done
+#72 exporting manifest list sha256:1f9f85db418c954d80e64f1eb95a09a80e9988fcafbacf762366da063aca5adf done
+#72 naming to docker.io/library/are-offline-gateway:latest done
+#72 unpacking to docker.io/library/are-offline-gateway:latest done
+#72 DONE 0.0s
+
+#73 [gateway] resolving provenance for metadata file
+#73 DONE 0.0s
+ Network are-offline_default  Creating
+ Network are-offline_default  Created
+ Container are-offline-sandbox-image-1  Creating
+ Container are-offline-mock-llm-1  Creating
+ Container are-offline-mock-llm-1  Created
+ Container are-offline-sandbox-image-1  Created
+ Container are-offline-llm-proxy-1  Creating
+ Container are-offline-sandbox-manager-1  Creating
+ Container are-offline-llm-proxy-1  Created
+ Container are-offline-sandbox-manager-1  Created
+ Container are-offline-harness-1  Creating
+ Container are-offline-harness-1  Created
+ Container are-offline-gateway-1  Creating
+ Container are-offline-gateway-1  Created
+ Container are-offline-sandbox-image-1  Starting
+ Container are-offline-mock-llm-1  Starting
+ Container are-offline-sandbox-image-1  Started
+ Container are-offline-sandbox-image-1  Waiting
+ Container are-offline-mock-llm-1  Started
+ Container are-offline-mock-llm-1  Waiting
+ Container are-offline-sandbox-image-1  Exited
+ Container are-offline-sandbox-manager-1  Starting
+ Container are-offline-sandbox-manager-1  Started
+ Container are-offline-mock-llm-1  Healthy
+ Container are-offline-llm-proxy-1  Starting
+ Container are-offline-llm-proxy-1  Started
+ Container are-offline-sandbox-manager-1  Waiting
+ Container are-offline-llm-proxy-1  Waiting
+ Container are-offline-sandbox-manager-1  Healthy
+ Container are-offline-llm-proxy-1  Healthy
+ Container are-offline-harness-1  Starting
+ Container are-offline-harness-1  Started
+ Container are-offline-harness-1  Waiting
+ Container are-offline-harness-1  Healthy
+ Container are-offline-gateway-1  Starting
+ Container are-offline-gateway-1  Started
+ Container are-offline-llm-proxy-1  Waiting
+ Container are-offline-harness-1  Waiting
+ Container are-offline-sandbox-image-1  Waiting
+ Container are-offline-mock-llm-1  Waiting
+ Container are-offline-sandbox-manager-1  Waiting
+ Container are-offline-gateway-1  Waiting
+ Container are-offline-harness-1  Healthy
+ Container are-offline-llm-proxy-1  Healthy
+ Container are-offline-sandbox-image-1  Exited
+ Container are-offline-mock-llm-1  Healthy
+ Container are-offline-sandbox-manager-1  Healthy
+ Container are-offline-gateway-1  Healthy
+docker compose -p are-offline -f docker-compose.yml -f tests/infra/compose.yml exec -T sandbox-manager python -c "import os; assert os.environ['ARE_TEST_CANARY'] == 'fixture-manager-canary-C2'"
+docker compose -p are-offline -f docker-compose.yml -f tests/infra/compose.yml exec -T llm-proxy python -c "import os; assert os.environ['LLM_PROVIDER_URL'] == 'http://mock-llm:8000'"
+SANDBOX_TEST_URL=http://127.0.0.1:18081 HARNESS_TEST_URL=http://127.0.0.1:18080 uv run --frozen --offline pytest -q tests/infra
+FFF.............                                                         [100%]
+=================================== FAILURES ===================================
+____________ test_hidden_validation_requires_completed_tests[valid] ____________
+
+    @contextlib.contextmanager
+    def map_httpcore_exceptions() -> Generator[None]:
+        global HTTPCORE_EXC_MAP
+        if len(HTTPCORE_EXC_MAP) == 0:
+            HTTPCORE_EXC_MAP = _load_httpcore_exceptions()
+        try:
+>           yield
+
+.venv/lib/python3.13/site-packages/httpx2/_transports/default.py:98: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.13/site-packages/httpx2/_transports/default.py:245: in handle_request
+    resp = self._pool.handle_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.13/site-packages/httpcore2/_sync/connection_pool.py:242: in handle_request
+    raise exc from None
+.venv/lib/python3.13/site-packages/httpcore2/_sync/connection_pool.py:224: in handle_request
+    response = connection.handle_request(pool_request.request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.13/site-packages/httpcore2/_sync/connection.py:96: in handle_request
+    return self._connection.handle_request(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.13/site-packages/httpcore2/_sync/http11.py:125: in handle_request
+    raise exc
+.venv/lib/python3.13/site-packages/httpcore2/_sync/http11.py:79: in handle_request
+    self._send_request_headers(**kwargs)
+.venv/lib/python3.13/site-packages/httpcore2/_sync/http11.py:133: in _send_request_headers
+    with map_exceptions({h11.LocalProtocolError: LocalProtocolError}):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache/python/cpython-3.13.15-macos-aarch64-none/lib/python3.13/contextlib.py:162: in __exit__
+    self.gen.throw(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+map = {<class 'h11._util.LocalProtocolError'>: <class 'httpcore2.LocalProtocolError'>}
+
+    @contextlib.contextmanager
+    def map_exceptions(map: ExceptionMapping) -> Generator[None]:
+        try:
+            yield
+        except Exception as exc:  # noqa: PIE786
+            for from_exc, to_exc in map.items():
+                if isinstance(exc, from_exc):
+>                   raise to_exc(exc) from exc
+E                   httpcore2.LocalProtocolError: Illegal header value b'Bearer '
+
+.venv/lib/python3.13/site-packages/httpcore2/_exceptions.py:17: LocalProtocolError
+
+The above exception was the direct cause of the following exception:
+
+source = 'import re\ndef slugify(text):\n    return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")\n'
+expected = True
+
+    @pytest.mark.parametrize(
+        "source,expected",
+        [
+            (
+                "import re\ndef slugify(text):\n"
+                '    return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")\n',
+                True,
+            ),
+            ('def slugify(text):\n    return "wrong"\n', False),
+            ('import os\nos._exit(0)\ndef slugify(text):\n    return "wrong"\n', False),
+        ],
+        ids=["valid", "wrong-result", "early-successful-exit"],
+    )
+    def test_hidden_validation_requires_completed_tests(source, expected):
+        files = {
+            "slug.py": FileData(content=source, sha256=hashlib.sha256(source.encode()).hexdigest())
+        }
+>       assert validate_code(files, TASKS["B6.1"] / "hidden_tests.py") is expected
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/infra/test_baf_validation.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+baf/runner.py:130: in validate_code
+    api.post(sandbox, "/v0/release", "release", session_id=session)
+client/api.py:19: in post
+    response = client.post(path, json={"version": "0", "type": kind, **data})
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.13/site-packages/httpx2/_client.py:1203: in post
+    return self.request(
+.venv/lib/python3.13/site-packages/httpx2/_client.py:796: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.13/site-packages/httpx2/_client.py:979: in send
+    response = self._send_handling_auth(
+.venv/lib/python3.13/site-packages/httpx2/_client.py:1007: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv/lib/python3.13/site-packages/httpx2/_client.py:1042: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.13/site-packages/httpx2/_client.py:1075: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.13/site-packages/httpx2/_transports/default.py:244: in handle_request
+    with map_httpcore_exceptions():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache/python/cpython-3.13.15-macos-aarch64-none/lib/python3.13/contextlib.py:162: in __exit__
+    self.gen.throw(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    @contextlib.contextmanager
+    def map_httpcore_exceptions() -> Generator[None]:
+        global HTTPCORE_EXC_MAP
+        if len(HTTPCORE_EXC_MAP) == 0:
+            HTTPCORE_EXC_MAP = _load_httpcore_exceptions()
+        try:
+            yield
+        except Exception as exc:
+            mapped_exc = None
+    
+            for from_exc, to_exc in HTTPCORE_EXC_MAP.items():
+                if not isinstance(exc, from_exc):
+                    continue
+                # We want to map to the most specific exception we can find.
+                # Eg if `exc` is an `httpcore2.ReadTimeout`, we want to map to
+                # `httpx2.ReadTimeout`, not just `httpx2.TimeoutException`.
+                if mapped_exc is None or issubclass(to_exc, mapped_exc):
+                    mapped_exc = to_exc
+    
+            if mapped_exc is None:  # pragma: no cover
+                raise
+    
+            message = str(exc)
+>           raise mapped_exc(message) from exc
+E           httpx2.LocalProtocolError: Illegal header value b'Bearer '
+
+.venv/lib/python3.13/site-packages/httpx2/_transports/default.py:115: LocalProtocolError
+________ test_hidden_validation_requires_completed_tests[wrong-result] _________
+
+    @contextlib.contextmanager
+    def map_httpcore_exceptions() -> Generator[None]:
+        global HTTPCORE_EXC_MAP
+        if len(HTTPCORE_EXC_MAP) == 0:
+            HTTPCORE_EXC_MAP = _load_httpcore_exceptions()
+        try:
+>           yield
+
+.venv/lib/python3.13/site-packages/httpx2/_transports/default.py:98: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.13/site-packages/httpx2/_transports/default.py:245: in handle_request
+    resp = self._pool.handle_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.13/site-packages/httpcore2/_sync/connection_pool.py:242: in handle_request
+    raise exc from None
+.venv/lib/python3.13/site-packages/httpcore2/_sync/connection_pool.py:224: in handle_request
+    response = connection.handle_request(pool_request.request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.13/site-packages/httpcore2/_sync/connection.py:96: in handle_request
+    return self._connection.handle_request(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.13/site-packages/httpcore2/_sync/http11.py:125: in handle_request
+    raise exc
+.venv/lib/python3.13/site-packages/httpcore2/_sync/http11.py:79: in handle_request
+    self._send_request_headers(**kwargs)
+.venv/lib/python3.13/site-packages/httpcore2/_sync/http11.py:133: in _send_request_headers
+    with map_exceptions({h11.LocalProtocolError: LocalProtocolError}):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache/python/cpython-3.13.15-macos-aarch64-none/lib/python3.13/contextlib.py:162: in __exit__
+    self.gen.throw(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+map = {<class 'h11._util.LocalProtocolError'>: <class 'httpcore2.LocalProtocolError'>}
+
+    @contextlib.contextmanager
+    def map_exceptions(map: ExceptionMapping) -> Generator[None]:
+        try:
+            yield
+        except Exception as exc:  # noqa: PIE786
+            for from_exc, to_exc in map.items():
+                if isinstance(exc, from_exc):
+>                   raise to_exc(exc) from exc
+E                   httpcore2.LocalProtocolError: Illegal header value b'Bearer '
+
+.venv/lib/python3.13/site-packages/httpcore2/_exceptions.py:17: LocalProtocolError
+
+The above exception was the direct cause of the following exception:
+
+source = 'def slugify(text):\n    return "wrong"\n', expected = False
+
+    @pytest.mark.parametrize(
+        "source,expected",
+        [
+            (
+                "import re\ndef slugify(text):\n"
+                '    return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")\n',
+                True,
+            ),
+            ('def slugify(text):\n    return "wrong"\n', False),
+            ('import os\nos._exit(0)\ndef slugify(text):\n    return "wrong"\n', False),
+        ],
+        ids=["valid", "wrong-result", "early-successful-exit"],
+    )
+    def test_hidden_validation_requires_completed_tests(source, expected):
+        files = {
+            "slug.py": FileData(content=source, sha256=hashlib.sha256(source.encode()).hexdigest())
+        }
+>       assert validate_code(files, TASKS["B6.1"] / "hidden_tests.py") is expected
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/infra/test_baf_validation.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+baf/runner.py:130: in validate_code
+    api.post(sandbox, "/v0/release", "release", session_id=session)
+client/api.py:19: in post
+    response = client.post(path, json={"version": "0", "type": kind, **data})
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.13/site-packages/httpx2/_client.py:1203: in post
+    return self.request(
+.venv/lib/python3.13/site-packages/httpx2/_client.py:796: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.13/site-packages/httpx2/_client.py:979: in send
+    response = self._send_handling_auth(
+.venv/lib/python3.13/site-packages/httpx2/_client.py:1007: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv/lib/python3.13/site-packages/httpx2/_client.py:1042: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.13/site-packages/httpx2/_client.py:1075: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.13/site-packages/httpx2/_transports/default.py:244: in handle_request
+    with map_httpcore_exceptions():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache/python/cpython-3.13.15-macos-aarch64-none/lib/python3.13/contextlib.py:162: in __exit__
+    self.gen.throw(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    @contextlib.contextmanager
+    def map_httpcore_exceptions() -> Generator[None]:
+        global HTTPCORE_EXC_MAP
+        if len(HTTPCORE_EXC_MAP) == 0:
+            HTTPCORE_EXC_MAP = _load_httpcore_exceptions()
+        try:
+            yield
+        except Exception as exc:
+            mapped_exc = None
+    
+            for from_exc, to_exc in HTTPCORE_EXC_MAP.items():
+                if not isinstance(exc, from_exc):
+                    continue
+                # We want to map to the most specific exception we can find.
+                # Eg if `exc` is an `httpcore2.ReadTimeout`, we want to map to
+                # `httpx2.ReadTimeout`, not just `httpx2.TimeoutException`.
+                if mapped_exc is None or issubclass(to_exc, mapped_exc):
+                    mapped_exc = to_exc
+    
+            if mapped_exc is None:  # pragma: no cover
+                raise
+    
+            message = str(exc)
+>           raise mapped_exc(message) from exc
+E           httpx2.LocalProtocolError: Illegal header value b'Bearer '
+
+.venv/lib/python3.13/site-packages/httpx2/_transports/default.py:115: LocalProtocolError
+____ test_hidden_validation_requires_completed_tests[early-successful-exit] ____
+
+    @contextlib.contextmanager
+    def map_httpcore_exceptions() -> Generator[None]:
+        global HTTPCORE_EXC_MAP
+        if len(HTTPCORE_EXC_MAP) == 0:
+            HTTPCORE_EXC_MAP = _load_httpcore_exceptions()
+        try:
+>           yield
+
+.venv/lib/python3.13/site-packages/httpx2/_transports/default.py:98: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.13/site-packages/httpx2/_transports/default.py:245: in handle_request
+    resp = self._pool.handle_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.13/site-packages/httpcore2/_sync/connection_pool.py:242: in handle_request
+    raise exc from None
+.venv/lib/python3.13/site-packages/httpcore2/_sync/connection_pool.py:224: in handle_request
+    response = connection.handle_request(pool_request.request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.13/site-packages/httpcore2/_sync/connection.py:96: in handle_request
+    return self._connection.handle_request(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.13/site-packages/httpcore2/_sync/http11.py:125: in handle_request
+    raise exc
+.venv/lib/python3.13/site-packages/httpcore2/_sync/http11.py:79: in handle_request
+    self._send_request_headers(**kwargs)
+.venv/lib/python3.13/site-packages/httpcore2/_sync/http11.py:133: in _send_request_headers
+    with map_exceptions({h11.LocalProtocolError: LocalProtocolError}):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache/python/cpython-3.13.15-macos-aarch64-none/lib/python3.13/contextlib.py:162: in __exit__
+    self.gen.throw(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+map = {<class 'h11._util.LocalProtocolError'>: <class 'httpcore2.LocalProtocolError'>}
+
+    @contextlib.contextmanager
+    def map_exceptions(map: ExceptionMapping) -> Generator[None]:
+        try:
+            yield
+        except Exception as exc:  # noqa: PIE786
+            for from_exc, to_exc in map.items():
+                if isinstance(exc, from_exc):
+>                   raise to_exc(exc) from exc
+E                   httpcore2.LocalProtocolError: Illegal header value b'Bearer '
+
+.venv/lib/python3.13/site-packages/httpcore2/_exceptions.py:17: LocalProtocolError
+
+The above exception was the direct cause of the following exception:
+
+source = 'import os\nos._exit(0)\ndef slugify(text):\n    return "wrong"\n'
+expected = False
+
+    @pytest.mark.parametrize(
+        "source,expected",
+        [
+            (
+                "import re\ndef slugify(text):\n"
+                '    return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")\n',
+                True,
+            ),
+            ('def slugify(text):\n    return "wrong"\n', False),
+            ('import os\nos._exit(0)\ndef slugify(text):\n    return "wrong"\n', False),
+        ],
+        ids=["valid", "wrong-result", "early-successful-exit"],
+    )
+    def test_hidden_validation_requires_completed_tests(source, expected):
+        files = {
+            "slug.py": FileData(content=source, sha256=hashlib.sha256(source.encode()).hexdigest())
+        }
+>       assert validate_code(files, TASKS["B6.1"] / "hidden_tests.py") is expected
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/infra/test_baf_validation.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+baf/runner.py:130: in validate_code
+    api.post(sandbox, "/v0/release", "release", session_id=session)
+client/api.py:19: in post
+    response = client.post(path, json={"version": "0", "type": kind, **data})
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.13/site-packages/httpx2/_client.py:1203: in post
+    return self.request(
+.venv/lib/python3.13/site-packages/httpx2/_client.py:796: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.13/site-packages/httpx2/_client.py:979: in send
+    response = self._send_handling_auth(
+.venv/lib/python3.13/site-packages/httpx2/_client.py:1007: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv/lib/python3.13/site-packages/httpx2/_client.py:1042: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.13/site-packages/httpx2/_client.py:1075: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.13/site-packages/httpx2/_transports/default.py:244: in handle_request
+    with map_httpcore_exceptions():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache/python/cpython-3.13.15-macos-aarch64-none/lib/python3.13/contextlib.py:162: in __exit__
+    self.gen.throw(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    @contextlib.contextmanager
+    def map_httpcore_exceptions() -> Generator[None]:
+        global HTTPCORE_EXC_MAP
+        if len(HTTPCORE_EXC_MAP) == 0:
+            HTTPCORE_EXC_MAP = _load_httpcore_exceptions()
+        try:
+            yield
+        except Exception as exc:
+            mapped_exc = None
+    
+            for from_exc, to_exc in HTTPCORE_EXC_MAP.items():
+                if not isinstance(exc, from_exc):
+                    continue
+                # We want to map to the most specific exception we can find.
+                # Eg if `exc` is an `httpcore2.ReadTimeout`, we want to map to
+                # `httpx2.ReadTimeout`, not just `httpx2.TimeoutException`.
+                if mapped_exc is None or issubclass(to_exc, mapped_exc):
+                    mapped_exc = to_exc
+    
+            if mapped_exc is None:  # pragma: no cover
+                raise
+    
+            message = str(exc)
+>           raise mapped_exc(message) from exc
+E           httpx2.LocalProtocolError: Illegal header value b'Bearer '
+
+.venv/lib/python3.13/site-packages/httpx2/_transports/default.py:115: LocalProtocolError
+=========================== short test summary info ============================
+FAILED tests/infra/test_baf_validation.py::test_hidden_validation_requires_completed_tests[valid]
+FAILED tests/infra/test_baf_validation.py::test_hidden_validation_requires_completed_tests[wrong-result]
+FAILED tests/infra/test_baf_validation.py::test_hidden_validation_requires_completed_tests[early-successful-exit]
+3 failed, 13 passed in 45.60s
+make[1]: *** [test-agent] Error 1
+docker compose -p are-offline -f docker-compose.yml -f tests/infra/compose.yml down -v --remove-orphans
+ Container are-offline-gateway-1  Stopping
+ Container are-offline-gateway-1  Stopped
+ Container are-offline-gateway-1  Removing
+ Container are-offline-gateway-1  Removed
+ Container are-offline-harness-1  Stopping
+ Container are-offline-harness-1  Stopped
+ Container are-offline-harness-1  Removing
+ Container are-offline-harness-1  Removed
+ Container are-offline-sandbox-manager-1  Stopping
+ Container are-offline-llm-proxy-1  Stopping
+ Container are-offline-sandbox-manager-1  Stopped
+ Container are-offline-sandbox-manager-1  Removing
+ Container are-offline-sandbox-manager-1  Removed
+ Container are-offline-sandbox-image-1  Stopping
+ Container are-offline-sandbox-image-1  Stopped
+ Container are-offline-sandbox-image-1  Removing
+ Container are-offline-sandbox-image-1  Removed
+ Container are-offline-llm-proxy-1  Stopped
+ Container are-offline-llm-proxy-1  Removing
+ Container are-offline-llm-proxy-1  Removed
+ Container are-offline-mock-llm-1  Stopping
+ Container are-offline-mock-llm-1  Stopped
+ Container are-offline-mock-llm-1  Removing
+ Container are-offline-mock-llm-1  Removed
+ Network are-offline_default  Removing
+ Network are-offline_default  Removed
+make: *** [test-ci] Error 2

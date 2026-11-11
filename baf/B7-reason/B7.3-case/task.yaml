@@ -1,0 +1,10 @@
+id: B7.3
+baf: B7
+level: trap
+messages:
+- Имеет ли Z доступ к Q? Если правила противоречат без приоритета, запиши ПРОТИВОРЕЧИЕ
+  в answer.txt.
+answer_file: answer.txt
+answer_files:
+- answer.txt
+timeout_s: 240

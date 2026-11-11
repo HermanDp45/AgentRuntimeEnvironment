@@ -1,0 +1,15 @@
+{
+  "tasks": 39,
+  "repeats": 3,
+  "attempts": 117,
+  "passed": 117,
+  "model": "fixture-model",
+  "model_quality_measured": false,
+  "manifest_files": 427,
+  "manifest_matches": true,
+  "unit_tests": 93,
+  "infra_tests": 16,
+  "mock_ui_tests": 7,
+  "live_ui_skipped": 2,
+  "packaged_app_smoke_exit": 0
+}

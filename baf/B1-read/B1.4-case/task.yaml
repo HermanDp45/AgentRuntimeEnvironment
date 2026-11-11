@@ -1,0 +1,9 @@
+id: B1.4
+baf: B1
+level: own
+messages:
+- По policy.md запиши срок хранения резервных копий в днях в answer.txt.
+answer_file: answer.txt
+answer_files:
+- answer.txt
+timeout_s: 240

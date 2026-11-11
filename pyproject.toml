@@ -42,3 +42,6 @@ sandbox-manager = [
 sandbox = [
     "pytest==9.2.0",
 ]
+packaging = [
+    "pyinstaller==6.16.0",
+]

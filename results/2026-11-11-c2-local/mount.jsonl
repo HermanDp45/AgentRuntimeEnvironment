@@ -1,0 +1,2 @@
+{"task_id": "B9.3", "repeat": 1, "pass": true, "reason": "ok", "outcome": "passed", "tokens_in": 40, "tokens_out": 20, "model": "fixture-model", "run_id": "1ec41183-1a7f-4c62-83c4-402b11f0cac3", "approvals": [{"kind": "WriteFile", "approved": true}], "seconds": 1.654}
+{"task_id": "B9.3", "repeat": 2, "pass": true, "reason": "ok", "outcome": "passed", "tokens_in": 40, "tokens_out": 20, "model": "fixture-model", "run_id": "080d1c80-25e4-41d5-8136-ab45660e74c0", "approvals": [{"kind": "WriteFile", "approved": true}], "seconds": 1.427}

@@ -1,0 +1,12 @@
+id: C4
+baf: C4
+level: composite
+messages:
+- По raw.csv нормализуй суммы в копейки, сохрани clean.json, затем создай report.json
+  с total_cents и rejected_rows. Неоднозначную сумму 1,2,3 исключи, номера строк с
+  учётом заголовка.
+answer_file: clean.json
+answer_files:
+- clean.json
+- report.json
+timeout_s: 240

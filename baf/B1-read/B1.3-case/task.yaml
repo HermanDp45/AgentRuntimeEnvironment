@@ -1,0 +1,9 @@
+id: B1.3
+baf: B1
+level: trap
+messages:
+- Какой размер неустойки по contract.md? Если данных нет, запиши НЕТ ДАННЫХ в answer.txt.
+answer_file: answer.txt
+answer_files:
+- answer.txt
+timeout_s: 240

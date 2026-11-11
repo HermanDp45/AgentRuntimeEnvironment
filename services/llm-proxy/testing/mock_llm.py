@@ -1,11 +1,13 @@
 """Сценарные ответы только для offline-инфраструктурных тестов."""
 
 import json
+from pathlib import Path
 
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
 app = FastAPI()
+BAF_REPLAY = json.loads(Path(__file__).with_name("baf_replay.json").read_text())
 
 
 @app.get("/health")
@@ -26,7 +28,14 @@ async def completion(request: Request):
     ]
     count = len(outputs)
     name, arguments, text = None, None, "Готово"
-    if task == "test:edit":
+    if task in BAF_REPLAY:
+        steps = BAF_REPLAY[task]
+        if count < len(steps):
+            step = steps[count]
+            name, arguments = step["name"], dict(step["arguments"])
+            if arguments.get("expected_sha256") == "$last_sha":
+                arguments["expected_sha256"] = outputs[-1]["value"]["sha256"]
+    elif task == "test:edit":
         if count == 0:
             name, arguments = "read_file", {"path": "note.txt"}
         elif count == 1:

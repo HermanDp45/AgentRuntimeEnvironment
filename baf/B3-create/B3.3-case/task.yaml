@@ -1,0 +1,10 @@
+id: B3.3
+baf: B3
+level: trap
+messages:
+- По spec.md создай countries.yaml и postal.yaml. Все значения должны оставаться строками.
+answer_file: countries.yaml
+answer_files:
+- countries.yaml
+- postal.yaml
+timeout_s: 240

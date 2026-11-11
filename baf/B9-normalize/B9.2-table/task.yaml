@@ -1,0 +1,7 @@
+id: B9.2
+baf: B9
+level: medium
+messages:
+- Нормализуй input.csv по spec.md и запиши result.json. Задача B9.2.
+answer_file: result.json
+timeout_s: 180

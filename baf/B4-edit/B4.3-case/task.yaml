@@ -1,0 +1,11 @@
+id: B4.3
+baf: B4
+level: trap
+messages:
+- В prices.csv (cp1251, CRLF) поменяй цену X на 990. Сохрани кодировку, переводы строк
+  и остальные данные.
+answer_file: prices.csv
+answer_files:
+- prices.csv
+timeout_s: 240
+requires_mount: true

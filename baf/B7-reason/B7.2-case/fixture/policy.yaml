@@ -1,0 +1,6 @@
+roles:
+  reader: {allow: [R]}
+  editor: {inherits: reader}
+  blocked: {inherits: editor, deny: [R]}
+  guest: {}
+rule: deny overrides inherited allow

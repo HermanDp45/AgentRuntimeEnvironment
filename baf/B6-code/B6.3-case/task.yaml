@@ -1,0 +1,11 @@
+id: B6.3
+baf: B6
+level: trap
+messages:
+- Реализуй days_between(a,b) в dates.py по spec.md.
+answer_file: dates.py
+answer_files:
+- dates.py
+timeout_s: 240
+hidden_files:
+- dates.py

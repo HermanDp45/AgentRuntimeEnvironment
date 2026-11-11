@@ -1,0 +1,8 @@
+{
+  "outputs": {
+    "prices.csv": {
+      "text": "товар,цена\r\nX,990\r\nY,200\r\n",
+      "encoding": "cp1251"
+    }
+  }
+}

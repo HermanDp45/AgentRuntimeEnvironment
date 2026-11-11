@@ -1,0 +1,9 @@
+{
+  "outputs": {
+    "unique.py": {},
+    "test_unique.py": {},
+    "README.md": {
+      "text": "# Utilities\n\nunique(items): удаляет повторы, сохраняя порядок.\n"
+    }
+  }
+}

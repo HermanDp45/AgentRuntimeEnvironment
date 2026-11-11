@@ -165,12 +165,12 @@ class DockerBackend:
             if operation.kind == "WriteFile":
                 old = self.worker(
                     container,
-                    {"kind": "ReadFile", "path": operation.path},
+                    {"kind": "ReadFile", "path": operation.path, "encoding": operation.encoding},
                     gate=gate,
                     cancelled=cancelled,
                 )
                 if old and old.status == "ok":
-                    backup.write_text(old.value["content"], encoding="utf-8")
+                    backup.write_bytes(old.value["content"].encode(operation.encoding))
                     backup.chmod(0o600)
                 payload["stage"] = stage
             return self.worker(container, payload, output, gate=gate, cancelled=cancelled)

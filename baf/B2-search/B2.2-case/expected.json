@@ -1,0 +1,8 @@
+{
+  "outputs": {
+    "answer.txt": {
+      "text": "src/m000.py\nsrc/m017.py\nsrc/m034.py\nsrc/m051.py\nsrc/m068.py\nsrc/m085.py\nsrc/m102.py\nsrc/m119.py\nsrc/m136.py\nsrc/m153.py\nsrc/m170.py\nsrc/m187.py",
+      "strip": true
+    }
+  }
+}

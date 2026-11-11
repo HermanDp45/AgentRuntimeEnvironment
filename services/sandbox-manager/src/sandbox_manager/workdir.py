@@ -158,7 +158,7 @@ class MountedWorkdir:
             with self.http() as client:
                 result = client.put(
                     "/" + quote(operation.path),
-                    content=operation.content.encode(),
+                    content=operation.content.encode(operation.encoding),
                     headers={"X-Workdir-Sha256": operation.expected_sha256},
                 )
             if result.status_code == 200:
@@ -170,6 +170,8 @@ class MountedWorkdir:
                 412: "write_conflict",
                 413: "file_too_large",
             }.get(result.status_code, "workdir_unavailable")
+        except UnicodeError:
+            code = "invalid_encoding"
         except httpx2.HTTPError:
             code = "workdir_unavailable"
         kind = "transport" if code == "workdir_unavailable" else "sandbox"

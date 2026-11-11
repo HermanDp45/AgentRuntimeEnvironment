@@ -1,0 +1,13 @@
+id: C2
+baf: C2
+level: composite
+messages:
+- 'Сделай report.md по data/: общая выручка и прибыль (выручка минус расходы). Формат
+  две строки revenue: N и profit: N. Сначала получи список файлов командой find data
+  -type f.'
+answer_file: report.md
+answer_files:
+- report.md
+timeout_s: 240
+commands:
+  find data -type f: 0

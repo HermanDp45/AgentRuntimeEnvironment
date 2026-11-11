@@ -1,0 +1,15 @@
+{
+  "rows": [
+    {
+      "name": "Alice",
+      "date": "2026-01-31",
+      "amount_cents": 123450
+    },
+    {
+      "name": "Bob",
+      "date": "2026-02-01",
+      "amount_cents": 5
+    }
+  ],
+  "errors": []
+}

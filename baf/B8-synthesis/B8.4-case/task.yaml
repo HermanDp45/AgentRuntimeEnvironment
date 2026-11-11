@@ -1,0 +1,10 @@
+id: B8.4
+baf: B8
+level: own
+messages:
+- Сопоставь users.csv и purchases.csv по id. Запиши totals.json с суммами по имени,
+  включая нулевые.
+answer_file: totals.json
+answer_files:
+- totals.json
+timeout_s: 240

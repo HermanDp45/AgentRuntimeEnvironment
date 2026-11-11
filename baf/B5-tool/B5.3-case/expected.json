@@ -1,0 +1,8 @@
+{
+  "outputs": {
+    "answer.txt": {
+      "text": "no missing_dependency",
+      "strip": true
+    }
+  }
+}

@@ -742,11 +742,14 @@ class ChatWindow(QMainWindow):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--url", default="http://127.0.0.1:8080")
+    parser.add_argument("--smoke-test", action="store_true", help=argparse.SUPPRESS)
     args = parser.parse_args()
     app = QApplication(sys.argv[:1])
     app.setApplicationName("Agent Runtime")
     window = ChatWindow(args.url)
     window.show()
+    if args.smoke_test:
+        QTimer.singleShot(200, window.close)
     return app.exec()
 
 

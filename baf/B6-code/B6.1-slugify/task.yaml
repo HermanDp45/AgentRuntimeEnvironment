@@ -1,0 +1,7 @@
+id: B6.1
+baf: B6
+level: simple
+messages:
+  - "Прочитай spec.md. Реализуй slugify(text) в slug.py."
+answer_file: slug.py
+timeout_s: 180

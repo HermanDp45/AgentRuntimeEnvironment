@@ -1,0 +1,12 @@
+id: B2.4
+baf: B2
+level: own
+messages:
+- Где реально читается TOKEN, а не упоминается в комментарии? Путь в answer.txt. Сначала
+  получи список файлов командой find src -type f.
+answer_file: answer.txt
+answer_files:
+- answer.txt
+timeout_s: 240
+commands:
+  find src -type f: 0

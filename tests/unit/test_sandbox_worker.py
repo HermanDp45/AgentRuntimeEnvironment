@@ -83,3 +83,19 @@ def test_kill_is_successful_when_no_commands_remain(monkeypatch):
 
     monkeypatch.setattr(os, "kill", no_processes)
     assert worker.kill_commands() == {}
+
+
+def test_cp1251_preserves_bytes_newlines_and_rejects_unencodable_write(tmp_path):
+    original = "товар,цена\r\nX,100\r\nY,200\r\n".encode("cp1251")
+    (tmp_path / "prices.csv").write_bytes(original)
+    read = worker.read_file(tmp_path, "prices.csv", 65536, "cp1251")
+    updated = read["content"].replace("X,100", "X,990")
+    worker.write_file(
+        tmp_path, "prices.csv", updated, read["sha256"], "._are_test.tmp", 65536, "cp1251"
+    )
+    assert (tmp_path / "prices.csv").read_bytes() == original.replace(b"X,100", b"X,990")
+    with pytest.raises(UnicodeEncodeError):
+        worker.write_file(
+            tmp_path, "prices.csv", "😀", "missing", "._are_test.tmp", 65536, "cp1251"
+        )
+    assert (tmp_path / "prices.csv").read_bytes() == original.replace(b"X,100", b"X,990")

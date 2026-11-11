@@ -3,6 +3,10 @@ services:
     environment:
       CLIENT_TOKENS: fixture-client-token
 
+  sandbox-manager:
+    environment:
+      ARE_TEST_CANARY: fixture-manager-canary-C2
+
   llm-proxy:
     environment:
       LLM_PROVIDER_URL: http://mock-llm:8000

@@ -61,10 +61,10 @@ def digest(data):
     return hashlib.sha256(data).hexdigest()
 
 
-def read_file(root, path, limit):
+def read_file(root, path, limit, encoding="utf-8"):
     with parent(root, path) as (fd, name):
         data, _ = read_bytes(fd, name, limit)
-    return {"content": data.decode("utf-8"), "sha256": digest(data)}
+    return {"content": data.decode(encoding), "sha256": digest(data)}
 
 
 def current(fd, name, limit):
@@ -75,8 +75,8 @@ def current(fd, name, limit):
         return "missing", 0o600
 
 
-def write_file(root, path, content, expected, stage, limit):
-    data = content.encode("utf-8")
+def write_file(root, path, content, expected, stage, limit, encoding="utf-8"):
+    data = content.encode(encoding)
     if len(data) > limit:
         raise WorkerError("file_too_large", "File exceeds the configured limit")
     if not stage.startswith("._are_") or "/" in stage:
@@ -227,7 +227,7 @@ def kill_commands():
 def execute(request, root=Path("/work")):
     kind, limit = request["kind"], request.get("limit", 65536)
     if kind == "ReadFile":
-        return read_file(root, request["path"], limit)
+        return read_file(root, request["path"], limit, request.get("encoding", "utf-8"))
     if kind == "WriteFile":
         return write_file(
             root,
@@ -236,6 +236,7 @@ def execute(request, root=Path("/work")):
             request["expected_sha256"],
             request["stage"],
             limit,
+            request.get("encoding", "utf-8"),
         )
     if kind == "Collect":
         return {"files": collect(root, limit, request.get("mounted", False))}
@@ -295,7 +296,7 @@ def main():
         if isinstance(error, WorkerError):
             code = error.code
         if isinstance(error, UnicodeError):
-            code = "not_utf8"
+            code = "invalid_encoding"
         emit(
             {
                 "type": "result",
