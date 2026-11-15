@@ -1,0 +1,1 @@
+{"checks": ["server_reads_mac", "client_edit_visible", "auth_and_path_boundaries", "server_write_visible_on_mac", "stale_write_rejected", "disconnect_reported"], "passed": true, "scope": "SSH + WebDAV; no sandbox mount"}

@@ -1,0 +1,94 @@
+compose	Run make test-ci	﻿2026-11-15T05:51:16.4373354Z ##[group]Run make test-ci
+compose	Run make test-ci	2026-11-15T05:51:16.4373780Z ^[[36;1mmake test-ci^[[0m
+compose	Run make test-ci	2026-11-15T05:51:16.4389602Z shell: /usr/bin/bash -e {0}
+compose	Run make test-ci	2026-11-15T05:51:16.4390030Z env:
+compose	Run make test-ci	2026-11-15T05:51:16.4390412Z   UV_PYTHON_INSTALL_DIR: /home/runner/work/_temp/uv-python-dir
+compose	Run make test-ci	2026-11-15T05:51:16.4391034Z   UV_CACHE_DIR: /home/runner/work/_temp/setup-uv-cache
+compose	Run make test-ci	2026-11-15T05:51:16.4391480Z ##[endgroup]
+compose	Run make test-ci	2026-11-15T05:51:16.4444092Z uv lock --check --offline
+compose	Run make test-ci	2026-11-15T05:51:16.5992326Z Resolved 47 packages in 0.83ms
+compose	Run make test-ci	2026-11-15T05:51:16.6000344Z uv run --frozen --offline ruff check .
+compose	Run make test-ci	2026-11-15T05:51:16.6255634Z All checks passed!
+compose	Run make test-ci	2026-11-15T05:51:16.6272984Z uv run --frozen --offline ruff format --check .
+compose	Run make test-ci	2026-11-15T05:51:16.6589814Z 145 files already formatted
+compose	Run make test-ci	2026-11-15T05:51:16.6613644Z uv run --frozen --offline pytest -q tests/unit
+compose	Run make test-ci	2026-11-15T05:51:22.1882607Z ..........................F............................................. [ 77%]
+compose	Run make test-ci	2026-11-15T05:51:22.6034408Z .....................                                                    [100%]
+compose	Run make test-ci	2026-11-15T05:51:22.6036464Z =================================== FAILURES ===================================
+compose	Run make test-ci	2026-11-15T05:51:22.6037770Z ____ test_corpus_checkers_accept_reference_and_reject_missing_output[B6.4] _____
+compose	Run make test-ci	2026-11-15T05:51:22.6038569Z 
+compose	Run make test-ci	2026-11-15T05:51:22.6039149Z tmp_path = PosixPath('/tmp/pytest-of-runner/pytest-0/test_corpus_checkers_accept_re23')
+compose	Run make test-ci	2026-11-15T05:51:22.6040404Z identifier = 'B6.4'
+compose	Run make test-ci	2026-11-15T05:51:22.6040766Z 
+compose	Run make test-ci	2026-11-15T05:51:22.6041118Z     @pytest.mark.parametrize("identifier", sorted(TASKS))
+compose	Run make test-ci	2026-11-15T05:51:22.6042356Z     def test_corpus_checkers_accept_reference_and_reject_missing_output(tmp_path, identifier):
+compose	Run make test-ci	2026-11-15T05:51:22.6043420Z         from pathlib import Path
+compose	Run make test-ci	2026-11-15T05:51:22.6043990Z     
+compose	Run make test-ci	2026-11-15T05:51:22.6044544Z         import yaml
+compose	Run make test-ci	2026-11-15T05:51:22.6045041Z     
+compose	Run make test-ci	2026-11-15T05:51:22.6046261Z         task = TASKS[identifier]
+compose	Run make test-ci	2026-11-15T05:51:22.6047189Z         spec = yaml.safe_load((task / "task.yaml").read_text())
+compose	Run make test-ci	2026-11-15T05:51:22.6048320Z         replay = json.loads(Path("services/llm-proxy/testing/baf_replay.json").read_text())
+compose	Run make test-ci	2026-11-15T05:51:22.6049468Z         steps = replay["\n".join(spec["messages"])]
+compose	Run make test-ci	2026-11-15T05:51:22.6050355Z >       shutil.copytree(task / "fixture", tmp_path, dirs_exist_ok=True)
+compose	Run make test-ci	2026-11-15T05:51:22.6050942Z 
+compose	Run make test-ci	2026-11-15T05:51:22.6051239Z tests/unit/test_baf_checkers.py:36: 
+compose	Run make test-ci	2026-11-15T05:51:22.6051998Z _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+compose	Run make test-ci	2026-11-15T05:51:22.6052559Z 
+compose	Run make test-ci	2026-11-15T05:51:22.6053342Z src = PosixPath('/home/runner/work/AgentRuntimeEnvironment/AgentRuntimeEnvironment/baf/B6-code/B6.4-case/fixture')
+compose	Run make test-ci	2026-11-15T05:51:22.6054909Z dst = PosixPath('/tmp/pytest-of-runner/pytest-0/test_corpus_checkers_accept_re23')
+compose	Run make test-ci	2026-11-15T05:51:22.6055871Z symlinks = False, ignore = None
+compose	Run make test-ci	2026-11-15T05:51:22.6056763Z copy_function = <function copy2 at 0x7f473501e340>
+compose	Run make test-ci	2026-11-15T05:51:22.6057634Z ignore_dangling_symlinks = False, dirs_exist_ok = True
+compose	Run make test-ci	2026-11-15T05:51:22.6058180Z 
+compose	Run make test-ci	2026-11-15T05:51:22.6058676Z     def copytree(src, dst, symlinks=False, ignore=None, copy_function=copy2,
+compose	Run make test-ci	2026-11-15T05:51:22.6059394Z                  ignore_dangling_symlinks=False, dirs_exist_ok=False):
+compose	Run make test-ci	2026-11-15T05:51:22.6060104Z         """Recursively copy a directory tree and return the destination directory.
+compose	Run make test-ci	2026-11-15T05:51:22.6060692Z     
+compose	Run make test-ci	2026-11-15T05:51:22.6061208Z         If exception(s) occur, an Error is raised with a list of reasons.
+compose	Run make test-ci	2026-11-15T05:51:22.6061770Z     
+compose	Run make test-ci	2026-11-15T05:51:22.6062331Z         If the optional symlinks flag is true, symbolic links in the
+compose	Run make test-ci	2026-11-15T05:51:22.6063008Z         source tree result in symbolic links in the destination tree; if
+compose	Run make test-ci	2026-11-15T05:51:22.6063648Z         it is false, the contents of the files pointed to by symbolic
+compose	Run make test-ci	2026-11-15T05:51:22.6064352Z         links are copied. If the file pointed to by the symlink doesn't
+compose	Run make test-ci	2026-11-15T05:51:22.6065086Z         exist, an exception will be added in the list of errors raised in
+compose	Run make test-ci	2026-11-15T05:51:22.6066147Z         an Error exception at the end of the copy process.
+compose	Run make test-ci	2026-11-15T05:51:22.6066802Z     
+compose	Run make test-ci	2026-11-15T05:51:22.6067346Z         You can set the optional ignore_dangling_symlinks flag to true if you
+compose	Run make test-ci	2026-11-15T05:51:22.6068143Z         want to silence this exception. Notice that this has no effect on
+compose	Run make test-ci	2026-11-15T05:51:22.6068779Z         platforms that don't support os.symlink.
+compose	Run make test-ci	2026-11-15T05:51:22.6069248Z     
+compose	Run make test-ci	2026-11-15T05:51:22.6069706Z         The optional ignore argument is a callable. If given, it
+compose	Run make test-ci	2026-11-15T05:51:22.6070366Z         is called with the `src` parameter, which is the directory
+compose	Run make test-ci	2026-11-15T05:51:22.6071020Z         being visited by copytree(), and `names` which is the list of
+compose	Run make test-ci	2026-11-15T05:51:22.6071661Z         `src` contents, as returned by os.listdir():
+compose	Run make test-ci	2026-11-15T05:51:22.6072165Z     
+compose	Run make test-ci	2026-11-15T05:51:22.6072580Z             callable(src, names) -> ignored_names
+compose	Run make test-ci	2026-11-15T05:51:22.6073049Z     
+compose	Run make test-ci	2026-11-15T05:51:22.6073521Z         Since copytree() is called recursively, the callable will be
+compose	Run make test-ci	2026-11-15T05:51:22.6074441Z         called once for each directory that is copied. It returns a
+compose	Run make test-ci	2026-11-15T05:51:22.6075058Z         list of names relative to the `src` directory that should
+compose	Run make test-ci	2026-11-15T05:51:22.6075621Z         not be copied.
+compose	Run make test-ci	2026-11-15T05:51:22.6075994Z     
+compose	Run make test-ci	2026-11-15T05:51:22.6076478Z         The optional copy_function argument is a callable that will be used
+compose	Run make test-ci	2026-11-15T05:51:22.6077436Z         to copy each file. It will be called with the source path and the
+compose	Run make test-ci	2026-11-15T05:51:22.6078104Z         destination path as arguments. By default, copy2() is used, but any
+compose	Run make test-ci	2026-11-15T05:51:22.6078868Z         function that supports the same signature (like copy()) can be used.
+compose	Run make test-ci	2026-11-15T05:51:22.6079432Z     
+compose	Run make test-ci	2026-11-15T05:51:22.6079902Z         If dirs_exist_ok is false (the default) and `dst` already exists, a
+compose	Run make test-ci	2026-11-15T05:51:22.6080650Z         `FileExistsError` is raised. If `dirs_exist_ok` is true, the copying
+compose	Run make test-ci	2026-11-15T05:51:22.6081399Z         operation will continue if it encounters existing directories, and files
+compose	Run make test-ci	2026-11-15T05:51:22.6082182Z         within the `dst` tree will be overwritten by corresponding files from the
+compose	Run make test-ci	2026-11-15T05:51:22.6082794Z         `src` tree.
+compose	Run make test-ci	2026-11-15T05:51:22.6083178Z         """
+compose	Run make test-ci	2026-11-15T05:51:22.6083596Z         sys.audit("shutil.copytree", src, dst)
+compose	Run make test-ci	2026-11-15T05:51:22.6084075Z >       with os.scandir(src) as itr:
+compose	Run make test-ci	2026-11-15T05:51:22.6084564Z              ^^^^^^^^^^^^^^^
+compose	Run make test-ci	2026-11-15T05:51:22.6085719Z E       FileNotFoundError: [Errno 2] No such file or directory: '/home/runner/work/AgentRuntimeEnvironment/AgentRuntimeEnvironment/baf/B6-code/B6.4-case/fixture'
+compose	Run make test-ci	2026-11-15T05:51:22.6086737Z 
+compose	Run make test-ci	2026-11-15T05:51:22.6087263Z ../../_temp/uv-python-dir/cpython-3.13.15-linux-x86_64-gnu/lib/python3.13/shutil.py:591: FileNotFoundError
+compose	Run make test-ci	2026-11-15T05:51:22.6088101Z =========================== short test summary info ============================
+compose	Run make test-ci	2026-11-15T05:51:22.6089671Z FAILED tests/unit/test_baf_checkers.py::test_corpus_checkers_accept_reference_and_reject_missing_output[B6.4] - FileNotFoundError: [Errno 2] No such file or directory: '/home/runner/work/AgentRuntimeEnvironment/AgentRuntimeEnvironment/baf/B6-code/B6.4-case/fixture'
+compose	Run make test-ci	2026-11-15T05:51:22.6091206Z 1 failed, 92 passed in 4.90s
+compose	Run make test-ci	2026-11-15T05:51:22.7200531Z make: *** [Makefile:42: test-unit] Error 1
+compose	Run make test-ci	2026-11-15T05:51:22.7217858Z ##[error]Process completed with exit code 2.
