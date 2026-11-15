@@ -34,6 +34,9 @@ uv run --frozen --env-file .env python services/llm-proxy/probe.py results/api-c
 ```
 
 Два синтетических платных запроса, без исполнения инструмента.
+Для другой модели задаются `LLM_PROBE_MODEL` и при необходимости
+`LLM_PROBE_MAX_TOKENS`: у reasoning-модели часть лимита уходит на рассуждение.
+Эти параметры меняют только пробу, конфигурация работающего приложения не меняется.
 Проверка уже была [сохранена](../../results/2026-11-06-llm-api-probe/README.md).
 Полный read-only сценарий через gateway — services/harness/probe.py.
 

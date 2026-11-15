@@ -1,0 +1,287 @@
+{
+  "endpoint": "https://inference.airi.net",
+  "model": "Openai/Gpt-oss-120b",
+  "checks": [
+    {
+      "name": "models",
+      "request": null,
+      "status": 200,
+      "response": {
+        "object": "list",
+        "data": [
+          {
+            "id": "AIRI/OCC-1-1.7B",
+            "object": "model",
+            "created": 1794725650,
+            "owned_by": "vllm",
+            "root": "s3://a030dylov/nlp-data/models/occ-ai/OCC-RAG-1.7B/733cc24406179feedbd4bf54b4723c8d414bbc94/7ab534b2-ddcd-47e6-a759-80375a7a2756",
+            "parent": null,
+            "max_model_len": 32768,
+            "permission": [
+              {
+                "id": "modelperm-a267df912ea650b1",
+                "object": "model_permission",
+                "created": 1794725650,
+                "allow_create_engine": false,
+                "allow_sampling": true,
+                "allow_logprobs": true,
+                "allow_search_indices": false,
+                "allow_view": true,
+                "allow_fine_tuning": false,
+                "organization": "*",
+                "group": null,
+                "is_blocking": false
+              }
+            ]
+          },
+          {
+            "id": "BAAI/Bge-Reranker-v2-m3",
+            "object": "model",
+            "created": 1794725650,
+            "owned_by": "vllm",
+            "root": "s3://a030dylov/nlp-data/models/BAAI/bge-reranker-v2-m3/953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e/c056a768-30d9-4645-a672-9c4fd59fc0c7",
+            "parent": null,
+            "max_model_len": 2048,
+            "permission": [
+              {
+                "id": "modelperm-b0c4f33a02b26406",
+                "object": "model_permission",
+                "created": 1794725650,
+                "allow_create_engine": false,
+                "allow_sampling": true,
+                "allow_logprobs": true,
+                "allow_search_indices": false,
+                "allow_view": true,
+                "allow_fine_tuning": false,
+                "organization": "*",
+                "group": null,
+                "is_blocking": false
+              }
+            ]
+          },
+          {
+            "id": "Cross-encoder/mmarco-mMiniLMv2-L12-H384-v1",
+            "object": "model",
+            "created": 1794725650,
+            "owned_by": "vllm",
+            "root": "s3://a030dylov/nlp-data/models/cross-encoder/mmarco-mMiniLMv2-L12-H384-v1/1427fd652930e4ba29e8149678df786c240d8825/9e26680a-8378-479b-9f53-47adf36e2edc",
+            "parent": null,
+            "max_model_len": 512,
+            "permission": [
+              {
+                "id": "modelperm-bfb1c560adc3ff69",
+                "object": "model_permission",
+                "created": 1794725650,
+                "allow_create_engine": false,
+                "allow_sampling": true,
+                "allow_logprobs": true,
+                "allow_search_indices": false,
+                "allow_view": true,
+                "allow_fine_tuning": false,
+                "organization": "*",
+                "group": null,
+                "is_blocking": false
+              }
+            ]
+          },
+          {
+            "id": "Datalab-to/chandra-ocr-2",
+            "object": "model",
+            "created": 1794725650,
+            "owned_by": "vllm",
+            "root": "s3://a030dylov/nlp-data/models/datalab-to/chandra-ocr-2/af93b47dba1b47b6640c86ccf487ed2260ab9a09/f59ee121-0c6d-4608-aadc-b67f9321fc1b",
+            "parent": null,
+            "max_model_len": 18000,
+            "permission": [
+              {
+                "id": "modelperm-be6be3d84c6fd7bb",
+                "object": "model_permission",
+                "created": 1794725650,
+                "allow_create_engine": false,
+                "allow_sampling": true,
+                "allow_logprobs": true,
+                "allow_search_indices": false,
+                "allow_view": true,
+                "allow_fine_tuning": false,
+                "organization": "*",
+                "group": null,
+                "is_blocking": false
+              }
+            ]
+          },
+          {
+            "id": "Numind/NuExtract3",
+            "object": "model",
+            "created": 1794725650,
+            "owned_by": "vllm",
+            "root": "s3://a030dylov/nlp-data/models/numind/NuExtract3/b447d978e55d0fe961cf366de5c474e1659183e7/8b0b4f25-2357-4e68-858d-4f7653de3239",
+            "parent": null,
+            "max_model_len": 32768,
+            "permission": [
+              {
+                "id": "modelperm-aa823603903cb4fa",
+                "object": "model_permission",
+                "created": 1794725650,
+                "allow_create_engine": false,
+                "allow_sampling": true,
+                "allow_logprobs": true,
+                "allow_search_indices": false,
+                "allow_view": true,
+                "allow_fine_tuning": false,
+                "organization": "*",
+                "group": null,
+                "is_blocking": false
+              }
+            ]
+          },
+          {
+            "id": "Openai/Gpt-oss-120b",
+            "object": "model",
+            "created": 1794725650,
+            "owned_by": "vllm",
+            "root": "/models/Openai/Gpt-oss-120b",
+            "parent": null,
+            "max_model_len": 131072,
+            "permission": [
+              {
+                "id": "modelperm-9b8937bd7989f2ec",
+                "object": "model_permission",
+                "created": 1794725650,
+                "allow_create_engine": false,
+                "allow_sampling": true,
+                "allow_logprobs": true,
+                "allow_search_indices": false,
+                "allow_view": true,
+                "allow_fine_tuning": false,
+                "organization": "*",
+                "group": null,
+                "is_blocking": false
+              }
+            ]
+          },
+          {
+            "id": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+            "object": "model",
+            "created": 1794725650,
+            "owned_by": "vllm",
+            "root": "s3://a030dylov/nlp-data/models/Qwen/Qwen3-235B-A22B-Instruct-2507/ac9c66cc9b46af7306746a9250f23d47083d689e/248e6793-d8f0-4dc6-9447-85d87b967e5e",
+            "parent": null,
+            "max_model_len": 65536,
+            "permission": [
+              {
+                "id": "modelperm-8fff01b64ffaaeba",
+                "object": "model_permission",
+                "created": 1794725650,
+                "allow_create_engine": false,
+                "allow_sampling": true,
+                "allow_logprobs": true,
+                "allow_search_indices": false,
+                "allow_view": true,
+                "allow_fine_tuning": false,
+                "organization": "*",
+                "group": null,
+                "is_blocking": false
+              }
+            ]
+          },
+          {
+            "id": "Qwen/Qwen3-8B",
+            "object": "model",
+            "created": 1794725650,
+            "owned_by": "vllm",
+            "root": "s3://a030dylov/nlp-data/models/Qwen/Qwen3-8B/b968826d9c46dd6066d109eabc6255188de91218/14e00251-ad1a-4e39-bcc5-1392aeb47c3d",
+            "parent": null,
+            "max_model_len": 32768,
+            "permission": [
+              {
+                "id": "modelperm-9fe345d6f82003ba",
+                "object": "model_permission",
+                "created": 1794725650,
+                "allow_create_engine": false,
+                "allow_sampling": true,
+                "allow_logprobs": true,
+                "allow_search_indices": false,
+                "allow_view": true,
+                "allow_fine_tuning": false,
+                "organization": "*",
+                "group": null,
+                "is_blocking": false
+              }
+            ]
+          },
+          {
+            "id": "Qwen/Qwen3-Embedding-0.6B",
+            "object": "model",
+            "created": 1794725650,
+            "owned_by": "vllm",
+            "root": "s3://a030dylov/nlp-data/models/Qwen/Qwen3-Embedding-0.6B/97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3/b8124af6-3f0f-4e0d-b334-388715684a4a",
+            "parent": null,
+            "max_model_len": 32768,
+            "permission": [
+              {
+                "id": "modelperm-9230302c11cc9ade",
+                "object": "model_permission",
+                "created": 1794725650,
+                "allow_create_engine": false,
+                "allow_sampling": true,
+                "allow_logprobs": true,
+                "allow_search_indices": false,
+                "allow_view": true,
+                "allow_fine_tuning": false,
+                "organization": "*",
+                "group": null,
+                "is_blocking": false
+              }
+            ]
+          },
+          {
+            "id": "Qwen/Qwen3.8-27B",
+            "object": "model",
+            "created": 1794725650,
+            "owned_by": "vllm",
+            "root": "s3://a030dylov/nlp-data/models/Qwen/Qwen3.8-27B/1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0/80d2e734-e6da-45ea-8d1d-625329f8200f",
+            "parent": null,
+            "max_model_len": 262144,
+            "permission": [
+              {
+                "id": "modelperm-b4217a9eaf76eb66",
+                "object": "model_permission",
+                "created": 1794725650,
+                "allow_create_engine": false,
+                "allow_sampling": true,
+                "allow_logprobs": true,
+                "allow_search_indices": false,
+                "allow_view": true,
+                "allow_fine_tuning": false,
+                "organization": "*",
+                "group": null,
+                "is_blocking": false
+              }
+            ]
+          }
+        ]
+      },
+      "seconds": 0.196
+    },
+    {
+      "name": "tokenize",
+      "request": {
+        "model": "Openai/Gpt-oss-120b",
+        "prompt": "Text to tokenize",
+        "add_special_tokens": true
+      },
+      "status": 200,
+      "response": {
+        "count": 3,
+        "max_model_len": 131072,
+        "tokens": [
+          1279,
+          316,
+          192720
+        ],
+        "token_strs": null
+      },
+      "seconds": 0.056
+    }
+  ]
+}

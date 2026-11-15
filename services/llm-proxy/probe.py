@@ -8,7 +8,7 @@ from pathlib import Path
 
 import httpx2
 
-MODEL = "Qwen/Qwen3-235B-A22B-Instruct-2507"
+MODEL = os.getenv("LLM_PROBE_MODEL", "Qwen/Qwen3-235B-A22B-Instruct-2507")
 
 
 def main():
@@ -45,7 +45,7 @@ def main():
         payload = {
             "model": MODEL,
             "messages": [{"role": "user", "content": prompt}],
-            "max_tokens": 8 if name == "text" else 128,
+            "max_tokens": int(os.getenv("LLM_PROBE_MAX_TOKENS", "8" if name == "text" else "128")),
             "temperature": 0,
             **extra,
         }

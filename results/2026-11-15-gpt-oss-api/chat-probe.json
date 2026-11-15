@@ -1,0 +1,156 @@
+{
+  "endpoint": "https://inference.airi.net/v1/chat/completions",
+  "model": "Openai/Gpt-oss-120b",
+  "checks": [
+    {
+      "name": "text",
+      "request": {
+        "model": "Openai/Gpt-oss-120b",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly OK and nothing else."
+          }
+        ],
+        "max_tokens": 2048,
+        "temperature": 0
+      },
+      "pass": true,
+      "http_status": 200,
+      "response": {
+        "id": "chatcmpl-8a504eaa1388c7b947a46d3918cddab2",
+        "object": "chat.completion",
+        "created": 1794725681,
+        "model": "Openai/Gpt-oss-120b",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "OK",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": "The user says: \"Reply with exactly OK and nothing else.\" So we must output exactly \"OK\". No extra punctuation, no newline? Usually just \"OK\". Must be exactly that."
+            },
+            "logprobs": null,
+            "finish_reason": "stop",
+            "stop_reason": null,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.32.0-tp2-15aee104",
+        "usage": {
+          "prompt_tokens": 75,
+          "total_tokens": 124,
+          "completion_tokens": 49,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": {
+            "reasoning_tokens": 38
+          }
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      },
+      "seconds": 0.411
+    },
+    {
+      "name": "tool_call",
+      "request": {
+        "model": "Openai/Gpt-oss-120b",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call get_service_port with service equal to orders. Do not answer directly."
+          }
+        ],
+        "max_tokens": 2048,
+        "temperature": 0,
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "get_service_port",
+              "description": "Get the configured port of a service.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "service": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "service"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "auto"
+      },
+      "pass": true,
+      "http_status": 200,
+      "response": {
+        "id": "chatcmpl-d63d116e096dd50ade89b48e7e5a24bf",
+        "object": "chat.completion",
+        "created": 1794725681,
+        "model": "Openai/Gpt-oss-120b",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": null,
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "tool_calls": [
+                {
+                  "id": "chatcmpl-tool-804986f4267c1c94",
+                  "type": "function",
+                  "function": {
+                    "name": "get_service_port",
+                    "arguments": "{\"service\": \"orders\"}"
+                  }
+                }
+              ],
+              "reasoning": "The user wants to call the function get_service_port with service \"orders\". The instruction: \"Do not answer directly.\" So we should just call the function and not produce any other text. Use the function call."
+            },
+            "logprobs": null,
+            "finish_reason": "tool_calls",
+            "stop_reason": 200012,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.32.0-tp2-15aee104",
+        "usage": {
+          "prompt_tokens": 137,
+          "total_tokens": 209,
+          "completion_tokens": 72,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": {
+            "reasoning_tokens": 52
+          }
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      },
+      "seconds": 0.534
+    }
+  ]
+}

@@ -1,0 +1,519 @@
+uv lock --check --offline
+Resolved 47 packages in 12ms
+uv run --frozen --offline ruff check .
+All checks passed!
+uv run --frozen --offline ruff format --check .
+147 files already formatted
+uv run --frozen --offline pytest -q tests/unit
+........................................................................ [ 77%]
+.....................                                                    [100%]
+93 passed in 2.93s
+GATEWAY_PORT=18080 SANDBOX_MANAGER_PORT=18081 docker compose -p are-offline -f docker-compose.yml -f tests/infra/compose.yml up --build --wait --wait-timeout 90
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [sandbox-image internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.06kB done
+#1 DONE 0.0s
+
+#2 [mock-llm internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.13kB done
+#2 DONE 0.0s
+
+#3 [mock-llm internal] load metadata for ghcr.io/astral-sh/uv:0.12.12@sha256:73d2665b478d8fa2de1cf105c6841f8e9cb6b09e568fc7700440c09f8fcd7ac4
+#3 DONE 1.0s
+
+#4 [mock-llm internal] load metadata for docker.io/library/python:3.13.15-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26
+#4 DONE 1.1s
+
+#5 [sandbox-image internal] load .dockerignore
+#5 transferring context: 767B done
+#5 DONE 0.0s
+
+#6 [mock-llm internal] load .dockerignore
+#6 transferring context: 767B done
+#6 DONE 0.0s
+
+#7 [mock-llm internal] load build context
+#7 transferring context: 32.39kB done
+#7 DONE 0.0s
+
+#8 [mock-llm uv 1/1] FROM ghcr.io/astral-sh/uv:0.12.12@sha256:73d2665b478d8fa2de1cf105c6841f8e9cb6b09e568fc7700440c09f8fcd7ac4
+#8 resolve ghcr.io/astral-sh/uv:0.12.12@sha256:73d2665b478d8fa2de1cf105c6841f8e9cb6b09e568fc7700440c09f8fcd7ac4 0.0s done
+#8 DONE 0.0s
+
+#9 [sandbox-image builder 1/5] FROM docker.io/library/python:3.13.15-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26
+#9 resolve docker.io/library/python:3.13.15-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26 0.0s done
+#9 DONE 0.0s
+
+#10 [mock-llm builder 5/5] RUN uv sync --frozen --no-dev --no-cache
+#10 CACHED
+
+#11 [mock-llm production 3/5] WORKDIR /app
+#11 CACHED
+
+#12 [mock-llm production 5/5] COPY services/llm-proxy/src src
+#12 CACHED
+
+#13 [mock-llm production 2/5] RUN groupadd --gid 10001 app && useradd --uid 10001 --gid app --no-create-home app
+#13 CACHED
+
+#14 [mock-llm builder 4/5] COPY pyproject.toml uv.lock ./
+#14 CACHED
+
+#15 [mock-llm production 4/5] COPY --from=builder /app/.venv .venv
+#15 CACHED
+
+#16 [mock-llm testing 1/1] COPY services/llm-proxy/testing /test
+#16 CACHED
+
+#17 [sandbox-image internal] load build context
+#17 transferring context: 11.79kB done
+#17 DONE 0.0s
+
+#18 [sandbox-image builder 3/5] WORKDIR /app
+#18 CACHED
+
+#19 [sandbox-image builder 4/5] COPY pyproject.toml uv.lock ./
+#19 CACHED
+
+#20 [sandbox-image builder 5/5] RUN uv sync --frozen --only-group sandbox --no-cache
+#20 CACHED
+
+#21 [sandbox-image stage-2 5/6] COPY services/sandbox-manager/sandbox/sandbox_worker.py /opt/sandbox_worker.py
+#21 CACHED
+
+#22 [sandbox-image builder 2/5] COPY --from=uv /uv /usr/local/bin/uv
+#22 CACHED
+
+#23 [sandbox-image stage-2 2/6] RUN groupadd --gid 10001 agent && useradd --uid 10001 --gid agent --no-create-home agent
+#23 CACHED
+
+#24 [sandbox-image stage-2 3/6] COPY --from=builder /app/.venv /app/.venv
+#24 CACHED
+
+#25 [sandbox-image stage-2 4/6] COPY contracts/__init__.py contracts/paths.py /opt/contracts/
+#25 CACHED
+
+#26 [sandbox-image stage-2 6/6] WORKDIR /work
+#26 CACHED
+
+#27 [mock-llm] exporting to image
+#27 exporting layers done
+#27 exporting manifest sha256:91d2c301357cdcfab64e009a4a185b0147b84cf427426f52051fd4f6be98992f done
+#27 exporting config sha256:13444a62c0beb81ea0fc09a5893b9ab38fc1fa940441c00e3c0da025e4809cf5 done
+#27 exporting attestation manifest sha256:277f8bfc3cb28f06978326dceda8b9981313360c98f727410d700b89ba1e2422 0.0s done
+#27 exporting manifest list sha256:6a9c63cf4886176fbd74bd8a933bd4691717889001ee879776d12010b88f7d71 done
+#27 naming to docker.io/library/are-offline-mock-llm:latest done
+#27 unpacking to docker.io/library/are-offline-mock-llm:latest done
+#27 DONE 0.0s
+
+#28 [sandbox-image] exporting to image
+#28 exporting layers done
+#28 exporting manifest sha256:d2af188ea34b347e4f3fc263200d6cbffc1950e011f2fbd48bd6af98cffc6b29 done
+#28 exporting config sha256:0b43a0197101ea44f07308ddd12faddae513edd5e81fa6a69b63f992dbeb8923 done
+#28 exporting attestation manifest sha256:f11d14edc642be405c23c4c1e019ebe729090c111d181d30fec90dd4875eeb28 done
+#28 exporting manifest list sha256:2f5bd663369ab4f511c5ff60bddd42626a5188a1ac5cf1ab65a169206c56b163 done
+#28 naming to docker.io/library/are-offline-sandbox:v0 done
+#28 unpacking to docker.io/library/are-offline-sandbox:v0 done
+#28 DONE 0.0s
+
+#29 [mock-llm] resolving provenance for metadata file
+#29 DONE 0.0s
+
+#30 [sandbox-image] resolving provenance for metadata file
+#30 DONE 0.0s
+
+#31 [sandbox-manager internal] load build definition from Dockerfile
+#31 transferring dockerfile: 981B done
+#31 DONE 0.0s
+
+#32 [llm-proxy internal] load build definition from Dockerfile
+#32 transferring dockerfile: 1.13kB done
+#32 DONE 0.0s
+
+#4 [llm-proxy internal] load metadata for docker.io/library/python:3.13.15-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26
+#4 DONE 1.1s
+
+#3 [sandbox-manager internal] load metadata for ghcr.io/astral-sh/uv:0.12.12@sha256:73d2665b478d8fa2de1cf105c6841f8e9cb6b09e568fc7700440c09f8fcd7ac4
+#3 DONE 1.0s
+
+#33 [llm-proxy internal] load .dockerignore
+#33 transferring context: 767B done
+#33 DONE 0.0s
+
+#34 [sandbox-manager internal] load .dockerignore
+#34 transferring context: 767B done
+#34 DONE 0.0s
+
+#35 [llm-proxy internal] load build context
+#35 transferring context: 640B done
+#35 DONE 0.0s
+
+#36 [sandbox-manager internal] load build context
+#36 transferring context: 86.98kB done
+#36 DONE 0.0s
+
+#8 [sandbox-manager uv 1/1] FROM ghcr.io/astral-sh/uv:0.12.12@sha256:73d2665b478d8fa2de1cf105c6841f8e9cb6b09e568fc7700440c09f8fcd7ac4
+#8 resolve ghcr.io/astral-sh/uv:0.12.12@sha256:73d2665b478d8fa2de1cf105c6841f8e9cb6b09e568fc7700440c09f8fcd7ac4 done
+#8 resolve ghcr.io/astral-sh/uv:0.12.12@sha256:73d2665b478d8fa2de1cf105c6841f8e9cb6b09e568fc7700440c09f8fcd7ac4 done
+#8 DONE 0.0s
+
+#9 [sandbox-manager builder 1/5] FROM docker.io/library/python:3.13.15-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26
+#9 resolve docker.io/library/python:3.13.15-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26 done
+#9 DONE 0.0s
+
+#37 [sandbox-manager stage-2 2/6] WORKDIR /app
+#37 CACHED
+
+#38 [sandbox-manager builder 4/5] COPY pyproject.toml uv.lock ./
+#38 CACHED
+
+#39 [sandbox-manager builder 5/5] RUN uv sync --frozen --no-dev --group sandbox-manager --no-cache
+#39 CACHED
+
+#40 [sandbox-manager stage-2 3/6] COPY --from=builder /app/.venv .venv
+#40 CACHED
+
+#41 [sandbox-manager stage-2 4/6] COPY contracts contracts
+#41 CACHED
+
+#42 [sandbox-manager stage-2 5/6] COPY services/sandbox-manager/src src
+#42 CACHED
+
+#43 [sandbox-manager stage-2 6/6] COPY services/sandbox-manager/config.toml config.toml
+#43 CACHED
+
+#13 [llm-proxy production 2/5] RUN groupadd --gid 10001 app && useradd --uid 10001 --gid app --no-create-home app
+#13 CACHED
+
+#44 [llm-proxy builder 4/5] COPY pyproject.toml uv.lock ./
+#44 CACHED
+
+#22 [llm-proxy builder 2/5] COPY --from=uv /uv /usr/local/bin/uv
+#22 CACHED
+
+#45 [llm-proxy builder 5/5] RUN uv sync --frozen --no-dev --no-cache
+#45 CACHED
+
+#18 [llm-proxy builder 3/5] WORKDIR /app
+#18 CACHED
+
+#11 [llm-proxy production 3/5] WORKDIR /app
+#11 CACHED
+
+#46 [llm-proxy production 4/5] COPY --from=builder /app/.venv .venv
+#46 CACHED
+
+#47 [llm-proxy production 5/5] COPY services/llm-proxy/src src
+#47 CACHED
+
+#48 [sandbox-manager] exporting to image
+#48 exporting layers done
+#48 exporting manifest sha256:579d7f3e2a3cc9643f264eda18da0aa1bcbb4094cc0066764cc51bf0af36b175 done
+#48 exporting config sha256:f1454c7f4b742e210492c63da941ea7d577efa8ca7a7fc032c7872829a3be06f done
+#48 exporting attestation manifest sha256:09e491849c9bb883fc944f138c9de8f62b64aa873084c7fa8aeb91f978e6e9bf 0.0s done
+#48 exporting manifest list sha256:5a532e635aed88a54c0a006d39e677fc10c2d4201ee3aabb1ca1dea3ef6ed833 done
+#48 naming to docker.io/library/are-offline-sandbox-manager:latest done
+#48 unpacking to docker.io/library/are-offline-sandbox-manager:latest done
+#48 DONE 0.0s
+
+#49 [llm-proxy] exporting to image
+#49 exporting layers done
+#49 exporting manifest sha256:8283de75cff573bb1715d06ceab538e3c9e3ac213c786f3d74515ae723b44735 done
+#49 exporting config sha256:4f70c54d3bf5a8d46761b629148296ab91a8086b674b18341a6aae08c9a963b9 done
+#49 exporting attestation manifest sha256:2f57bda8d4b9473233ae13dba754e9db1f4d3065f75d4bad625ab34ab8107504 0.0s done
+#49 exporting manifest list sha256:e420e2c4670be22b1299644f4e9d0e96f23773d8ab38171553dca33af5b141f1 done
+#49 naming to docker.io/library/are-offline-llm-proxy:latest done
+#49 unpacking to docker.io/library/are-offline-llm-proxy:latest done
+#49 DONE 0.0s
+
+#50 [sandbox-manager] resolving provenance for metadata file
+#50 DONE 0.0s
+
+#51 [llm-proxy] resolving provenance for metadata file
+#51 DONE 0.0s
+
+#52 [harness internal] load build definition from Dockerfile
+#52 transferring dockerfile: 1.04kB done
+#52 DONE 0.0s
+
+#3 [harness internal] load metadata for ghcr.io/astral-sh/uv:0.12.12@sha256:73d2665b478d8fa2de1cf105c6841f8e9cb6b09e568fc7700440c09f8fcd7ac4
+#3 DONE 1.0s
+
+#4 [harness internal] load metadata for docker.io/library/python:3.13.15-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26
+#4 DONE 1.1s
+
+#53 [harness internal] load .dockerignore
+#53 transferring context: 767B done
+#53 DONE 0.0s
+
+#54 [harness internal] load build context
+#54 transferring context: 92.46kB done
+#54 DONE 0.0s
+
+#9 [harness builder 1/5] FROM docker.io/library/python:3.13.15-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26
+#9 resolve docker.io/library/python:3.13.15-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26 done
+#9 DONE 0.0s
+
+#8 [harness uv 1/1] FROM ghcr.io/astral-sh/uv:0.12.12@sha256:73d2665b478d8fa2de1cf105c6841f8e9cb6b09e568fc7700440c09f8fcd7ac4
+#8 resolve ghcr.io/astral-sh/uv:0.12.12@sha256:73d2665b478d8fa2de1cf105c6841f8e9cb6b09e568fc7700440c09f8fcd7ac4 done
+#8 DONE 0.0s
+
+#22 [harness builder 2/5] COPY --from=uv /uv /usr/local/bin/uv
+#22 CACHED
+
+#55 [harness builder 4/5] COPY pyproject.toml uv.lock ./
+#55 CACHED
+
+#56 [harness builder 5/5] RUN uv sync --frozen --no-dev --no-cache
+#56 CACHED
+
+#57 [harness stage-2 2/7] RUN groupadd --gid 10001 app && useradd --uid 10001 --gid app --no-create-home app
+#57 CACHED
+
+#58 [harness stage-2 4/7] COPY --from=builder /app/.venv .venv
+#58 CACHED
+
+#59 [harness stage-2 6/7] COPY services/harness/src src
+#59 CACHED
+
+#18 [harness builder 3/5] WORKDIR /app
+#18 CACHED
+
+#60 [harness stage-2 3/7] WORKDIR /app
+#60 CACHED
+
+#61 [harness stage-2 5/7] COPY contracts contracts
+#61 CACHED
+
+#62 [harness stage-2 7/7] COPY services/harness/config.toml config.toml
+#62 CACHED
+
+#63 [harness] exporting to image
+#63 exporting layers done
+#63 exporting manifest sha256:953cc2b4890aa3f42150e5eb534b06dc56d108ef37a81ab32341345e74fcc123 done
+#63 exporting config sha256:00679ec00b792b30b969c67a6b395c76ed40d1428bed628b3be0f60dbaaaa66e done
+#63 exporting attestation manifest sha256:35f57f163fb59b9c3e5809d103352292c7a013aa9985d9058675957cdfe80d0a done
+#63 exporting manifest list sha256:45e5604d58efb176f8d0515ff7d48601369e571d97cb021a44b1e4a6614af554 done
+#63 naming to docker.io/library/are-offline-harness:latest done
+#63 unpacking to docker.io/library/are-offline-harness:latest done
+#63 DONE 0.0s
+
+#64 [harness] resolving provenance for metadata file
+#64 DONE 0.0s
+
+#65 [gateway internal] load build definition from Dockerfile
+#65 transferring dockerfile: 979B done
+#65 DONE 0.0s
+
+#4 [gateway internal] load metadata for docker.io/library/python:3.13.15-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26
+#4 DONE 1.1s
+
+#3 [gateway internal] load metadata for ghcr.io/astral-sh/uv:0.12.12@sha256:73d2665b478d8fa2de1cf105c6841f8e9cb6b09e568fc7700440c09f8fcd7ac4
+#3 DONE 1.0s
+
+#66 [gateway internal] load .dockerignore
+#66 transferring context: 767B done
+#66 DONE 0.0s
+
+#67 [gateway internal] load build context
+#67 transferring context: 3.80kB done
+#67 DONE 0.0s
+
+#8 [gateway uv 1/1] FROM ghcr.io/astral-sh/uv:0.12.12@sha256:73d2665b478d8fa2de1cf105c6841f8e9cb6b09e568fc7700440c09f8fcd7ac4
+#8 resolve ghcr.io/astral-sh/uv:0.12.12@sha256:73d2665b478d8fa2de1cf105c6841f8e9cb6b09e568fc7700440c09f8fcd7ac4 0.0s done
+#8 DONE 0.0s
+
+#9 [gateway builder 1/5] FROM docker.io/library/python:3.13.15-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26
+#9 resolve docker.io/library/python:3.13.15-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26 0.0s done
+#9 DONE 0.0s
+
+#68 [gateway builder 5/5] RUN uv sync --frozen --no-dev --no-cache
+#68 CACHED
+
+#11 [gateway stage-2 3/5] WORKDIR /app
+#11 CACHED
+
+#13 [gateway stage-2 2/5] RUN groupadd --gid 10001 app && useradd --uid 10001 --gid app --no-create-home app
+#13 CACHED
+
+#18 [gateway builder 3/5] WORKDIR /app
+#18 CACHED
+
+#69 [gateway stage-2 4/5] COPY --from=builder /app/.venv .venv
+#69 CACHED
+
+#70 [gateway builder 4/5] COPY pyproject.toml uv.lock ./
+#70 CACHED
+
+#22 [gateway builder 2/5] COPY --from=uv /uv /usr/local/bin/uv
+#22 CACHED
+
+#71 [gateway stage-2 5/5] COPY services/gateway/src src
+#71 CACHED
+
+#72 [gateway] exporting to image
+#72 exporting layers done
+#72 exporting manifest sha256:07f630f6cf5fd41496bd1d094305428b972c6b735c14bc085452b8d000f89294 done
+#72 exporting config sha256:66bdd2ce5a6a90b25cc1c50fe355a4879606784bdc9c1f1522b93f3e28b3dfb1 done
+#72 exporting attestation manifest sha256:7c6a2c1693bb134f4bfc7c18950e39940b25f497d45e22cece3915387adcf7ea done
+#72 exporting manifest list sha256:583f5a4955f208c77778d5dba7aed3d7483c85368f9d4785a799d5299b791b53 done
+#72 naming to docker.io/library/are-offline-gateway:latest done
+#72 unpacking to docker.io/library/are-offline-gateway:latest done
+#72 DONE 0.0s
+
+#73 [gateway] resolving provenance for metadata file
+#73 DONE 0.0s
+ Network are-offline_default  Creating
+ Network are-offline_default  Created
+ Container are-offline-mock-llm-1  Creating
+ Container are-offline-sandbox-image-1  Creating
+ Container are-offline-mock-llm-1  Created
+ Container are-offline-sandbox-image-1  Created
+ Container are-offline-llm-proxy-1  Creating
+ Container are-offline-sandbox-manager-1  Creating
+ Container are-offline-sandbox-manager-1  Created
+ Container are-offline-llm-proxy-1  Created
+ Container are-offline-harness-1  Creating
+ Container are-offline-harness-1  Created
+ Container are-offline-gateway-1  Creating
+ Container are-offline-gateway-1  Created
+ Container are-offline-mock-llm-1  Starting
+ Container are-offline-sandbox-image-1  Starting
+ Container are-offline-sandbox-image-1  Started
+ Container are-offline-sandbox-image-1  Waiting
+ Container are-offline-mock-llm-1  Started
+ Container are-offline-mock-llm-1  Waiting
+ Container are-offline-sandbox-image-1  Exited
+ Container are-offline-sandbox-manager-1  Starting
+ Container are-offline-sandbox-manager-1  Started
+ Container are-offline-mock-llm-1  Healthy
+ Container are-offline-llm-proxy-1  Starting
+ Container are-offline-llm-proxy-1  Started
+ Container are-offline-sandbox-manager-1  Waiting
+ Container are-offline-llm-proxy-1  Waiting
+ Container are-offline-sandbox-manager-1  Healthy
+ Container are-offline-llm-proxy-1  Healthy
+ Container are-offline-harness-1  Starting
+ Container are-offline-harness-1  Started
+ Container are-offline-harness-1  Waiting
+ Container are-offline-harness-1  Healthy
+ Container are-offline-gateway-1  Starting
+ Container are-offline-gateway-1  Started
+ Container are-offline-mock-llm-1  Waiting
+ Container are-offline-sandbox-manager-1  Waiting
+ Container are-offline-gateway-1  Waiting
+ Container are-offline-llm-proxy-1  Waiting
+ Container are-offline-harness-1  Waiting
+ Container are-offline-sandbox-image-1  Waiting
+ Container are-offline-harness-1  Healthy
+ Container are-offline-sandbox-manager-1  Healthy
+ Container are-offline-llm-proxy-1  Healthy
+ Container are-offline-mock-llm-1  Healthy
+ Container are-offline-sandbox-image-1  Exited
+ Container are-offline-gateway-1  Healthy
+docker compose -p are-offline -f docker-compose.yml -f tests/infra/compose.yml exec -T sandbox-manager python -c "import os; assert os.environ['ARE_TEST_CANARY'] == 'fixture-manager-canary-C2'"
+docker compose -p are-offline -f docker-compose.yml -f tests/infra/compose.yml exec -T llm-proxy python -c "import os; assert os.environ['LLM_PROVIDER_URL'] == 'http://mock-llm:8000'"
+SANDBOX_TEST_URL=http://127.0.0.1:18081 HARNESS_TEST_URL=http://127.0.0.1:18080 uv run --frozen --offline pytest -q tests/infra
+................                                                         [100%]
+16 passed in 21.64s
+QT_QPA_PLATFORM=offscreen uv run --frozen --offline --group gui pytest -q tests/ui
+.......ss                                                                [100%]
+7 passed, 2 skipped in 2.02s
+docker compose -p are-offline -f docker-compose.yml -f tests/infra/compose.yml exec -T llm-proxy python -c "import os; assert os.environ['LLM_PROVIDER_URL'] == 'http://mock-llm:8000'"
+CLIENT_TOKEN=fixture-client-token SANDBOX_TEST_URL=http://127.0.0.1:18081 uv run --frozen --offline python -m baf.runner --url http://127.0.0.1:18080 
+B1.1: passed (ok)
+B2.1: passed (ok)
+B3.1: passed (ok)
+B4.1: passed (ok)
+B5.1: passed (ok)
+B6.1: passed (ok)
+B7.1: passed (ok)
+B8.1: passed (ok)
+B9.1: passed (ok)
+B9.2: passed (ok)
+B9.3: passed (ok)
+Результаты в results/baf/early/20261115T065553051293Z.jsonl
+COMPOSE_PROJECT_NAME=are-offline COMPOSE_FILE=docker-compose.yml:tests/infra/compose.yml uv run --frozen --offline python tests/infra/check_lifecycle.py
+ Container are-offline-harness-1  Killing
+ Container are-offline-harness-1  Killed
+ Container are-offline-harness-1  Created
+ Container are-offline-harness-1  Starting
+ Container are-offline-harness-1  Started
+ Container are-offline-harness-1  Waiting
+ Container are-offline-harness-1  Healthy
+ Container are-offline-sandbox-manager-1  Killing
+ Container are-offline-sandbox-manager-1  Killed
+ Container are-offline-sandbox-image-1  Created
+ Container are-offline-sandbox-manager-1  Created
+ Container are-offline-sandbox-image-1  Starting
+ Container are-offline-sandbox-image-1  Started
+ Container are-offline-sandbox-image-1  Waiting
+ Container are-offline-sandbox-image-1  Exited
+ Container are-offline-sandbox-manager-1  Starting
+ Container are-offline-sandbox-manager-1  Started
+ Container are-offline-sandbox-image-1  Waiting
+ Container are-offline-sandbox-manager-1  Waiting
+ Container are-offline-sandbox-image-1  Exited
+ Container are-offline-sandbox-manager-1  Healthy
+ Container are-offline-sandbox-manager-1  Stopping
+ Container are-offline-sandbox-manager-1  Stopped
+{
+  "harness_crash": {
+    "started_before_kill": true,
+    "configured_timeout_s": 120,
+    "stopped_after_crash_s": 120.083,
+    "descendants_cleaned": true,
+    "completed_write_preserved": true,
+    "old_run_lost_after_restart": true
+  },
+  "resources": {
+    "Memory": 1073741824,
+    "MemorySwap": 1073741824,
+    "NanoCpus": 1000000000,
+    "PidsLimit": 128,
+    "NetworkMode": "none",
+    "ReadonlyRootfs": true,
+    "CapDrop": [
+      "ALL"
+    ],
+    "SecurityOpt": [
+      "no-new-privileges:true",
+      "seccomp=builtin"
+    ],
+    "Tmpfs": {
+      "/tmp": "rw,noexec,nosuid,nodev,size=16777216,uid=10001,gid=10001",
+      "/work": "rw,nosuid,nodev,size=67108864,uid=10001,gid=10001,mode=0755"
+    }
+  },
+  "image": "sha256:2f5bd663369ab4f511c5ff60bddd42626a5188a1ac5cf1ab65a169206c56b163",
+  "startup_orphan_cleanup": true,
+  "graceful_cleanup": true
+}
+docker compose -p are-offline -f docker-compose.yml -f tests/infra/compose.yml down -v --remove-orphans
+ Container are-offline-gateway-1  Stopping
+ Container are-offline-gateway-1  Stopped
+ Container are-offline-gateway-1  Removing
+ Container are-offline-gateway-1  Removed
+ Container are-offline-harness-1  Stopping
+ Container are-offline-harness-1  Stopped
+ Container are-offline-harness-1  Removing
+ Container are-offline-harness-1  Removed
+ Container are-offline-llm-proxy-1  Stopping
+ Container are-offline-sandbox-manager-1  Stopping
+ Container are-offline-sandbox-manager-1  Stopped
+ Container are-offline-sandbox-manager-1  Removing
+ Container are-offline-sandbox-manager-1  Removed
+ Container are-offline-sandbox-image-1  Stopping
+ Container are-offline-sandbox-image-1  Stopped
+ Container are-offline-sandbox-image-1  Removing
+ Container are-offline-sandbox-image-1  Removed
+ Container are-offline-llm-proxy-1  Stopped
+ Container are-offline-llm-proxy-1  Removing
+ Container are-offline-llm-proxy-1  Removed
+ Container are-offline-mock-llm-1  Stopping
+ Container are-offline-mock-llm-1  Stopped
+ Container are-offline-mock-llm-1  Removing
+ Container are-offline-mock-llm-1  Removed
+ Network are-offline_default  Removing
+ Network are-offline_default  Removed
