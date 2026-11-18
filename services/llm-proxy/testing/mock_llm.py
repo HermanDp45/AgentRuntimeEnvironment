@@ -35,6 +35,9 @@ async def completion(request: Request):
             name, arguments = step["name"], dict(step["arguments"])
             if arguments.get("expected_sha256") == "$last_sha":
                 arguments["expected_sha256"] = outputs[-1]["value"]["sha256"]
+    elif task == "test:create" and not outputs:
+        name = "write_file"
+        arguments = {"path": "note.txt", "content": "created", "expected_sha256": "missing"}
     elif task == "test:edit":
         if count == 0:
             name, arguments = "read_file", {"path": "note.txt"}

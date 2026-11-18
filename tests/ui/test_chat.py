@@ -369,3 +369,32 @@ def test_selected_folder_is_live_and_changes_stay_after_close(qt_app, tmp_path, 
         )
     assert note.read_text() == "edited-on-client"
     assert (tmp_path / ".git" / "config").read_text() == "private"
+
+
+@pytest.mark.docker
+@pytest.mark.skipif(not os.getenv("HARNESS_TEST_URL"), reason="Use make up-test")
+def test_mounted_file_list_tracks_new_and_renamed_files(qt_app, tmp_path):
+    subdir = tmp_path / "sub"
+    subdir.mkdir()
+    window = ChatWindow(os.environ["HARNESS_TEST_URL"], "fixture-client-token")
+    window.set_folder(str(tmp_path))
+    window.show()
+    try:
+        connect(qt_app, window)
+        wait(qt_app, lambda: not window.jobs)
+        assert window.file_list.count() == 0
+        send(window, "test:create")
+        wait(qt_app, window.approval.isVisible, timeout=20)
+        QTest.mouseClick(window.allow, Qt.MouseButton.LeftButton)
+        wait(qt_app, window.send_button.isEnabled, timeout=20)
+        assert (tmp_path / "note.txt").read_text() == "created"
+        assert window.file_list.item(0).text() == "note.txt"
+        assert window.file_content.toPlainText() == "created"
+
+        (tmp_path / "note.txt").rename(subdir / "renamed.txt")
+        QTest.mouseClick(window.refresh_files, Qt.MouseButton.LeftButton)
+        wait(qt_app, window.send_button.isEnabled, timeout=20)
+        assert set(window.last_files) == {"sub/renamed.txt"}
+    finally:
+        window.close()
+        wait(qt_app, lambda: not window.isVisible() and not window.jobs and not window.stream)

@@ -68,6 +68,7 @@ services:
     depends_on:
       sandbox-image:
         condition: service_completed_successfully
+        restart: true
     ports:
       - "127.0.0.1:${SANDBOX_MANAGER_PORT:-8081}:8081"
     environment:

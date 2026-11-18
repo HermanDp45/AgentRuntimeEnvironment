@@ -118,6 +118,15 @@ def clean_stage(root, path, stage):
     return {}
 
 
+def refresh_listing(directory):
+    # rclone обновляет своё дерево, но Linux NFS может сохранить прежний результат readdir.
+    fd = os.open(directory, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+    try:
+        os.posix_fadvise(fd, 0, 0, os.POSIX_FADV_DONTNEED)
+    finally:
+        os.close(fd)
+
+
 def collect(root, limit, mounted=False):
     files, size, entries = {}, 0, 0
 
@@ -125,6 +134,8 @@ def collect(root, limit, mounted=False):
         if mounted:
             raise error
 
+    if mounted:
+        refresh_listing(root)
     for directory, names, leaves in os.walk(root, followlinks=False, onerror=report):
         entries += len(names) + len(leaves)
         if entries > 512:
@@ -138,6 +149,8 @@ def collect(root, limit, mounted=False):
             path = Path(directory) / name
             if path.is_symlink():
                 raise WorkerError("invalid_path", "Symbolic links are not collected")
+            if mounted and name in names:
+                refresh_listing(path)
             if name in leaves:
                 relative = path.relative_to(root).as_posix()
                 try:
