@@ -1,0 +1,205 @@
+{
+  "all": {
+    "n": 117,
+    "passed_by_round": [
+      32,
+      28,
+      30
+    ],
+    "tokens_in": 759179,
+    "tokens_out": 76886,
+    "median_seconds": 34.599,
+    "outcomes": {
+      "passed": 90,
+      "check_failed": 26,
+      "timeout": 1
+    }
+  },
+  "B1": {
+    "n": 12,
+    "passed_by_round": [
+      4,
+      4,
+      4
+    ],
+    "tokens_in": 134559,
+    "tokens_out": 4044,
+    "median_seconds": 18.612499999999997,
+    "outcomes": {
+      "passed": 12
+    }
+  },
+  "B2": {
+    "n": 12,
+    "passed_by_round": [
+      4,
+      4,
+      3
+    ],
+    "tokens_in": 63014,
+    "tokens_out": 6014,
+    "median_seconds": 26.363500000000002,
+    "outcomes": {
+      "passed": 11,
+      "check_failed": 1
+    }
+  },
+  "B3": {
+    "n": 12,
+    "passed_by_round": [
+      4,
+      4,
+      4
+    ],
+    "tokens_in": 75193,
+    "tokens_out": 6664,
+    "median_seconds": 35.408,
+    "outcomes": {
+      "passed": 12
+    }
+  },
+  "B4": {
+    "n": 12,
+    "passed_by_round": [
+      4,
+      4,
+      4
+    ],
+    "tokens_in": 74292,
+    "tokens_out": 8104,
+    "median_seconds": 38.306,
+    "outcomes": {
+      "passed": 12
+    }
+  },
+  "B5": {
+    "n": 12,
+    "passed_by_round": [
+      2,
+      0,
+      1
+    ],
+    "tokens_in": 35584,
+    "tokens_out": 5807,
+    "median_seconds": 30.145,
+    "outcomes": {
+      "passed": 3,
+      "check_failed": 9
+    }
+  },
+  "B6": {
+    "n": 12,
+    "passed_by_round": [
+      4,
+      3,
+      4
+    ],
+    "tokens_in": 75810,
+    "tokens_out": 14634,
+    "median_seconds": 69.3065,
+    "outcomes": {
+      "passed": 11,
+      "timeout": 1
+    }
+  },
+  "B7": {
+    "n": 12,
+    "passed_by_round": [
+      2,
+      2,
+      2
+    ],
+    "tokens_in": 45933,
+    "tokens_out": 4054,
+    "median_seconds": 23.154,
+    "outcomes": {
+      "passed": 6,
+      "check_failed": 6
+    }
+  },
+  "B8": {
+    "n": 12,
+    "passed_by_round": [
+      4,
+      3,
+      4
+    ],
+    "tokens_in": 89595,
+    "tokens_out": 8984,
+    "median_seconds": 37.218,
+    "outcomes": {
+      "passed": 11,
+      "check_failed": 1
+    }
+  },
+  "B9": {
+    "n": 9,
+    "passed_by_round": [
+      3,
+      3,
+      3
+    ],
+    "tokens_in": 65986,
+    "tokens_out": 6567,
+    "median_seconds": 47.922,
+    "outcomes": {
+      "passed": 9
+    }
+  },
+  "C1": {
+    "n": 3,
+    "passed_by_round": [
+      0,
+      0,
+      0
+    ],
+    "tokens_in": 28584,
+    "tokens_out": 2770,
+    "median_seconds": 64.601,
+    "outcomes": {
+      "check_failed": 3
+    }
+  },
+  "C2": {
+    "n": 3,
+    "passed_by_round": [
+      1,
+      1,
+      1
+    ],
+    "tokens_in": 18672,
+    "tokens_out": 1348,
+    "median_seconds": 32.638,
+    "outcomes": {
+      "passed": 3
+    }
+  },
+  "C3": {
+    "n": 3,
+    "passed_by_round": [
+      0,
+      0,
+      0
+    ],
+    "tokens_in": 30994,
+    "tokens_out": 4437,
+    "median_seconds": 91.344,
+    "outcomes": {
+      "check_failed": 3
+    }
+  },
+  "C4": {
+    "n": 3,
+    "passed_by_round": [
+      0,
+      0,
+      0
+    ],
+    "tokens_in": 20963,
+    "tokens_out": 3459,
+    "median_seconds": 57.471,
+    "outcomes": {
+      "check_failed": 3
+    }
+  }
+}

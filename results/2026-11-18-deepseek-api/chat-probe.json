@@ -1,0 +1,142 @@
+{
+  "endpoint": "https://litellm-backend.deeppavlov.ai/v1/chat/completions",
+  "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+  "checks": [
+    {
+      "name": "text",
+      "request": {
+        "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly OK and nothing else."
+          }
+        ],
+        "max_tokens": 2048,
+        "temperature": 0
+      },
+      "pass": true,
+      "http_status": 200,
+      "response": {
+        "id": "chatcmpl-845ae2d641a73e8e",
+        "created": 1794989060,
+        "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+        "object": "chat.completion",
+        "system_fingerprint": "vllm-0.32.0-tp8-150f5af4",
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "OK",
+              "role": "assistant",
+              "reasoning_content": "We need answer exactly OK. Need comply.",
+              "provider_specific_fields": {
+                "reasoning": "We need answer exactly OK. Need comply.",
+                "refusal": null
+              }
+            },
+            "provider_specific_fields": {
+              "routed_experts": null,
+              "stop_reason": null,
+              "token_ids": null
+            }
+          }
+        ],
+        "usage": {
+          "completion_tokens": 12,
+          "prompt_tokens": 38,
+          "total_tokens": 50,
+          "completion_tokens_details": {
+            "reasoning_tokens": 9
+          }
+        }
+      },
+      "seconds": 5.935
+    },
+    {
+      "name": "tool_call",
+      "request": {
+        "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call get_service_port with service equal to orders. Do not answer directly."
+          }
+        ],
+        "max_tokens": 2048,
+        "temperature": 0,
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "get_service_port",
+              "description": "Get the configured port of a service.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "service": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "service"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "auto"
+      },
+      "pass": true,
+      "http_status": 200,
+      "response": {
+        "id": "chatcmpl-88f30edaf9134f03",
+        "created": 1794989061,
+        "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+        "object": "chat.completion",
+        "system_fingerprint": "vllm-0.32.0-tp8-150f5af4",
+        "choices": [
+          {
+            "finish_reason": "tool_calls",
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "tool_calls": [
+                {
+                  "function": {
+                    "arguments": "{\"service\": \"orders\"}",
+                    "name": "get_service_port"
+                  },
+                  "id": "chatcmpl-tool-80c44e1184bb4f82",
+                  "type": "function"
+                }
+              ],
+              "reasoning_content": "The user wants me to call get_service_port with service \"orders\".",
+              "provider_specific_fields": {
+                "reasoning": "The user wants me to call get_service_port with service \"orders\".",
+                "refusal": null
+              },
+              "content": null
+            },
+            "provider_specific_fields": {
+              "routed_experts": null,
+              "stop_reason": null,
+              "token_ids": null
+            }
+          }
+        ],
+        "usage": {
+          "completion_tokens": 54,
+          "prompt_tokens": 305,
+          "total_tokens": 359,
+          "completion_tokens_details": {
+            "reasoning_tokens": 14
+          }
+        }
+      },
+      "seconds": 3.091
+    }
+  ]
+}
