@@ -25,19 +25,25 @@ class ModelClient:
     def __init__(self, client, config):
         self.client, self.config = client, config
 
-    async def complete(self, history, tools, max_tokens):
+    async def complete(self, history, tools, max_tokens, model_profile=None):
         try:
             async with self.client.stream(
                 "POST",
                 "/v1/chat/completions",
                 json={
                     "messages": history,
+                    "model_profile": model_profile,
                     "tools": tools,
                     "tool_choice": "auto",
                     "max_tokens": max_tokens,
                     "temperature": 0,
                 },
             ) as response:
+                if response.status_code == 503:
+                    if (await response.aread()) and response.json().get("error", {}).get(
+                        "code"
+                    ) == "api_key_missing":
+                        raise Stop(failure("transport", "api_key_missing"))
                 response.raise_for_status()
                 data = bytearray()
                 async for chunk in response.aiter_bytes():

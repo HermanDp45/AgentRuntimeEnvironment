@@ -11,6 +11,7 @@ from pydantic import (
     WithJsonSchema,
 )
 
+from contracts.models import ModelProfile
 from contracts.paths import PATH_PATTERN, safe_path
 
 SafePath = Annotated[
@@ -192,10 +193,12 @@ SandboxMessage = Annotated[
 
 class ClientSession(MountedProvision):
     type: Literal["session.create"]
+    model_profile: ModelProfile | None = None
 
 
 class FixtureSession(Provision):
     type: Literal["session.fixture"]
+    model_profile: ModelProfile | None = None
 
 
 class ClientTask(Message):

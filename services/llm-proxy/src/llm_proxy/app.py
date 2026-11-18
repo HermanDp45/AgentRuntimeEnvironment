@@ -11,9 +11,12 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, ConfigDict, Field, JsonValue
 
+from contracts.models import MODEL_IDS, ModelProfile
+
 
 class Chat(BaseModel):
     model_config = ConfigDict(extra="forbid")
+    model_profile: ModelProfile | None = None
     messages: list[dict[str, JsonValue]] = Field(min_length=1, max_length=512)
     tools: list[dict[str, JsonValue]] = Field(max_length=16)
     tool_choice: str = "auto"
@@ -36,6 +39,11 @@ def create_app(client=None):
     provider = os.getenv("LLM_PROVIDER_URL", "https://inference.airi.net").rstrip("/")
     model = os.getenv("LLM_MODEL", "Qwen/Qwen3-235B-A22B-Instruct-2507")
     key = os.getenv("LLM_API_KEY", "")
+
+    profiles = {
+        "deepseek": ("https://litellm-backend.deeppavlov.ai", os.getenv("DEEPSEEK_API_KEY")),
+        "qwen": ("https://inference.airi.net", os.getenv("QWEN_API_KEY")),
+    }
 
     @asynccontextmanager
     async def lifespan(app):
@@ -67,17 +75,29 @@ def create_app(client=None):
 
     @app.post("/v1/chat/completions")
     async def chat(body: Chat):
-        if not key:
+        endpoint, model_id, api_key = provider, model, key
+        if profile := body.model_profile:
+            endpoint, profile_key = profiles[profile]
+            model_id = MODEL_IDS[profile]
+            api_key = profile_key or (key if provider == endpoint else "")
+        if not api_key:
             return error(503, "api_key_missing")
-        payload = {**body.model_dump(), "model": model, "stream": False}
+        payload = {**body.model_dump(exclude={"model_profile"}), "model": model_id, "stream": False}
+        first = payload["messages"][0]
+        if (
+            body.model_profile
+            and first.get("role") == "system"
+            and isinstance(first.get("content"), str)
+        ):
+            first["content"] += f"\nYour configured model ID is {model_id}."
         if len(json.dumps(payload).encode()) > 2 * 1024 * 1024:
             return error(413, "context_too_large")
         try:
             async with app.state.http.stream(
                 "POST",
-                provider + "/v1/chat/completions",
+                endpoint + "/v1/chat/completions",
                 json=payload,
-                headers={"Authorization": f"Bearer {key}"},
+                headers={"Authorization": f"Bearer {api_key}"},
             ) as response:
                 response.raise_for_status()
                 data = bytearray()
@@ -85,7 +105,7 @@ def create_app(client=None):
                     data.extend(chunk)
                     if len(data) > 1024 * 1024:
                         return error(502, "provider_reply_too_large")
-                return json.loads(data.decode().replace(key, "REDACTED"))
+                return json.loads(data.decode().replace(api_key, "REDACTED"))
         except (httpx2.HTTPError, ValueError):
             return error(502, "provider_unavailable")
 

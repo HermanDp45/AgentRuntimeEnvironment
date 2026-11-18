@@ -218,6 +218,14 @@ def test_stream_reconnect_resumes_without_reposting(qt_app, chat):
     assert sum(path == "/v0/tasks" for _, path, _ in server.requests) == 1
 
 
+def test_model_selection_is_bound_to_chat(qt_app, chat):
+    window, server = chat
+    window.model_picker.setCurrentIndex(window.model_picker.findData("qwen"))
+    connect(qt_app, window)
+    assert server.requests[0][2]["model_profile"] == "qwen"
+    assert not window.model_picker.isEnabled()
+
+
 def test_http_error_does_not_display_token(qt_app, chat, monkeypatch):
     window, server = chat
     original = server.handle

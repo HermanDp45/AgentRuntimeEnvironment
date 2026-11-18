@@ -37,7 +37,7 @@ class Model:
     def __init__(self, *replies):
         self.replies, self.histories = list(replies), []
 
-    async def complete(self, history, tools, max_tokens):
+    async def complete(self, history, tools, max_tokens, model_profile=None):
         self.histories.append(copy.deepcopy(history))
         return self.replies.pop(0)
 

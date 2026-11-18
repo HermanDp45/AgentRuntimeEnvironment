@@ -113,6 +113,8 @@ port клиентского WebDAV и одноразовый export_token. Пу�
 Менеджер принимает provision.mount с теми же полями. Учебные session.fixture и
 provision сохранены. export_token не передаётся в сандбокс или модели.
 
+Сообщения `session.create` и `session.fixture` принимают необязательный `model_profile` со значением `deepseek` или `qwen`. Выбор закреплён за сессией. Если поле пропущено, применяется конфигурация сервера.
+
 Для выбранной папки WriteFile публикуется через WebDAV с проверкой SHA.
 RunCommand видит /work на чтение. Закрытие удаляет сетевые ресурсы, сохраняя
 файлы клиента. [Устройство](../docs/adr/0010-local-workdir.md).

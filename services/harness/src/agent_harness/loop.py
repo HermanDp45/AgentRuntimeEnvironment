@@ -48,7 +48,7 @@ class Engine:
     def __init__(self, model, sandbox, config):
         self.model, self.sandbox, self.config = model, sandbox, config
 
-    async def run(self, history, message, approve, emit):
+    async def run(self, history, message, approve, emit, model_profile=None):
         config, started, paused = self.config, time.monotonic(), 0.0
         pending, used_ids = (
             [],
@@ -105,7 +105,9 @@ class Engine:
                     raise Stop(tools.failure("limit", "context_limit"))
                 call_started = time.monotonic()
                 async with asyncio.timeout(min(config["model_timeout_s"], remaining())):
-                    body = await self.model.complete(history, tools.schemas(), config["max_tokens"])
+                    body = await self.model.complete(
+                        history, tools.schemas(), config["max_tokens"], model_profile
+                    )
                 model_calls += 1
                 try:
                     choice = body["choices"][0]

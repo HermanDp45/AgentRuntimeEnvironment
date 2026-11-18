@@ -18,6 +18,7 @@ from PySide6.QtGui import (
 )
 from PySide6.QtWidgets import (
     QApplication,
+    QComboBox,
     QFileDialog,
     QFrame,
     QHBoxLayout,
@@ -151,7 +152,7 @@ def labeled_field(title, field):
 
 
 class ChatWindow(QMainWindow):
-    def __init__(self, url="http://127.0.0.1:8080", token=None):
+    def __init__(self, url="http://127.0.0.1:8080", token=None, model_profile=None):
         super().__init__()
         self.client = None
         self.session = self.run_id = self.pending = None
@@ -159,6 +160,7 @@ class ChatWindow(QMainWindow):
         self.stream = None
         self.closing = False
         self.close_done = False
+        self.reopen = False
         self.release_started = False
         self.last_files = {}
         self.workdir = None
@@ -190,6 +192,9 @@ class ChatWindow(QMainWindow):
         layout.addWidget(
             self.connection_panel(url, token or os.getenv("CLIENT_TOKEN", "local-dev-token"))
         )
+
+        if model_profile:
+            self.model_picker.setCurrentIndex(self.model_picker.findData(model_profile))
 
         split = QSplitter()
         split.setChildrenCollapsible(False)
@@ -225,6 +230,11 @@ class ChatWindow(QMainWindow):
         self.connect_button.clicked.connect(self.connect_chat)
         row.addLayout(labeled_field("Сервер", self.url), 3)
         row.addLayout(labeled_field("Токен", self.token), 2)
+        self.model_picker = QComboBox()
+        self.model_picker.addItem("По настройкам сервера", None)
+        self.model_picker.addItem("DeepSeek Flash", "deepseek")
+        self.model_picker.addItem("Qwen", "qwen")
+        row.addLayout(labeled_field("Модель чата", self.model_picker), 2)
         row.addWidget(self.connect_button, 0, Qt.AlignmentFlag.AlignBottom)
         layout.addLayout(row)
         folder_row = QHBoxLayout()
@@ -243,14 +253,17 @@ class ChatWindow(QMainWindow):
     def choose_folder(self):
         folder = QFileDialog.getExistingDirectory(self, "Рабочая папка", self.folder or "")
         if folder:
-            self.folder = folder
-            self.folder_path.setText(folder)
-            self.mode_badge.setText("Локальная папка")
-            self.session_hint.setText("Подтверждённые правки сохраняются в выбранной папке.")
-            self.file_content.setToolTip(
-                "Просмотр до 128 текстовых файлов размером до 64 КиБ. "
-                "Служебные и двоичные файлы скрыты."
-            )
+            self.set_folder(folder)
+
+    def set_folder(self, folder):
+        self.folder = folder
+        self.folder_path.setText(folder)
+        self.mode_badge.setText("Локальная папка")
+        self.session_hint.setText("Подтверждённые правки сохраняются в выбранной папке.")
+        self.file_content.setToolTip(
+            "Просмотр до 128 текстовых файлов размером до 64 КиБ. "
+            "Служебные и двоичные файлы скрыты."
+        )
 
     def conversation_panel(self):
         widget = panel()
@@ -407,6 +420,8 @@ class ChatWindow(QMainWindow):
         )
         self.cancel_button.setEnabled(bool(self.run_id) and not self.closing)
         self.refresh_files.setEnabled(self.send_button.isEnabled())
+        if self.session:
+            self.connect_button.setEnabled(self.send_button.isEnabled())
 
     @Slot()
     def connect_chat(self):
@@ -439,6 +454,9 @@ class ChatWindow(QMainWindow):
             self.close_workdir()
             self.show_error("Проверьте токен клиента: он должен содержать символы ASCII.")
             return
+        if profile := self.model_picker.currentData():
+            payload["model_profile"] = profile
+        self.model_picker.setEnabled(False)
         self.session = str(uuid4())
         self.url.setEnabled(False)
         self.token.setEnabled(False)
@@ -467,6 +485,7 @@ class ChatWindow(QMainWindow):
             self.client = self.session = None
             self.url.setEnabled(True)
             self.token.setEnabled(True)
+            self.model_picker.setEnabled(True)
             self.connect_button.setEnabled(True)
             self.folder_button.setEnabled(True)
             self.show_error(error)
@@ -482,7 +501,9 @@ class ChatWindow(QMainWindow):
             "Рабочая папка подключена" if self.workdir else "Готов к задаче · учебная сессия"
         )
         self.refresh_files.setVisible(bool(self.workdir))
-        self.connect_button.setText("Подключено")
+        self.connect_button.setText("Новый чат")
+        self.connect_button.clicked.disconnect(self.connect_chat)
+        self.connect_button.clicked.connect(self.new_chat)
         self.set_busy(False)
         self.collect_files()
         self.message.setFocus()
@@ -557,7 +578,12 @@ class ChatWindow(QMainWindow):
             }
             self.status.setText(labels.get(result["status"], "Задача завершена"))
             if result.get("error"):
-                self.activity.appendPlainText("Ошибка: " + result["error"]["code"])
+                code = result["error"]["code"]
+                self.activity.appendPlainText(
+                    "Для выбранной модели на сервере не задан API-ключ."
+                    if code == "api_key_missing"
+                    else "Ошибка: " + code
+                )
             self.run_id = self.pending = None
             self.approval.hide()
             self.cancel_button.setEnabled(False)
@@ -599,7 +625,8 @@ class ChatWindow(QMainWindow):
                 )
         elif kind == "status" and data.get("phase") == "model_reply":
             self.activity.appendPlainText(
-                f"Ответ модели #{data['model_call']} · {data['duration_s']:.2f} с"
+                f"Ответ модели #{data['model_call']} · {data.get('model') or 'модель не указана'}"
+                f" · {data['duration_s']:.2f} с"
             )
 
     @Slot()
@@ -689,6 +716,11 @@ class ChatWindow(QMainWindow):
         self.show_error(message)
         self.cancel_button.setEnabled(bool(self.run_id) and not self.closing)
 
+    @Slot()
+    def new_chat(self):
+        self.reopen = True
+        self.close()
+
     def closeEvent(self, event):
         if self.close_done or not self.client:
             event.accept()
@@ -731,6 +763,7 @@ class ChatWindow(QMainWindow):
 
     @Slot(object)
     def close_failed(self, error):
+        self.reopen = False
         self.closing = False
         self.release_started = False
         self.set_busy(True)
@@ -741,16 +774,26 @@ class ChatWindow(QMainWindow):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--model", choices=("deepseek", "qwen"))
     parser.add_argument("--url", default="http://127.0.0.1:8080")
     parser.add_argument("--smoke-test", action="store_true", help=argparse.SUPPRESS)
     args = parser.parse_args()
     app = QApplication(sys.argv[:1])
     app.setApplicationName("Agent Runtime")
-    window = ChatWindow(args.url)
-    window.show()
-    if args.smoke_test:
-        QTimer.singleShot(200, window.close)
-    return app.exec()
+    url, token, profile, folder = args.url, None, args.model, None
+    while True:
+        window = ChatWindow(url, token, profile)
+        if folder:
+            window.set_folder(folder)
+        window.show()
+        if args.smoke_test:
+            QTimer.singleShot(200, window.close)
+        result = app.exec()
+        if not window.reopen:
+            return result
+        url, token = window.url.text(), window.token.text()
+        profile, folder = window.model_picker.currentData(), window.folder
+        window.deleteLater()
 
 
 if __name__ == "__main__":

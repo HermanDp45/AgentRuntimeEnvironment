@@ -12,6 +12,7 @@ ENV PATH="/app/.venv/bin:$PATH" PYTHONPATH=/app/src \
 RUN groupadd --gid 10001 app && useradd --uid 10001 --gid app --no-create-home app
 WORKDIR /app
 COPY --from=builder /app/.venv .venv
+COPY contracts/models.py src/contracts/models.py
 COPY services/llm-proxy/src src
 USER 10001:10001
 EXPOSE 8000

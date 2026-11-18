@@ -76,7 +76,7 @@ class Runtime:
             if len(self.sessions) >= self.config["max_sessions"]:
                 raise Rejected("session_limit")
             payload = {
-                **request.model_dump(mode="json"),
+                **request.model_dump(mode="json", exclude={"model_profile"}),
                 "type": "provision.mount" if request.type == "session.create" else "provision",
             }
             try:
@@ -182,7 +182,11 @@ class Runtime:
                 result = Cancelled(status="cancelled")
             else:
                 result = await Engine(self.model, session.sandbox, self.config).run(
-                    session.history, run.request.message, approve, emit
+                    session.history,
+                    run.request.message,
+                    approve,
+                    emit,
+                    session.request.model_profile,
                 )
         except Stop as stop:
             result = stop.result

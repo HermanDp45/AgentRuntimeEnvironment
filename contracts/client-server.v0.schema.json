@@ -159,6 +159,22 @@
           "default": false,
           "title": "Read Only",
           "type": "boolean"
+        },
+        "model_profile": {
+          "anyOf": [
+            {
+              "enum": [
+                "deepseek",
+                "qwen"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model Profile"
         }
       },
       "required": [
@@ -386,6 +402,22 @@
           "default": false,
           "title": "Read Only",
           "type": "boolean"
+        },
+        "model_profile": {
+          "anyOf": [
+            {
+              "enum": [
+                "deepseek",
+                "qwen"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model Profile"
         }
       },
       "required": [

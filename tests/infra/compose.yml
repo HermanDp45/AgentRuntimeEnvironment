@@ -10,6 +10,8 @@ services:
   llm-proxy:
     environment:
       LLM_PROVIDER_URL: http://mock-llm:8000
+      DEEPSEEK_API_KEY: ""
+      QWEN_API_KEY: ""
       LLM_API_KEY: fixture-provider-secret
       LLM_MODEL: fixture-model
     depends_on:

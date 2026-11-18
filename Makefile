@@ -11,8 +11,13 @@ TEST_COMPOSE = docker compose -p $(TEST_PROJECT) -f docker-compose.yml -f tests/
 setup-gui:
 	uv sync --frozen --group gui
 
-gui:
-	uv run --frozen --offline --group gui python -m client.gui
+.PHONY: start
+start: MODEL ?= deepseek
+start: setup-gui up
+
+start gui: export ARE_GUI_MODEL = $(MODEL)
+start gui:
+	uv run --frozen --offline --group gui python -m client.gui $${ARE_GUI_MODEL:+--model "$$ARE_GUI_MODEL"}
 
 test-ui:
 	QT_QPA_PLATFORM=offscreen uv run --frozen --offline --group gui pytest -q tests/ui
